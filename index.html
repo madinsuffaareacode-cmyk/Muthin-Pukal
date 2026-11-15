@@ -22,30 +22,19 @@
 </header>
 
 <!-- HOME PAGE -->
-<section class="home-hero">
-
+<section class="home-hero" id="home">
     <div class="hero-content">
-        
         <h1>✦ Muthin Pukal ✦</h1>
-         <div>
-
-
         <p>Discover the beauty of Islamic Madh Songs</p>
-
-        <a href="#home-categories" class="explore-btn">
-         
-        </a>
+        <a href="#home-categories" class="explore-btn">Explore Songs</a>
     </div>
-
 </section>
 
 <!-- CATEGORY SECTION -->
 <section class="home-categories" id="home-categories">
 
     <h2>Explore Our Categories</h2>
-    <p class="category-subtitle">
-        Choose your favourite collection
-    </p>
+    <p class="category-subtitle">Choose your favourite collection</p>
 
     <div class="categories">
 
@@ -75,7 +64,7 @@
         </button>
 
         <button onclick="filterCategory('ap-usthad')" class="category-card usthad-card">
-            <span class="category-icon"
+            <span class="category-icon">✧</span>
             <span>A.P Usthad Songs</span>
         </button>
 
@@ -97,45 +86,30 @@
     </div>
 </section>
 
-<!-- SONGS SECTION: SONGS APPEAR ONLY AFTER CATEGORY SELECTION -->
-<section class="songs" id="songs">
+<!-- SONGS SECTION -->
+<section class="songs" id="songs" style="display:none;">
 
     <h2>Our Song Collection</h2>
 
-    <input type="text" id="search"
+    <input
+        type="text"
+        id="search"
         placeholder="Search your favourite song..."
-        oninput="searchSongs()">
+        oninput="searchSongs()"
+    >
 
+    <!-- SONG LIST: only one song-list container -->
     <div id="song-list">
 
-        <!-- ಇಲ್ಲಿ ನಿನ್ನ ಈಗಿರುವ ಎಲ್ಲಾ song-card ಕೋಡ್‌ಗಳನ್ನು ಹಾಗೆಯೇ ಇರಿಸು -->
-<section class="songs" id="songs">
-
-    <h2>Our Song Collection</h2>
-
-    <div class="categories">
-        <button onclick="filterCategory('all')">All Songs</button>
-        <button onclick="filterCategory('malayalam')">Malayalam Songs</button>
-        <button onclick="filterCategory('kannada')">Kannada Songs</button>
-        <button onclick="filterCategory('urdu')">Urdu Na'ath</button>
-        <button onclick="filterCategory('mappila')">Mappila Songs</button>
-        <button onclick="filterCategory('ap-usthad')">A.P Usthad Songs</button>
-        <button onclick="filterCategory('sufi')">Sufi Songs</button>
-        <button onclick="filterCategory('arabic')">Arabic Nasheeds</button>
-        <button onclick="filterCategory('others')">Others</button>
-    </div>
-
-    <div id="song-list">
-
-        <!-- Arabic Nasheed -->
-
+        <!-- SONG 1: ARABIC NASHEED -->
         <div class="song-card" data-category="arabic">
+
             <h3>يا نبي سلام عليك</h3>
             <p>Category: Arabic Nasheed</p>
 
             <div class="lyrics-content arabic"
-                dir="rtl"
-                style="text-align:right; line-height:2.2; font-size:20px;">
+                 dir="rtl"
+                 style="text-align:right; line-height:2.2; font-size:20px;">
 
                 أنت نور الله فجراً
                 <br>جئت بعد العسر يسراً
@@ -163,334 +137,314 @@
                 <br>جئتنا بالخير دينا
                 <br>ياختام المرسلين
                 <br>يا حبيبى يا محمد
+
             </div>
 
             <button class="copy-btn" onclick="copyLyrics(this)">
                 Copy Lyrics
             </button>
+
         </div>
 
-        <!-- Arabic Nasheed -->
+        <!-- SONG 2: MUTH NABI -->
+        <div class="song-card" data-category="malayalam">
 
+            <h3>Muth Nabi Vol-08</h3>
+            <p>Category: Malayalam Songs</p>
 
-<div class="song-card" data-category="malayalam">
+            <div class="lyrics-tabs">
+                <button onclick="showLyrics(this, 'malayalam')">മലയാളം</button>
+                <button onclick="showLyrics(this, 'kannada')">ಕನ್ನಡ</button>
+            </div>
 
-    <h3>Muth Nabi Vol-08</h3>
-    <p>Category: Malayalam Songs</p>
+            <div class="lyrics-content malayalam">
 
-    <div class="lyrics-tabs">
-        <button onclick="showLyrics(this, 'malayalam')">മലയാളം</button>
-        <button onclick="showLyrics(this, 'kannada')">ಕನ್ನಡ</button>
-    </div>
+                <h4>മുത്ത് നബി Volume : 08</h4>
 
-    <!-- Malayalam Lyrics -->
-    <div class="lyrics-content malayalam">
+                മഹമൂദുന്നബി ചിരി തൂകിയെ...
+                മറയില്ലാതെ ഞാനൊന്ന് നോക്കിയെ...
+                മലക്കുൽ മൗത്തു വന്ന് റൂഹ് നീക്കിയെ...
+                മനുജാ കോടാനുകോടി തൻ്റെ പൂതിയെ...
+                മഹ്ബൂബുള്ള മൗത്തിനില്ല പേടിയെ...
+                മരണമേ ഞാൻ മദീനയിൽ ഉണ്ടാകയെ...
+                മണ്ണിൽ മൂടുമ്പോൾ തങ്ങളുള്ള ബോഡിയെ...
+                മന്നവാ നീ അദാബ് ഹറാമാക്കിയെ...
+                (മഹ്മൂദുന്നബി)
 
-        <h4>മുത്ത് നബി Volume : 08</h4>
+                <br><br>
 
-        മഹമൂദുന്നബി ചിരി തൂകിയെ...
-        മറയില്ലാതെ ഞാനൊന്ന് നോക്കിയെ...
-        മലക്കുൽ മൗത്തു വന്ന് റൂഹ് നീക്കിയെ...
-        മനുജാ കോടാനുകോടി തൻ്റെ പൂതിയെ...
-        മഹ്ബൂബുള്ള മൗത്തിനില്ല പേടിയെ...
-        മരണമേ ഞാൻ മദീനയിൽ ഉണ്ടാകയെ...
-        മണ്ണിൽ മൂടുമ്പോൾ തങ്ങളുള്ള ബോഡിയെ...
-        മന്നവാ നീ അദാബ് ഹറാമാക്കിയെ...
-        (മഹ്മൂദുന്നബി)
+                മുസൽമാന്റെ ഹൃദയം .. മദീനയിൽ വലയം ..
+                മഹ്ബൂബിനോർമകളാലെ അലയും..
+                മദ്ഹോതി കരയും മനം നീറി എരിയും
+                മഹിത മുഖം കണ്ടിടാത്ത നോവുരയും.. (2)
 
-        <br><br>
+                <br><br>
 
-        മുസൽമാന്റെ ഹൃദയം .. മദീനയിൽ വലയം ..
-        മഹ്ബൂബിനോർമകളാലെ അലയും..
-        മദ്ഹോതി കരയും മനം നീറി എരിയും
-        മഹിത മുഖം കണ്ടിടാത്ത നോവുരയും.. (2)
+                ഒന്നു കാണാതെയെത്ര കാലമീ വിധി ...
+                കുന്നു കൂടിടുന്ന പാപമാണെൻ്റൊരു ഗതി...
+                എന്നും സ്വലവാത്ത് ചൊല്ലലുണ്ട് യാ നബീ !!
+                പൊന്നു വൈകാതെ വന്നിടുമോ സയ്യിദീ...
+                (മഹ്മൂദുന്നബി)
 
-        <br><br>
+                <br><br>
 
-        ഒന്നു കാണാതെയെത്ര കാലമീ വിധി ...
-        കുന്നു കൂടിടുന്ന പാപമാണെൻ്റൊരു ഗതി...
-        എന്നും സ്വലവാത്ത് ചൊല്ലലുണ്ട് യാ നബീ !!
-        പൊന്നു വൈകാതെ വന്നിടുമോ സയ്യിദീ...
-        (മഹ്മൂദുന്നബി)
+                അസ്റാഈൽ അണയും അകമെല്ലാം വിറയും
+                അലങ്കാരം അഹങ്കാരം വീണുടയും
+                അഹ് ലെല്ലാം അകലും അനങ്ങില്ലാ
+                ശകലം അഹ്‌മദ് നബി മാത്രമാണ് പോകാൻ ബലം.. (2)
 
-        <br><br>
+                <br><br>
 
-        അസ്റാഈൽ അണയും അകമെല്ലാം വിറയും
-        അലങ്കാരം അഹങ്കാരം വീണുടയും
-        അഹ് ലെല്ലാം അകലും അനങ്ങില്ലാ
-        ശകലം അഹ്‌മദ് നബി മാത്രമാണ് പോകാൻ ബലം.. (2)
+                തങ്ങളില്ലാത്ത മൗത്ത് വേണ്ട തങ്ങളെ
+                തിങ്കളല്ലാതെ ആരുമില്ല തെന്നലേ
+                തങ്കമേ പാവമാണ് കേൾക്കൂ തേങ്ങലെ...
+                തന്നിടാമോ ശഫാഅത്ത് ഇരു ജഗമിലെ... (2)
+                (മഹ്മൂദുന്നബി)
 
-        <br><br>
+                <br><br>
 
-        തങ്ങളില്ലാത്ത മൗത്ത് വേണ്ട തങ്ങളെ
-        തിങ്കളല്ലാതെ ആരുമില്ല തെന്നലേ
-        തങ്കമേ പാവമാണ് കേൾക്കൂ തേങ്ങലെ...
-        തന്നിടാമോ ശഫാഅത്ത് ഇരു ജഗമിലെ... (2)
-        (മഹ്മൂദുന്നബി)
+                മദീനയിൽ വരണം മറ പൊളിഞ്ഞു കാണണം
+                മുഹിബ്ബും മഹ്ബൂബിൻ മഖാമിലേറണം
+                മദീനയിൽ മരണം .. മഹിത മഹാ സുദിനം..
+                മഹാരാജ ഹിമയിൽ ചെന്ന് അറ്റുവീഴണം ...
 
-        <br><br>
+                <br><br>
 
-        മദീനയിൽ വരണം മറ പൊളിഞ്ഞു കാണണം
-        മുഹിബ്ബും മഹ്ബൂബിൻ മഖാമിലേറണം
-        മദീനയിൽ മരണം .. മഹിത മഹാ സുദിനം..
-        മഹാരാജ ഹിമയിൽ ചെന്ന് അറ്റുവീഴണം ...
+                من قدر ان يموت بالمدينة فاليمت بها سلامة شفاعتي
 
-        <br><br>
+                <br><br>
 
-        من قدر ان يموت بالمدينة فاليمت بها سلامة شفاعتي
+                മധുരമുള്ള മണ്ണിലാക്കണെ ആദ്യരാത്രി
+                മെഹബൂബ് വരും ഖബർ തന്നെ ജന്നത്തീ .... (2)
+                (മഹ്മൂദുന്നബി)
 
-        <br><br>
+            </div>
 
-        മധുരമുള്ള മണ്ണിലാക്കണെ ആദ്യരാത്രി
-        മെഹബൂബ് വരും ഖബർ തന്നെ ജന്നത്തീ .... (2)
-        (മഹ്മൂദുന്നബി)
+            <div class="lyrics-content kannada" style="display:none;">
 
-    </div>
+                <h4>ಮುತ್ತ್ ನಬಿ Volume : 08</h4>
 
-    <!-- Kannada Script Lyrics -->
-    <div class="lyrics-content kannada" style="display:none;">
+                ಮಹಮೂದುನ್ನಬಿ ಚಿರಿ ತೂಕಿಯೇ...
+                ಮರಯಿಲ್ಲಾತೆ ಞಾನೊನ್ನುಂ ನೋಕಿಯೇ...
+                ಮಲಕುಲ್ ಮೌತ್ತು ವನ್ನು ರೂಹ್ ನೀಕ್ಕಿಯೇ...
+                ಮನುಜಾ ಕೋಟಾನುಕೋಟಿ ತಂದೆ ಪೂತಿಯೇ...
+                ಮಹ್ಬೂಬುಲ್ಲ ಮೌತ್ತಿನ್ನಿಲ್ಲ ಪೇಡಿಯೇ...
+                ಮರಣಮೇ ಞಾನ್ ಮದೀನಯಿಲ್ ಉಂಡಾಕಯೇ...
+                ಮಣ್ಣಿಲ್ ಮೂಡುವೋಳ್ ತಂಗಳുള്ള ಬೋಡಿಯೇ...
+                ಮನ್ನವಾ ನೀ ಅದಾಬ್ ಹರಾಮಾಕ್ಕಿಯೇ...
+                (ಮಹ್ಮೂದುನ್ನಬಿ)
 
-        <h4>ಮುತ್ತ್ ನಬಿ Volume : 08</h4>
+                <br><br>
 
-        ಮಹಮೂದುನ್ನಬಿ ಚಿರಿ ತೂಕಿಯೇ...
-        ಮರಯಿಲ್ಲಾತೆ ಞಾನೊನ್ನುಂ ನೋಕಿಯೇ...
-        ಮಲಕುಲ್ ಮೌತ್ತು ವನ್ನು ರೂಹ್ ನೀಕ್ಕಿಯೇ...
-        ಮನುಜಾ ಕೋಟಾನುಕೋಟಿ ತಂದೆ ಪೂತಿಯೇ...
-        ಮಹ್ಬೂಬುಲ್ಲ ಮೌತ್ತಿನ್ನಿಲ್ಲ ಪೇಡಿಯೇ...
-        ಮರಣಮೇ ಞಾನ್ ಮದೀನಯಿಲ್ ಉಂಡಾಕಯೇ...
-        ಮಣ್ಣಿಲ್ ಮೂಡುವೋಳ್ ತಂಗಳുള്ള ಬೋಡಿಯೇ...
-        ಮನ್ನವಾ ನೀ ಅದಾಬ್ ಹರಾಮಾಕ್ಕಿಯೇ...
-        (ಮಹ್ಮೂದುನ್ನಬಿ)
+                ಮುಸಲ್ಮಾನ്റെ ಹೃದಯಂ .. ಮದೀನಯಿಲ್ ವಲಯಂ ..
+                ಮಹ್ಬೂಬಿನೋರ್ಮಕಳಾಲೆ ಅಲಯುಂ..
+                ಮದ್ಹೋತಿ ಕರಯುಂ ಮನಂ ನೀರಿ ಎರಿಯುಂ
+                ಮಹಿತ ಮುಖಂ ಕಂಡಿಡಾತ್ತ ನೋವುರಯುಂ.. (2)
 
-        <br><br>
+                <br><br>
 
-        ಮುಸಲ್ಮಾನ്റെ ಹೃದಯಂ .. ಮದೀನಯಿಲ್ ವಲಯಂ ..
-        ಮಹ್ಬೂಬಿನೋರ್ಮಕಳಾಲೆ ಅಲಯುಂ..
-        ಮದ್ಹೋತಿ ಕರಯುಂ ಮನಂ ನೀರಿ ಎರಿಯುಂ
-        ಮಹಿತ ಮುಖಂ ಕಂಡಿಡಾತ್ತ ನೋವುರಯುಂ.. (2)
+                ಒನ್ನು ಕಾಣಾತೆ ಎತ್ರ ಕಾಲಮೀ ವಿಧಿ...
+                ಕುನ್ನು ಕೂಡಿಡುನ್ನ ಪಾಪಮಾಣೆಂಟೆರು ಗತಿ...
+                ಎನ್ನುಂ ಸ್ವಲವಾತ್ ಚೊಲ್ಲಲುಂಡು ಯಾ ನಬೀ !!
+                ಪೊನ್ನು ವೈಕಾತೆ ವನ್ನಿಡುಮೋ ಸಯ್ಯಿದೀ...
+                (ಮಹ್ಮೂದುನ್ನಬಿ)
 
-        <br><br>
+                <br><br>
 
-        ಒನ್ನು ಕಾಣಾತೆ ಎತ್ರ ಕಾಲಮೀ ವಿಧಿ...
-        ಕುನ್ನು ಕೂಡಿಡುನ್ನ ಪಾಪಮಾಣೆಂಟೆರು ಗತಿ...
-        ಎನ್ನುಂ ಸ್ವಲವಾತ್ ಚೊಲ್ಲಲುಂಡು ಯಾ ನಬೀ !!
-        ಪೊನ್ನು ವೈಕಾತೆ ವನ್ನಿಡುಮೋ ಸಯ್ಯಿದೀ...
-        (ಮಹ್ಮೂದುನ್ನಬಿ)
+                ಅಸ್ರಾಈಲ್ ಅಣಯುಂ ಅಕಮೆಲ್ಲಾಂ ವಿರಯುಂ
+                ಅಲಂಕಾರಂ ಅಹಂಕಾರಂ ವೀಣುಡಯುಂ
+                ಅಹ್ಲೆಲ್ಲಾಂ ಅಕಲುಂ ಅನಂಗಿಲ್ಲಾ
+                ಶಕಲಂ ಅಹ್ಮದ್ ನಬಿ ಮಾತ್ರಮಾಣ್ ಪೋಕಾನ್ ಬಲಂ.. (2)
 
-        <br><br>
+                <br><br>
 
-        ಅಸ್ರಾಈಲ್ ಅಣಯುಂ ಅಕಮೆಲ್ಲಾಂ ವಿರಯುಂ
-        ಅಲಂಕಾರಂ ಅಹಂಕಾರಂ ವೀಣುಡಯುಂ
-        ಅಹ್ಲೆಲ್ಲಾಂ ಅಕಲುಂ ಅನಂಗಿಲ್ಲಾ
-        ಶಕಲಂ ಅಹ್ಮದ್ ನಬಿ ಮಾತ್ರಮಾಣ್ ಪೋಕಾನ್ ಬಲಂ.. (2)
+                ತಂಗಳಿಲ್ಲಾತ್ತ ಮೌತ್ತು ವೇಂಡ ತಂಗಳೇ
+                ತಿಂಗಳಲ್ಲಾತೆ ಆರുമಿಲ್ಲ ತೆನ್ನಲೇ
+                ತಂಕಮೇ ಪಾವಮಾಣ್ ಕೇಳ್ಕ್ಕೂ ತೇಂಗಳೇ...
+                ತನ್ನಿಡಾಮೋ ಶಫಾಅತ್ ಇರು ಜಗಮಿಲೇ... (2)
+                (ಮಹ್ಮೂದುನ್ನಬಿ)
 
-        <br><br>
+                <br><br>
 
-        ತಂಗಳಿಲ್ಲಾತ್ತ ಮೌತ್ತು ವೇಂಡ ತಂಗಳೇ
-        ತಿಂಗಳಲ್ಲಾತೆ ಆರுமಿಲ್ಲ ತೆನ್ನಲೇ
-        ತಂಕಮೇ ಪಾವಮಾಣ್ ಕೇಳ್ಕ್ಕೂ ತೇಂಗಳೇ...
-        ತನ್ನಿಡಾಮೋ ಶಫಾಅತ್ ಇರು ಜಗಮಿಲೇ... (2)
-        (ಮಹ್ಮೂದುನ್ನಬಿ)
+                ಮದೀನಯಿಲ್ ವರணம் ಮರ ಪೊಳಿಂಞು ಕಾಣണം
+                ಮುಹಿಬ್ಬುಂ ಮಹ್ಬೂಬಿನ್ ಮಖಾಮಿಲೇರണം
+                ಮದೀನಯಿಲ್ ಮರಣಂ .. ಮಹಿತ ಮಹಾ ಸುದಿನಂ..
+                ಮಹಾರಾಜ ಹಿಮಯಿಲ್ ಚೆನ್ನು ಅಟ್ಟು ವೀಳಣಂ ...
 
-        <br><br>
+                <br><br>
 
-        ಮದೀನಯಿಲ್ ವರணம் ಮರ ಪೊಳಿಂಞು ಕಾಣണം
-        ಮುಹಿಬ್ಬುಂ ಮಹ್ಬೂಬಿನ್ ಮಖಾಮಿಲೇರണം
-        ಮದೀನಯಿಲ್ ಮರಣಂ .. ಮಹಿತ ಮಹಾ ಸುದಿನಂ..
-        ಮಹಾರಾಜ ಹಿಮಯಿಲ್ ಚೆನ್ನು ಅಟ್ಟು ವೀಳಣಂ ...
+                من قدر ان يموت بالمدينة فاليمت بها سلامة شفاعتي
 
-        <br><br>
+                <br><br>
 
-        من قدر ان يموت بالمدينة فاليمت بها سلامة شفاعتي
+                ಮಧುರಮುಳ್ಳ ಮಣ್ಣಿಲಾಕ್ಕಣೇ ಆದ್ಯರಾತ್ರಿ
+                ಮೆಹಬೂಬ್ ವರುಂ ಖಬರ್ ತನ್ನೆ ಜನ್ನತ್ತೀ .... (2)
 
-        <br><br>
+            </div>
 
-        ಮಧುರಮುಳ್ಳ ಮಣ್ಣಿಲಾಕ್ಕಣೇ ಆದ್ಯರಾತ್ರಿ
-        ಮೆಹಬೂಬ್ ವರುಂ ಖಬರ್ ತನ್ನೆ ಜನ್ನತ್ತೀ .... (2)
-        (ಮಹ್ಮೂದುನ್ನಬಿ)
+            <button class="copy-btn" onclick="copyLyrics(this)">
+                Copy Lyrics
+            </button>
 
-    </div>
+            <div class="youtube-video">
+                <h4>Watch Song on YouTube</h4>
 
-    <button class="copy-btn" onclick="copyLyrics(this)">
-        Copy Lyrics
-    </button>
+                <iframe
+                    width="100%"
+                    height="300"
+                    src="https://www.youtube.com/embed/8vlClUbw_m8"
+                    title="Muth Nabi Vol-08"
+                    frameborder="0"
+                    allowfullscreen>
+                </iframe>
+            </div>
 
-    <div class="youtube-video">
-        <h4>Watch Song on YouTube</h4>
+        </div>
 
-        <iframe
-            width="100%"
-            height="300"
-            src="https://www.youtube.com/embed/8vlClUbw_m8"
-            title="Muth Nabi Vol-08"
-            frameborder="0"
-            allowfullscreen>
-        </iframe>
-    </div>
-
-</div>
-<!-- Song 02: Chandiranu Nachidanu -->
-
-<div class="song-card" data-category="kannada">
-
-    <h3>ಚಂದಿರನು ನಾಚಿದನು</h3>
-
-    <p><strong>Singer:</strong> Hafiz Saif Puttur</p>
-    <p><strong>Category:</strong> Kannada Songs</p>
-
-    <div class="lyrics-tabs">
-        <button onclick="showLyrics(this, 'kannada')">
-            ಕನ್ನಡ
-        </button>
-
-        <button onclick="showLyrics(this, 'kanglish')">
-            Kanglish
-        </button>
-    </div>
-
-    <!-- Kannada Lyrics -->
-
-    <div class="lyrics-content kannada">
-
-
-<!-- Kannada Lyrics -->
-<div class="lyrics-content kannada">
-
-<div>
-ಚಂದಿರನು ನಾಚಿದನು...
-ಪುಣ್ಯ ಹಬೀಬರ ಜನನದಂದು...
-ಚರಿತೆಯ ವರ್ಣನೆಯು...
-ಒಲವಿನ ಸುಮ ತೀರವದು....
-</div>
+        <!-- SONG 3: CHANDIRANU NACHIDANU -->
+        <div class="song-card" data-category="kannada">
 
-<div>
-ಅಂಧಕಾರದ ಮಳೆಯೂ ಸುರಿಯುತಿದ ಕಾಲವದು....
-ದಿವ್ಯ ಜ್ಯೋತಿ ಆಗತವು...
-ಮಕ್ಕ ನಾಡಿನಲ್ಲಿ ಸಂಭ್ರಮವೂ...
-</div>
+            <h3>ಚಂದಿರನು ನಾಚಿದನು</h3>
 
-<div>
-(ಉಮ್ಮುಲ್ ಖುರಾದ ಮಣ್ಣಿಗೆಯಂದು..
-ಶಾಂತಿ ಹರಡಿತು...)
-</div>
-
-<div>
-ಜಗದಗಲದಿ ಬೆಳಗಿದವರು..
-ಲೋಕಕೆ ಮಾದರಿಯೂ ತಾವು.. (2)
-</div>
+            <p><strong>Singer:</strong> Hafiz Saif Puttur</p>
+            <p><strong>Category:</strong> Kannada Songs</p>
 
-<div>
-ಅಗ್ನಿಕುಂಡವು ನಂದಿತು ಅಂದು..
-ಆ ವಸಂತದ ದಿನವೇ....
-ವಿಗ್ರಹ ಶರಣಾಯಿತು ಅಂದು...
-ಪುಣ್ಯ ಜನ್ಮದ ಘಳಿಗೆ...
-</div>
+            <div class="lyrics-tabs">
+                <button onclick="showLyrics(this, 'kannada')">ಕನ್ನಡ</button>
+                <button onclick="showLyrics(this, 'kanglish')">Kanglish</button>
+            </div>
 
-<div>
-ಆಮಿನರ ಕರುಳ ಕುಡಿ ಖಾತಿಂ ಅವರೂ...
-</div>
+            <div class="lyrics-content kannada">
 
-<div>
-ಮಕ್ಕ ಮಣ್ಣಲಿ ಹಖ್ಖ ಸಾರುತ...
-ವಿಶ್ವ ಬೆಳಗಿದ ತ್ವಾಹರೂ..
-ವೈರಿ ಕೂಟರ ಕಾಟಗಳೆಡೆಯಲ್ಲರಳಿ ಬಂದ ನೆಬಿಯೇ....
-ಬವಣೆ ಬೇನೆಯ ಸಹಿಸಿದರಂದು...
-ಮಕ್ಕ ತೊರೆದ ನಿಧಿಯೇ...
-</div>
+                ಚಂದಿರನು ನಾಚಿದನು...
+                ಪುಣ್ಯ ಹಬೀಬರ ಜನನದಂದು...
+                ಚರಿತೆಯ ವರ್ಣನೆಯು...
+                ಒಲವಿನ ಸುಮ ತೀರವದು....
 
-<div>
-ನನ್ನ ಮುತ್ತಿನ ಕಣ್ಣೀರೋರೆಸಿ...
-ತ್ವೈಬಾ ಕರೆಯಿತು...
-</div>
+                <br><br>
 
-</div>
+                ಅಂಧಕಾರದ ಮಳೆಯೂ ಸುರಿಯುತಿದ ಕಾಲವದು....
+                ದಿವ್ಯ ಜ್ಯೋತಿ ಆಗತವು...
+                ಮಕ್ಕ ನಾಡಿನಲ್ಲಿ ಸಂಭ್ರಮವೂ...
 
-<!-- Kanglish Lyrics -->
-<div class="lyrics-content kanglish" style="display:none;">
+                <br><br>
 
-<div>
-Chandiranu naachidanu...
-Punya Habeebara jananadandu...
-Chariteya varnane yu...
-Olavina suma teeravadu....
-</div>
+                (ಉಮ್ಮುಲ್ ಖುರಾದ ಮಣ್ಣಿಗೆಯಂದು..
+                ಶಾಂತಿ ಹರಡಿತು...)
 
-<div>
-Andhakaarada maleyu suriyutida kaalavadu....
-Divya jyoti aagathavu...
-Makka naadinalli sambhramavu...
-</div>
+                <br><br>
 
-<div>
-(Ummul Khuraada mannigeyandu..
-Shaanti haraditu...)
-</div>
+                ಜಗದಗಲದಿ ಬೆಳಗಿದವರು..
+                ಲೋಕಕೆ ಮಾದರಿಯೂ ತಾವು.. (2)
 
-<div>
-Jagadagaladi belagidavaru..
-Lokake maadariyu taavu.. (2)
-</div>
+                <br><br>
 
-<div>
-Agnikundavu nanditu andu..
-Aa vasanthada dinave....
-Vigraha sharanaayitu andu...
-Punya janmada ghalige...
-</div>
+                ಅಗ್ನಿಕುಂಡವು ನಂದಿತು ಅಂದು..
+                ಆ ವಸಂತದ ದಿನವೇ....
+                ವಿಗ್ರಹ ಶರಣಾಯಿತು ಅಂದು...
+                ಪುಣ್ಯ ಜನ್ಮದ ಘಳಿಗೆ...
 
-<div>
-Aaminara karula kudi Khaathim avaru...
-</div>
+                <br><br>
 
-<div>
-Makka mannali haqq saaru tha...
-Vishwa belagida Thwaaharu..
-Vairi kootara kaatagalede allarali banda Nabiye....
+                ಆಮಿನರ ಕರುಳ ಕುಡಿ ಖಾತಿಂ ಅವರೂ...
 
-Bavane beneya sahisidandu...
-Makka toreda nidhiye...
-</div>
+                <br><br>
 
+                ಮಕ್ಕ ಮಣ್ಣಲಿ ಹಖ್ಖ ಸಾರುತ...
+                ವಿಶ್ವ ಬೆಳಗಿದ ತ್ವಾಹರೂ..
+                ವೈರಿ ಕೂಟರ ಕಾಟಗಳೆಡೆಯಲ್ಲರಳಿ ಬಂದ ನೆಬಿಯೇ....
+                ಬವಣೆ ಬೇನೆಯ ಸಹಿಸಿದರಂದು...
+                ಮಕ್ಕ ತೊರೆದ ನಿಧಿಯೇ...
 
-Nanna muttina kanneerore si...
-Thwaiba kareyitu...
-</div>
+                <br><br>
 
-</div>
+                ನನ್ನ ಮುತ್ತಿನ ಕಣ್ಣೀರೋರೆಸಿ...
+                ತ್ವೈಬಾ ಕರೆಯಿತು...
 
+            </div>
 
-    <button class="copy-btn" onclick="copyLyrics(this)">
-        Copy Lyrics
-    </button>
+            <div class="lyrics-content kanglish" style="display:none;">
 
-    <div class="youtube-video">
-        <h4>Watch Song on YouTube</h4>
+                Chandiranu naachidanu...
+                Punya Habeebara jananadandu...
+                Chariteya varnane yu...
+                Olavina suma teeravadu....
 
-        <iframe
-            width="100%"
-            height="300"
-            src="https://www.youtube.com/embed/HZ6A9szN4PQ"
-            title="Chandiranu Nachidanu - Hafiz Saif Puttur"
-            frameborder="0"
-            allowfullscreen>
-        </iframe>
-    </div>
+                <br><br>
 
-</div>
+                Andhakaarada maleyu suriyutida kaalavadu....
+                Divya jyoti aagathavu...
+                Makka naadinalli sambhramavu...
 
+                <br><br>
 
-        <!-- Qasida -->
+                (Ummul Khuraada mannigeyandu..
+                Shaanti haraditu...)
 
+                <br><br>
+
+                Jagadagaladi belagidavaru..
+                Lokake maadariyu taavu.. (2)
+
+                <br><br>
+
+                Agnikundavu nanditu andu..
+                Aa vasanthada dinave....
+                Vigraha sharanaayitu andu...
+                Punya janmada ghalige...
+
+                <br><br>
+
+                Aaminara karula kudi Khaathim avaru...
+
+                <br><br>
+
+                Makka mannali haqq saaru tha...
+                Vishwa belagida Thwaaharu..
+                Vairi kootara kaatagalede allarali banda Nabiye....
+
+                Bavane beneya sahisidandu...
+                Makka toreda nidhiye...
+
+                <br><br>
+
+                Nanna muttina kanneerore si...
+                Thwaiba kareyitu...
+
+            </div>
+
+            <button class="copy-btn" onclick="copyLyrics(this)">
+                Copy Lyrics
+            </button>
+
+            <div class="youtube-video">
+                <h4>Watch Song on YouTube</h4>
+
+                <iframe
+                    width="100%"
+                    height="300"
+                    src="https://www.youtube.com/embed/HZ6A9szN4PQ"
+                    title="Chandiranu Nachidanu - Hafiz Saif Puttur"
+                    frameborder="0"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+        </div>
+
+        <!-- SONG 4: QASIDA -->
         <div class="song-card" data-category="others">
+
             <h3>البردة</h3>
             <p>Category: Qasida</p>
             <p>Lyrics will be added here...</p>
+
         </div>
 
-        <!-- Malayalam Song -->
-
+        <!-- SONG 5: SAMPLE MALAYALAM SONG -->
         <div class="song-card" data-category="malayalam">
-            <h3>ನಮ್ಮ ಮೊದಲ ಮದ್ಹ್ ಹಾಡು</h3>
+
+            <h3>നമ്മുടെ ആദ്യ മദ്ഹ് ഗാനം</h3>
 
             <div class="lyrics-tabs">
                 <button onclick="showLyrics(this, 'malayalam')">മലയാളം</button>
@@ -513,20 +467,23 @@ Thwaiba kareyitu...
             <button class="copy-btn" onclick="copyLyrics(this)">
                 Copy Lyrics
             </button>
-        </div>
 
-        <!-- More songs can be added here -->
+        </div>
 
     </div>
 </section>
 
+<!-- ABOUT -->
 <section class="about" id="about">
+
     <h2>About Muthin Pukal</h2>
+
     <p>
         മദ്ഹ് ഗാനങ്ങളുടെയും ഇസ്‌ലാമിക പ്രകീർത്തനങ്ങളുടെയും
         വരികൾ ഒരിടത്ത് വായിക്കാനും ആസ്വദിക്കാനുമുള്ള
         ഒരു മനോഹരമായ ഡിജിറ്റൽ ശേഖരം.
     </p>
+
 </section>
 
 <footer>
@@ -535,5 +492,6 @@ Thwaiba kareyitu...
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="script.js"></script>
+
 </body>
 </html>
