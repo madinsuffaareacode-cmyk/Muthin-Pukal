@@ -8,7 +8,6 @@
     <title>മുത്തിൻ പുകൾ | Muthin Pukal</title>
 
     <link rel="stylesheet" href="style.css">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 
@@ -40,7 +39,7 @@
     <h2>Explore Our Categories</h2>
     <p class="category-subtitle">Choose your favourite collection</p>
 
-    <div class="categories">
+    <div class="categories" id="all-categories">
 
         <button onclick="filterCategory('all')" class="category-card all-card">
             <span class="category-icon">✦</span>
@@ -87,49 +86,11 @@
             <span>Others</span>
         </button>
 
+        <!-- NEW CATEGORIES WILL APPEAR HERE -->
+        <div id="dynamic-categories" style="display: contents;"></div>
+
     </div>
 </section>
 
 <!-- SONGS SECTION -->
-<section class="songs" id="songs" style="display:none;">
-
-    <h2>Our Song Collection</h2>
-
-    <input
-        type="text"
-        id="search"
-        placeholder="Search your favourite song..."
-        oninput="searchSongs()"
-    >
-
-    <!-- SONGS ADDED THROUGH ADMIN DASHBOARD -->
-    <div id="song-list"></div>
-
-</section>
-
-<!-- ABOUT -->
-<section class="about" id="about">
-
-    <h2>About Muthin Pukal</h2>
-
-    <p>
-        മദ്ഹ് ഗാനങ്ങളുടെയും ഇസ്‌ലാമിക പ്രകീർത്തനങ്ങളുടെയും
-        വരികൾ ഒരിടത്ത് വായിക്കാനും ആസ്വദിക്കാനുമുള്ള
-        ഒരു മനോഹരമായ ഡിജിറ്റൽ ശേഖരം.
-    </p>
-
-</section>
-
-<!-- FOOTER -->
-<footer>
-    <p>© Created by Fazal abdurrahman Anas Ullal.</p>
-</footer>
-
-<!-- SCRIPTS -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js"></script>
-<script src="database.js"></script>
-
-</body>
-</html>
-```
+<section class="songs" id="songs
