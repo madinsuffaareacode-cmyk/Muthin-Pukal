@@ -18,7 +18,7 @@ async function loadDatabaseSongs() {
     const songList = document.getElementById("song-list");
     if (!songList) return;
 
-    songList.innerHTML = "";
+    songList.
 
     data.forEach(song => {
         const card = document.createElement("div");
