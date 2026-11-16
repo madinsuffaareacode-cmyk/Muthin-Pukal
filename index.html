@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="ml">
 <head>
@@ -24,7 +24,6 @@
     </nav>
 </header>
 
-<!-- HOME PAGE -->
 <section class="home-hero" id="home">
     <div class="hero-content">
         <h1>✦ Muthin Pukal ✦</h1>
@@ -33,7 +32,6 @@
     </div>
 </section>
 
-<!-- CATEGORY SECTION -->
 <section class="home-categories" id="home-categories">
 
     <h2>Explore Our Categories</h2>
@@ -86,11 +84,41 @@
             <span>Others</span>
         </button>
 
-        <!-- NEW CATEGORIES WILL APPEAR HERE -->
         <div id="dynamic-categories" style="display: contents;"></div>
 
     </div>
 </section>
 
-<!-- SONGS SECTION -->
-<section class="songs" id="songs
+<section class="songs" id="songs" style="display:none;">
+
+    <h2>Our Song Collection</h2>
+
+    <input
+        type="text"
+        id="search"
+        placeholder="Search your favourite song..."
+        oninput="searchSongs()"
+    >
+
+    <div id="song-list"></div>
+
+</section>
+
+<section class="about" id="about">
+    <h2>About Muthin Pukal</h2>
+    <p>
+        Muthin Pukal is a collection of beautiful Islamic Madh songs.
+        Explore and enjoy songs in different languages.
+    </p>
+</section>
+
+<footer>
+    <p>© 2026 Muthin Pukal. All Rights Reserved.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
+<script src="database.js"></script>
+
+</body>
+</html>
