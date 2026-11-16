@@ -592,3 +592,44 @@ footer {
 .song-card.is-open .mp-song-actions {
     display: flex;
 }
+
+/* THUMBNAIL CARD FIX */
+
+#song-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 22px;
+}
+
+#song-list .song-card {
+    display: block;
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 16px;
+    border: 1px solid #e3d7a7;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+.mp-song-preview {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+}
+
+.mp-song-thumbnail {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+}
+
+.mp-song-details[hidden] {
+    display: none !important;
+}
+
+.mp-song-actions {
+    flex-wrap: wrap;
+}
