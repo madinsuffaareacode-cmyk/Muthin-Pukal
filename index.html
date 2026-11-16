@@ -1,0 +1,377 @@
+
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>മുത്തിൻ പുകൾ | Muthin Pukal</title>
+
+    <meta name="description" content="Explore beautiful Islamic Madh Songs at Muthin Pukal.">
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- ICONS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;500;600;700&family=Amiri:wght@400;700&family=Noto+Sans+Kannada:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        /* GLOBAL FONT */
+
+        body {
+            font-family: 'Anek Malayalam', sans-serif;
+        }
+
+        /* HEADER */
+
+        header,
+        header .logo,
+        header p,
+        header nav {
+            font-family: 'Anek Malayalam', sans-serif;
+        }
+
+        header .logo {
+            font-size: 27px;
+            font-weight: 700;
+        }
+
+        /* HOMEPAGE HERO */
+
+        .mp-home-intro {
+            position: relative;
+            text-align: center;
+            padding: 100px 20px 90px;
+            background:
+                linear-gradient(rgba(3,27,22,0.78), rgba(3,27,22,0.94)),
+                url('https://images.unsplash.com/photo-1519817650390-64a93db51149?w=1600');
+            background-position: center;
+            background-size: cover;
+            border-bottom: 1px solid rgba(214,181,104,0.3);
+        }
+
+        .mp-home-intro .mp-small-title {
+            color: #d6b568;
+            letter-spacing: 2px;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        .mp-home-intro h1 {
+            color: #e4c477;
+            font-family: 'Anek Malayalam', sans-serif;
+            font-size: clamp(42px, 7vw, 78px);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .mp-home-intro .mp-arabic {
+            color: #f1d99c;
+            font-family: 'Amiri', serif;
+            font-size: 35px;
+            direction: rtl;
+        }
+
+        .mp-home-intro .intro-line {
+            width: 100px;
+            height: 3px;
+            background: #d6b568;
+            margin: 25px auto;
+            border-radius: 5px;
+        }
+
+        .mp-home-intro .mp-description {
+            color: #e2e6df;
+            font-family: 'Anek Malayalam', sans-serif;
+            font-size: 17px;
+            line-height: 2;
+            margin-bottom: 30px;
+        }
+
+        .mp-explore-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: linear-gradient(135deg, #e4c477, #b38b3d);
+            color: #08271d;
+            padding: 14px 32px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .mp-explore-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(214,181,104,0.3);
+        }
+
+        /* SONG LIBRARY */
+
+        .mp-library {
+            max-width: 1200px;
+            margin: auto;
+            padding: 65px 20px;
+        }
+
+        .mp-library-heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .mp-library-heading h2 {
+            color: #d6b568;
+            font-family: 'Anek Malayalam', sans-serif;
+            font-size: clamp(27px, 4vw, 38px);
+            margin-bottom: 12px;
+        }
+
+        .mp-library-heading p {
+            color: #b8c8bd;
+            font-family: 'Anek Malayalam', sans-serif;
+            font-size: 17px;
+        }
+
+        .mp-library-heading .mp-divider {
+            width: 65px;
+            height: 3px;
+            background: #d6b568;
+            margin: 18px auto;
+            border-radius: 5px;
+        }
+
+        #song-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+            margin-top: 30px;
+        }
+
+        #song-list .song-card {
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        #search {
+            display: block;
+            width: min(100%, 550px);
+            margin: 30px auto;
+            padding: 15px 22px;
+            border: 1px solid #d6b568;
+            border-radius: 30px;
+            outline: none;
+            box-sizing: border-box;
+            background: #10382c;
+            color: white;
+            font-size: 16px;
+            font-family: 'Anek Malayalam', sans-serif;
+        }
+
+        #search::placeholder {
+            color: #b8c8bd;
+        }
+
+        #search:focus {
+            box-shadow: 0 0 15px rgba(214,181,104,0.2);
+        }
+
+        .mp-empty-message {
+            text-align: center;
+            color: #b8c8bd;
+            padding: 30px;
+        }
+
+        /* LYRICS FONTS */
+
+        .lyrics-content {
+            font-size: 19px;
+            line-height: 2.2;
+            padding: 22px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .lyrics-content.malayalam {
+            font-family: 'Anek Malayalam', sans-serif;
+            font-size: 20px;
+            line-height: 2.1;
+        }
+
+        .lyrics-content.kannada {
+            font-family: 'Noto Sans Kannada', sans-serif;
+            font-size: 19px;
+            line-height: 2.2;
+        }
+
+        .lyrics-content.arabic {
+            font-family: 'Amiri', serif;
+            font-size: 26px;
+            direction: rtl;
+            text-align: right;
+            line-height: 2.3;
+        }
+
+        .lyrics-content.urdu {
+            font-family: 'Noto Nastaliq Urdu', serif;
+            font-size: 23px;
+            direction: rtl;
+            text-align: right;
+            line-height: 2.5;
+        }
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            padding: 30px 15px;
+            margin-top: 30px;
+            background: #041e17;
+            border-top: 1px solid rgba(214,181,104,0.25);
+            color: #b8c8bd;
+            line-height: 2;
+            font-family: 'Anek Malayalam', sans-serif;
+        }
+
+        footer p:first-child {
+            color: #d6b568;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+
+            .mp-home-intro {
+                padding: 75px 18px;
+            }
+
+            .mp-home-intro .mp-description {
+                font-size: 15px;
+            }
+
+            .mp-home-intro .mp-arabic {
+                font-size: 28px;
+            }
+
+            #song-list {
+                grid-template-columns: 1fr;
+            }
+
+            .mp-library {
+                padding: 45px 18px;
+            }
+
+            .lyrics-content {
+                padding: 15px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header>
+
+    <div class="logo">✦ മുത്തിൻ പുകൾ ✦</div>
+
+    <p>ഇസ്‌ലാമിക മദ്ഹ് ഗാനങ്ങൾ</p>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="categories.html">Categories</a>
+        <a href="about.html">About</a>
+    </nav>
+
+</header>
+
+
+<!-- HERO SECTION -->
+
+<section class="mp-home-intro">
+
+    <p class="mp-small-title">
+        WELCOME TO OUR ISLAMIC SONG LIBRARY
+    </p>
+
+    <h1>മുത്തിൻ പുകൾ</h1>
+
+    <p class="mp-arabic">
+        مَدْحُ خَيْرِ الْأَنَامِ
+    </p>
+
+    <div class="intro-line"></div>
+
+    <p class="mp-description">
+        Discover the beauty of Islamic Madh Songs.
+        <br>
+        A beautiful collection of songs filled with love and devotion.
+    </p>
+
+    <a href="#songs" class="mp-explore-btn">
+        <i class="fa-solid fa-music"></i>
+        Explore Songs
+    </a>
+
+</section>
+
+
+<!-- SONG COLLECTION -->
+
+<section class="mp-library" id="songs">
+
+    <div class="mp-library-heading">
+
+        <h2>Our Song Collection</h2>
+
+        <div class="mp-divider"></div>
+
+        <p>
+            Explore all your favourite Madh songs in one place
+        </p>
+
+    </div>
+
+    <input
+        type="text"
+        id="search"
+        placeholder="Search your favourite song..."
+        oninput="searchSongs()"
+    >
+
+    <div id="song-list">
+
+        <p class="mp-empty-message">
+            Loading songs...
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <p>© 2026 Muthin Pukal. All Rights Reserved.</p>
+
+    <p>Created by: Ibn Jamaluddin Al Furqani</p>
+
+</footer>
+
+
+<!-- SCRIPTS -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="script.js"></script>
+
+<script src="database.js"></script>
+
+</body>
+</html>

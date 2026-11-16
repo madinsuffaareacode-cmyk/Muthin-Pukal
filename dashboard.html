@@ -1,0 +1,606 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muthin Pukal Admin Dashboard</title>
+
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #edf5ef;
+  color: #183b2d;
+}
+header {
+  background: #07513b;
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+header h2 { margin: 0; }
+button {
+  border: 0;
+  padding: 11px 16px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: bold;
+}
+button:disabled { opacity: .6; cursor: not-allowed; }
+.logout { background: white; color: #07513b; }
+main { max-width: 850px; margin: 25px auto; padding: 15px; }
+.card {
+  background: white;
+  padding: 22px;
+  border-radius: 13px;
+  margin-bottom: 22px;
+  box-shadow: 0 3px 15px #0001;
+}
+h3 { color: #07513b; margin-top: 0; }
+label {
+  display: block;
+  font-weight: bold;
+  margin: 15px 0 6px;
+}
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccd8d0;
+  border-radius: 7px;
+  font: inherit;
+}
+textarea { min-height: 100px; resize: vertical; }
+.save { background: #07513b; color: white; width: 100%; margin-top: 18px; }
+.cancel { background: #e5eee8; color: #07513b; width: 100%; margin-top: 8px; }
+.add-category {
+  background: #d4af37;
+  color: #183b2d;
+  margin-top: 10px;
+  width: 100%;
+}
+.new-category-box {
+  background: #f2f8f3;
+  border: 1px solid #dce7df;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 10px;
+}
+.song {
+  border: 1px solid #dce7df;
+  border-radius: 9px;
+  padding: 15px;
+  margin-top: 12px;
+}
+.song h4 { margin: 0 0 8px; }
+.song button { margin: 5px 5px 0 0; }
+.edit { background: #e6eee8; color: #07513b; }
+.delete { background: #ffe8e8; color: #b42318; }
+#message { margin-top: 15px; overflow-wrap: anywhere; }
+.small { color: #63766a; font-size: 13px; }
+.hidden { display: none; }
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>✦ Muthin Pukal Admin ✦</h2>
+  <button class="logout" id="logoutButton">Logout</button>
+</header>
+
+<main>
+
+<section class="card">
+  <h3 id="formTitle">Add New Song</h3>
+
+  <form id="songForm">
+    <input type="hidden" id="songId">
+
+    <label>Song Title *</label>
+    <input id="title" required placeholder="Enter song title">
+
+    <label>Category *</label>
+    <select id="category" required>
+      <option value="malayalam">Malayalam</option>
+      <option value="kannada">Kannada</option>
+      <option value="urdu">Urdu</option>
+      <option value="mappila">Mappila</option>
+      <option value="ap-usthad">A.P Usthad</option>
+      <option value="sufi">Sufi</option>
+      <option value="arabic">Arabic</option>
+      <option value="others">Others</option>
+      <option value="__add_new__">+ Add New Category</option>
+    </select>
+
+    <div id="newCategoryBox" class="new-category-box hidden">
+      <label>New Category Name</label>
+      <input id="newCategoryName" placeholder="Example: Madh Songs">
+
+      <button type="button" class="add-category" id="addCategoryButton">
+        Add Category
+      </button>
+      <p class="small">ಹೊಸ Category ಸೇರಿಸಿದ ನಂತರ ಅದನ್ನು ಆಯ್ಕೆ ಮಾಡಬಹುದು.</p>
+    </div>
+
+    <label>Malayalam Lyrics</label>
+    <textarea id="lyricsMalayalam" placeholder="Malayalam lyrics"></textarea>
+
+    <label>Kannada Lyrics</label>
+    <textarea id="lyricsKannada" placeholder="Kannada lyrics"></textarea>
+
+    <label>Arabic Lyrics</label>
+    <textarea id="lyricsArabic" placeholder="Arabic lyrics"></textarea>
+
+    <label>Urdu Lyrics</label>
+    <textarea id="lyricsUrdu" placeholder="Urdu lyrics"></textarea>
+
+    <label>Upload MP3 Audio</label>
+    <input type="file" id="audioFile" accept="audio/mpeg,audio/mp3">
+    <p class="small">MP3 file ಮಾತ್ರ ಆಯ್ಕೆ ಮಾಡು. ಹೊಸ MP3 ಆಯ್ಕೆ ಮಾಡದಿದ್ದರೆ ಹಳೆಯ Audio ಉಳಿಯುತ್ತದೆ.</p>
+
+    <label>YouTube Video Link</label>
+    <input type="url" id="youtubeUrl" placeholder="https://www.youtube.com/watch?v=...">
+
+    <button class="save" type="submit" id="saveButton">Save Song</button>
+    <button class="cancel hidden" type="button" id="cancelButton">Cancel Edit</button>
+  </form>
+
+  <p id="message"></p>
+</section>
+
+<section class="card">
+  <h3>All Songs</h3>
+  <div id="songList">Loading songs...</div>
+</section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://bnvmdtpplavypgzvpaga.supabase.co";
+const SUPABASE_KEY = "sb_publishable_iX79SzzZ0dW-Kd1VUYthaA_mSfWuYX8";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const form = document.getElementById("songForm");
+const message = document.getElementById("message");
+const songList = document.getElementById("songList");
+const categorySelect = document.getElementById("category");
+const newCategoryBox = document.getElementById("newCategoryBox");
+const newCategoryName = document.getElementById("newCategoryName");
+
+const defaultCategories = [
+  { value: "malayalam", label: "Malayalam" },
+  { value: "kannada", label: "Kannada" },
+  { value: "urdu", label: "Urdu" },
+  { value: "mappila", label: "Mappila" },
+  { value: "ap-usthad", label: "A.P Usthad" },
+  { value: "sufi", label: "Sufi" },
+  { value: "arabic", label: "Arabic" },
+  { value: "others", label: "Others" }
+];
+
+let customCategories = [];
+
+function showMessage(text, success = false) {
+  message.textContent = text;
+  message.style.color = success ? "green" : "red";
+}
+
+function slugify(text) {
+  return text
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+}
+
+function loadSavedCategories() {
+  try {
+    const saved = JSON.parse(
+      localStorage.getItem("muthinPukalCategories") || "[]"
+    );
+
+    if (Array.isArray(saved)) {
+      customCategories = saved.filter(
+        item => item && item.value && item.label
+      );
+    }
+  } catch (error) {
+    customCategories = [];
+  }
+}
+
+function saveCategories() {
+  localStorage.setItem(
+    "muthinPukalCategories",
+    JSON.stringify(customCategories)
+  );
+}
+
+function populateCategories(extraCategory = null) {
+  const currentValue = extraCategory || categorySelect.value;
+
+  const allCategories = [...defaultCategories];
+
+  customCategories.forEach(category => {
+    if (!allCategories.some(item => item.value === category.value)) {
+      allCategories.push(category);
+    }
+  });
+
+  if (
+    extraCategory &&
+    !allCategories.some(item => item.value === extraCategory)
+  ) {
+    allCategories.push({
+      value: extraCategory,
+      label: extraCategory
+    });
+  }
+
+  categorySelect.replaceChildren();
+
+  allCategories.forEach(category => {
+    const option = document.createElement("option");
+    option.value = category.value;
+    option.textContent = category.label;
+    categorySelect.appendChild(option);
+  });
+
+  const addOption = document.createElement("option");
+  addOption.value = "__add_new__";
+  addOption.textContent = "+ Add New Category";
+  categorySelect.appendChild(addOption);
+
+  const exists = allCategories.some(
+    item => item.value === currentValue
+  );
+
+  categorySelect.value = exists ? currentValue : "others";
+}
+
+// Show new category box
+categorySelect.addEventListener("change", () => {
+  if (categorySelect.value === "__add_new__") {
+    newCategoryBox.classList.remove("hidden");
+    newCategoryName.focus();
+  } else {
+    newCategoryBox.classList.add("hidden");
+  }
+});
+
+// Add new category
+document.getElementById("addCategoryButton").addEventListener("click", () => {
+  const label = newCategoryName.value.trim();
+
+  if (!label) {
+    alert("Please enter a category name.");
+    return;
+  }
+
+  const value = slugify(label);
+
+  if (!value) {
+    alert("Please enter a valid category name.");
+    return;
+  }
+
+  const exists = [...defaultCategories, ...customCategories].some(
+    item =>
+      item.value === value ||
+      item.label.toLowerCase() === label.toLowerCase()
+  );
+
+  if (exists) {
+    alert("This category already exists.");
+    return;
+  }
+
+  customCategories.push({ value, label });
+  saveCategories();
+
+  populateCategories(value);
+
+  newCategoryName.value = "";
+  newCategoryBox.classList.add("hidden");
+
+  showMessage("New category added successfully!", true);
+});
+
+// Check login
+async function checkLogin() {
+  const { data, error } = await supabaseClient.auth.getSession();
+
+  if (error || !data.session) {
+    window.location.href = "/admin.html";
+    return false;
+  }
+
+  return true;
+}
+
+// Load songs
+async function loadSongs() {
+  songList.textContent = "Loading songs...";
+
+  const { data, error } = await supabaseClient
+    .from("songs")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    songList.textContent = "Error: " + error.message;
+    return;
+  }
+
+  // Add categories already used by songs to the dropdown
+  (data || []).forEach(song => {
+    if (
+      song.category &&
+      ![...defaultCategories, ...customCategories].some(
+        item => item.value === song.category
+      )
+    ) {
+      customCategories.push({
+        value: song.category,
+        label: song.category
+      });
+    }
+  });
+
+  saveCategories();
+  populateCategories();
+
+  songList.replaceChildren();
+
+  if (!data || data.length === 0) {
+    songList.textContent = "No songs added yet.";
+    return;
+  }
+
+  data.forEach(song => {
+    const item = document.createElement("div");
+    item.className = "song";
+
+    const heading = document.createElement("h4");
+    heading.textContent = song.title;
+
+    const category = document.createElement("p");
+    category.className = "small";
+    category.textContent = "Category: " + song.category;
+
+    const editButton = document.createElement("button");
+    editButton.className = "edit";
+    editButton.textContent = "Edit";
+    editButton.addEventListener("click", () => editSong(song));
+
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "delete";
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("click", () => deleteSong(song));
+
+    item.append(heading, category, editButton, deleteButton);
+    songList.appendChild(item);
+  });
+}
+
+// Add or update song
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const { data: sessionData } = await supabaseClient.auth.getSession();
+
+  if (!sessionData.session) {
+    window.location.href = "/admin.html";
+    return;
+  }
+
+  const id = document.getElementById("songId").value;
+  const file = document.getElementById("audioFile").files[0];
+
+  const title = document.getElementById("title").value.trim();
+  const category = categorySelect.value;
+
+  if (!title) {
+    showMessage("Please enter a song title.");
+    return;
+  }
+
+  if (!category || category === "__add_new__") {
+    showMessage("Please select a category.");
+    return;
+  }
+
+  if (file && file.type !== "audio/mpeg") {
+    showMessage("Please select an MP3 audio file.");
+    return;
+  }
+
+  const saveButton = document.getElementById("saveButton");
+  saveButton.disabled = true;
+  showMessage("Saving song...", true);
+
+  let audioUrl = null;
+
+  if (id) {
+    const { data: oldSong, error: oldError } = await supabaseClient
+      .from("songs")
+      .select("audio_url")
+      .eq("id", id)
+      .single();
+
+    if (oldError) {
+      showMessage(oldError.message);
+      saveButton.disabled = false;
+      return;
+    }
+
+    audioUrl = oldSong.audio_url;
+  }
+
+  if (file) {
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const filePath = Date.now() + "-" + safeName;
+
+    const { error: uploadError } = await supabaseClient
+      .storage
+      .from("song-audio")
+      .upload(filePath, file, {
+        contentType: "audio/mpeg",
+        upsert: false
+      });
+
+    if (uploadError) {
+      showMessage("MP3 Upload Error: " + uploadError.message);
+      saveButton.disabled = false;
+      return;
+    }
+
+    const { data: publicData } = supabaseClient
+      .storage
+      .from("song-audio")
+      .getPublicUrl(filePath);
+
+    audioUrl = publicData.publicUrl;
+  }
+
+  const songData = {
+    title,
+    category,
+    lyrics_malayalam: document.getElementById("lyricsMalayalam").value,
+    lyrics_kannada: document.getElementById("lyricsKannada").value,
+    lyrics_arabic: document.getElementById("lyricsArabic").value,
+    lyrics_urdu: document.getElementById("lyricsUrdu").value,
+    audio_url: audioUrl,
+    youtube_url: document.getElementById("youtubeUrl").value.trim() || null
+  };
+
+  let result;
+
+  if (id) {
+    result = await supabaseClient
+      .from("songs")
+      .update(songData)
+      .eq("id", id);
+  } else {
+    result = await supabaseClient
+      .from("songs")
+      .insert(songData);
+  }
+
+  saveButton.disabled = false;
+
+  if (result.error) {
+    showMessage("Save Error: " + result.error.message);
+    return;
+  }
+
+  showMessage(
+    id ? "Song updated successfully!" : "Song added successfully!",
+    true
+  );
+
+  resetForm();
+  loadSongs();
+});
+
+// Edit song
+function editSong(song) {
+  if (
+    song.category &&
+    ![...defaultCategories, ...customCategories].some(
+      item => item.value === song.category
+    )
+  ) {
+    customCategories.push({
+      value: song.category,
+      label: song.category
+    });
+    saveCategories();
+  }
+
+  populateCategories(song.category);
+
+  document.getElementById("songId").value = song.id;
+  document.getElementById("title").value = song.title || "";
+  categorySelect.value = song.category || "others";
+  document.getElementById("lyricsMalayalam").value = song.lyrics_malayalam || "";
+  document.getElementById("lyricsKannada").value = song.lyrics_kannada || "";
+  document.getElementById("lyricsArabic").value = song.lyrics_arabic || "";
+  document.getElementById("lyricsUrdu").value = song.lyrics_urdu || "";
+  document.getElementById("youtubeUrl").value = song.youtube_url || "";
+  document.getElementById("audioFile").value = "";
+
+  newCategoryBox.classList.add("hidden");
+
+  document.getElementById("formTitle").textContent = "Edit Song";
+  document.getElementById("saveButton").textContent = "Update Song";
+  document.getElementById("cancelButton").classList.remove("hidden");
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// Reset form
+function resetForm() {
+  form.reset();
+  document.getElementById("songId").value = "";
+  document.getElementById("formTitle").textContent = "Add New Song";
+  document.getElementById("saveButton").textContent = "Save Song";
+  document.getElementById("cancelButton").classList.add("hidden");
+  newCategoryBox.classList.add("hidden");
+  populateCategories("malayalam");
+}
+
+document.getElementById("cancelButton").addEventListener("click", resetForm);
+
+// Delete song
+async function deleteSong(song) {
+  if (!confirm("Delete '" + song.title + "'?")) return;
+
+  const { error } = await supabaseClient
+    .from("songs")
+    .delete()
+    .eq("id", song.id);
+
+  if (error) {
+    showMessage("Delete Error: " + error.message);
+    return;
+  }
+
+  showMessage("Song deleted successfully!", true);
+  loadSongs();
+}
+
+// Logout
+document.getElementById("logoutButton").addEventListener("click", async () => {
+  await supabaseClient.auth.signOut();
+  window.location.href = "/admin.html";
+});
+
+// Start dashboard
+loadSavedCategories();
+populateCategories("malayalam");
+
+(async function startDashboard() {
+  const loggedIn = await checkLogin();
+
+  if (loggedIn) {
+    loadSongs();
+  }
+})();
+</script>
+
+</body>
+</html>
+```

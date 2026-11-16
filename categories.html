@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Categories | Muthin Pukal</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+        .mp-category-intro {
+            text-align: center;
+            padding: 45px 20px 25px;
+        }
+
+        .mp-category-intro h1 {
+            color: #d4af37;
+            font-size: clamp(28px, 5vw, 42px);
+        }
+
+        .mp-category-intro p {
+            color: #aaa;
+        }
+
+        .mp-category-section,
+        .mp-category-songs {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .mp-category-section h2,
+        .mp-category-songs h2 {
+            text-align: center;
+            color: #d4af37;
+            margin-bottom: 25px;
+        }
+
+        #all-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 18px;
+        }
+
+        #all-categories .category-card {
+            min-height: 110px;
+            cursor: pointer;
+        }
+
+        #search {
+            display: block;
+            width: min(100%, 550px);
+            margin: 25px auto;
+            padding: 14px 18px;
+            border: 1px solid #d4af37;
+            border-radius: 30px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        #song-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+            margin-top: 25px;
+        }
+
+        #song-list .song-card {
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        .mp-category-songs {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            #all-categories {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            #song-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">✦ മുത്തിൻ പുകൾ ✦</div>
+
+    <p>ഇസ്‌ലാമിക മദ്ഹ് ഗാനങ്ങൾ</p>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="categories.html">Categories</a>
+        <a href="about.html">About</a>
+    </nav>
+</header>
+
+
+<!-- CATEGORY INTRO -->
+
+<section class="mp-category-intro">
+    <h1>Explore Categories</h1>
+    <p>Find your favourite collection of Islamic Madh Songs</p>
+</section>
+
+
+<!-- CATEGORY CARDS -->
+
+<section class="mp-category-section">
+
+    <h2>Our Collections</h2>
+
+    <div class="categories" id="all-categories">
+
+        <button onclick="filterCategory('all')" class="category-card all-card">
+            <span class="category-icon">✦</span>
+            <span>All Songs</span>
+        </button>
+
+        <button onclick="filterCategory('malayalam')" class="category-card malayalam-card">
+            <span class="category-icon">മ</span>
+            <span>Malayalam Songs</span>
+        </button>
+
+        <button onclick="filterCategory('kannada')" class="category-card kannada-card">
+            <span class="category-icon">ಕ</span>
+            <span>Kannada Songs</span>
+        </button>
+
+        <button onclick="filterCategory('urdu')" class="category-card urdu-card">
+            <span class="category-icon">ن</span>
+            <span>Urdu Na'ath</span>
+        </button>
+
+        <button onclick="filterCategory('mappila')" class="category-card mappila-card">
+            <span class="category-icon">♫</span>
+            <span>Mappila Songs</span>
+        </button>
+
+        <button onclick="filterCategory('ap-usthad')" class="category-card usthad-card">
+            <span class="category-icon">✧</span>
+            <span>A.P Usthad Songs</span>
+        </button>
+
+        <button onclick="filterCategory('sufi')" class="category-card sufi-card">
+            <span class="category-icon">☪</span>
+            <span>Sufi Songs</span>
+        </button>
+
+        <button onclick="filterCategory('arabic')" class="category-card arabic-card">
+            <span class="category-icon">يا</span>
+            <span>Arabic Nasheeds</span>
+        </button>
+
+        <button onclick="filterCategory('others')" class="category-card others-card">
+            <span class="category-icon">❖</span>
+            <span>Others</span>
+        </button>
+
+        <div id="dynamic-categories" style="display: contents;"></div>
+
+    </div>
+
+</section>
+
+
+<!-- SELECTED CATEGORY SONGS -->
+
+<section class="mp-category-songs songs" id="songs">
+
+    <h2 id="category-heading">Our Song Collection</h2>
+
+    <input
+        type="text"
+        id="search"
+        placeholder="Search your favourite song..."
+        oninput="searchSongs()"
+    >
+
+    <div id="song-list"></div>
+
+</section>
+
+
+<footer>
+    <p>© 2026 Muthin Pukal. All Rights Reserved.</p>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
+<script src="database.js"></script>
+
+</body>
+</html>
