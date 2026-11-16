@@ -28,10 +28,7 @@ function getFavourites() {
 }
 
 function saveFavourites(favourites) {
-    localStorage.setItem(
-        "muthinFavourites",
-        JSON.stringify(favourites)
-    );
+    localStorage.setItem("muthinFavourites", JSON.stringify(favourites));
 }
 
 function getSongKey(card) {
@@ -51,19 +48,29 @@ function toggleFavourite(button) {
 
     if (favourites.includes(key)) {
         favourites = favourites.filter(item => item !== key);
-        button.innerText = "♡ Favourite";
     } else {
         favourites.push(key);
-        button.innerText = "♥ Favourite";
     }
 
     saveFavourites(favourites);
+    updateFavouriteIcon(card);
     searchSongs();
+}
+
+function updateFavouriteIcon(card) {
+    const button = card.querySelector(".mp-favourite-btn");
+    if (!button) return;
+
+    const saved = getFavourites().includes(getSongKey(card));
+
+    button.innerHTML = saved
+        ? '<i class="fa-solid fa-heart"></i> Favourite'
+        : '<i class="fa-regular fa-heart"></i> Favourite';
 }
 
 
 // =====================================
-// ADD ACTION BUTTONS TO SONG CARDS
+// SONG ACTION BUTTONS
 // =====================================
 
 function addSongActions(card) {
@@ -74,38 +81,51 @@ function addSongActions(card) {
     const toolbar = document.createElement("div");
     toolbar.className = "mp-song-actions";
 
+    // Favourite
     const favouriteButton = document.createElement("button");
-    favouriteButton.className = "mp-action-btn";
+    favouriteButton.className = "mp-action-btn mp-favourite-btn";
     favouriteButton.onclick = function () {
         toggleFavourite(this);
     };
 
-    const key = getSongKey(card);
-
-    favouriteButton.innerText =
-        getFavourites().includes(key)
-            ? "♥ Favourite"
-            : "♡ Favourite";
-
     toolbar.appendChild(favouriteButton);
+    updateFavouriteIcon(card);
 
+    // Save PDF
     const pdfButton = document.createElement("button");
     pdfButton.className = "mp-action-btn";
-    pdfButton.innerText = "📄 Save PDF";
+    pdfButton.innerHTML =
+        '<i class="fa-regular fa-file-pdf"></i> Save PDF';
+
     pdfButton.onclick = function () {
         saveSongPDF(card);
     };
 
     toolbar.appendChild(pdfButton);
 
+    // Share
     const shareButton = document.createElement("button");
     shareButton.className = "mp-action-btn";
-    shareButton.innerText = "📤 Share";
+    shareButton.innerHTML =
+        '<i class="fa-solid fa-share-nodes"></i> Share';
+
     shareButton.onclick = function () {
         shareSong(card);
     };
 
     toolbar.appendChild(shareButton);
+
+    // Copy Lyrics
+    const copyButton = document.createElement("button");
+    copyButton.className = "mp-action-btn";
+    copyButton.innerHTML =
+        '<i class="fa-regular fa-copy"></i> Copy Lyrics';
+
+    copyButton.onclick = function () {
+        copyLyrics(this);
+    };
+
+    toolbar.appendChild(copyButton);
 
     card.appendChild(toolbar);
 }
@@ -127,7 +147,6 @@ function enhanceSongCards() {
 // =====================================
 
 function filterCategory(category) {
-
     selectedCategory = category;
 
     document.querySelectorAll(".categories button").forEach(button => {
@@ -168,7 +187,6 @@ function filterCategory(category) {
 // =====================================
 
 function searchSongs() {
-
     const searchInput = document.getElementById("search");
 
     const searchValue = searchInput
@@ -178,7 +196,6 @@ function searchSongs() {
     const favourites = getFavourites();
 
     document.querySelectorAll("#song-list .song-card").forEach(song => {
-
         const categoryMatch =
             selectedCategory === null ||
             selectedCategory === "all" ||
@@ -204,7 +221,6 @@ function searchSongs() {
 // =====================================
 
 function setupFavouriteFilter() {
-
     const search = document.getElementById("search");
 
     if (!search || document.getElementById("mp-favourite-filter")) {
@@ -214,7 +230,8 @@ function setupFavouriteFilter() {
     const button = document.createElement("button");
 
     button.id = "mp-favourite-filter";
-    button.innerText = "♡ Show Favourite Songs";
+    button.innerHTML =
+        '<i class="fa-solid fa-heart"></i> Show Favourite Songs';
 
     button.style.display = "block";
     button.style.margin = "0 auto 25px";
@@ -226,12 +243,11 @@ function setupFavouriteFilter() {
     button.style.cursor = "pointer";
 
     button.onclick = function () {
-
         showOnlyFavourites = !showOnlyFavourites;
 
-        button.innerText = showOnlyFavourites
-            ? "♥ Show All Songs"
-            : "♡ Show Favourite Songs";
+        button.innerHTML = showOnlyFavourites
+            ? '<i class="fa-solid fa-music"></i> Show All Songs'
+            : '<i class="fa-solid fa-heart"></i> Show Favourite Songs';
 
         searchSongs();
     };
@@ -245,7 +261,6 @@ function setupFavouriteFilter() {
 // =====================================
 
 function showLyrics(button, language) {
-
     const card = button.closest(".song-card");
 
     if (!card) return;
@@ -269,7 +284,6 @@ function showLyrics(button, language) {
 // =====================================
 
 async function copyLyrics(button) {
-
     const card = button.closest(".song-card");
 
     if (!card) return;
@@ -286,11 +300,11 @@ async function copyLyrics(button) {
     try {
         await navigator.clipboard.writeText(visibleLyrics.innerText);
 
-        const oldText = button.innerText;
-        button.innerText = "Copied!";
+        const oldHTML = button.innerHTML;
+        button.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
 
         setTimeout(() => {
-            button.innerText = oldText;
+            button.innerHTML = oldHTML;
         }, 2000);
 
     } catch (error) {
@@ -314,7 +328,6 @@ function escapeHTML(text) {
 }
 
 function saveSongPDF(card) {
-
     const title = card.querySelector("h3")?.innerText || "Song";
 
     const visibleLyrics = [
@@ -327,7 +340,6 @@ function saveSongPDF(card) {
     }
 
     const lyrics = visibleLyrics.innerText;
-
     const pdfWindow = window.open("", "_blank");
 
     if (!pdfWindow) {
@@ -341,21 +353,18 @@ function saveSongPDF(card) {
         <head>
             <meta charset="UTF-8">
             <title>${escapeHTML(title)}</title>
-
             <style>
                 body {
                     font-family: Arial, sans-serif;
                     padding: 35px;
                     color: #073d30;
                 }
-
                 h1 {
                     text-align: center;
                     color: #07513b;
                     border-bottom: 2px solid #d4af37;
                     padding-bottom: 15px;
                 }
-
                 .lyrics {
                     font-size: 18px;
                     line-height: 2;
@@ -363,30 +372,20 @@ function saveSongPDF(card) {
                     overflow-wrap: anywhere;
                     margin-top: 30px;
                 }
-
                 .footer {
                     margin-top: 40px;
                     text-align: center;
                     color: #777;
                 }
-
                 @media print {
-                    body {
-                        padding: 15px;
-                    }
+                    body { padding: 15px; }
                 }
             </style>
         </head>
-
         <body>
             <h1>${escapeHTML(title)}</h1>
-
             <div class="lyrics">${escapeHTML(lyrics)}</div>
-
-            <div class="footer">
-                Muthin Pukal
-            </div>
-
+            <div class="footer">Muthin Pukal</div>
             <script>
                 window.onload = function() {
                     window.print();
@@ -405,16 +404,13 @@ function saveSongPDF(card) {
 // =====================================
 
 async function shareSong(card) {
-
     const title = card.querySelector("h3")?.innerText || "Song";
 
     const visibleLyrics = [
         ...card.querySelectorAll(".lyrics-content")
     ].find(item => getComputedStyle(item).display !== "none");
 
-    const lyrics = visibleLyrics
-        ? visibleLyrics.innerText
-        : "";
+    const lyrics = visibleLyrics ? visibleLyrics.innerText : "";
 
     const shareText =
         title + "\n\n" +
@@ -423,25 +419,17 @@ async function shareSong(card) {
         "https://muthin-pukal.vercel.app/";
 
     try {
-
         if (navigator.share) {
-
             await navigator.share({
                 title: title,
                 text: shareText,
                 url: "https://muthin-pukal.vercel.app/"
             });
-
         } else {
-
             await navigator.clipboard.writeText(shareText);
-
             alert("Song details copied! You can share them now.");
-
         }
-
     } catch (error) {
-
         if (error.name !== "AbortError") {
             alert("Sharing was not successful. Please try again.");
         }
@@ -463,16 +451,10 @@ function showMalayalam(button) {
 // =====================================
 
 function convertToKannada(button) {
-
     const card = button.closest(".song-card");
 
-    const malayalam = card.querySelector(
-        ".lyrics-content.malayalam"
-    );
-
-    const kannada = card.querySelector(
-        ".lyrics-content.kannada"
-    );
+    const malayalam = card.querySelector(".lyrics-content.malayalam");
+    const kannada = card.querySelector(".lyrics-content.kannada");
 
     if (!malayalam || !kannada) return;
 
@@ -515,7 +497,6 @@ function convertToKannada(button) {
         .replace(/ഹ/g, "ಹ");
 
     kannada.innerText = converted;
-
     showLyrics(button, "kannada");
 }
 
@@ -525,7 +506,6 @@ function convertToKannada(button) {
 // =====================================
 
 function setupMuthinPukal() {
-
     enhanceSongCards();
     setupFavouriteFilter();
 
@@ -538,7 +518,6 @@ function setupMuthinPukal() {
     const songList = document.getElementById("song-list");
 
     if (songList) {
-
         const observer = new MutationObserver(() => {
             enhanceSongCards();
             searchSongs();
