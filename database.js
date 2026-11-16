@@ -18,8 +18,6 @@ async function loadDatabaseSongs() {
     const songList = document.getElementById("song-list");
     if (!songList) return;
 
-
-
     data.forEach(song => {
         const card = document.createElement("div");
         card.className = "song-card";
