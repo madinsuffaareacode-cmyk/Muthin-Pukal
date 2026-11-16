@@ -140,6 +140,7 @@ async function loadDatabaseSongs() {
         }
 
         card.appendChild(details);
+        details.hidden = true;
 
         // OPEN / CLOSE SONG
         function toggleSong() {
