@@ -468,3 +468,63 @@ footer {
         height: 220px;
     }
 }
+/* MUTHIN PUKAL - GREEN & GOLD THEME */
+
+:root {
+    --primary-green: #073d30;
+    --dark-green: #032b21;
+    --gold: #d4af37;
+    --light-gold: #f5df9a;
+    --white: #ffffff;
+}
+
+.mp-song-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid #e5e9e4;
+}
+
+.mp-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 16px;
+    border: 1px solid var(--gold);
+    border-radius: 25px;
+    background: var(--primary-green);
+    color: var(--light-gold);
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.mp-action-btn i {
+    font-size: 15px;
+}
+
+.mp-action-btn:hover {
+    background: var(--gold);
+    color: var(--dark-green);
+    transform: translateY(-2px);
+}
+
+.mp-action-btn:focus-visible {
+    outline: 3px solid rgba(212, 175, 55, 0.35);
+    outline-offset: 3px;
+}
+
+@media (max-width: 650px) {
+    .mp-song-actions {
+        gap: 8px;
+    }
+
+    .mp-action-btn {
+        flex: 1 1 calc(50% - 8px);
+        padding: 11px 8px;
+        font-size: 13px;
+    }
+}
