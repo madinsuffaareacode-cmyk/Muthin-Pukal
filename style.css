@@ -1,229 +1,75 @@
 
+/* =================================
+   MUTHIN PUKAL - PREMIUM DESIGN
+================================= */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+:root {
+    --green: #073d30;
+    --dark-green: #032b21;
+    --light-green: #eaf3ed;
+    --gold: #d4af37;
+    --light-gold: #f5df9a;
+    --white: #ffffff;
+    --text: #263b32;
+}
+
 body {
     font-family: Arial, sans-serif;
-    background-color: #f5f8f2;
-    color: #183b2b;
+    background: #f5f8f2;
+    color: var(--text);
 }
+
+/* HEADER */
 
 header {
-    background: linear-gradient(135deg, #064e35, #0b7650);
+    background: linear-gradient(135deg, #032b21, #0b6548);
     color: white;
     text-align: center;
-    padding: 35px 15px;
-    border-bottom: 5px solid #d4af37;
-}
-
-header h1 {
-    font-size: 38px;
-    color: #f5d778;
-    margin-bottom: 10px;
-}
-
-header p {
-    font-size: 16px;
-}
-
-nav {
-    background-color: #073d2b;
-    padding: 15px;
-    text-align: center;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-    margin: 0 15px;
-    font-size: 16px;
-}
-
-nav a:hover {
-    color: #f5d778;
-}
-
-main {
-    max-width: 1100px;
-    margin: auto;
-    padding: 30px 20px;
-}
-
-h2 {
-    color: #086044;
-    margin-bottom: 20px;
-}
-
-#search {
-    width: 100%;
-    padding: 14px;
-    border: 2px solid #0b7650;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    font-size: 16px;
-}
-
-.song-card {
-    background: white;
-    padding: 22px;
-    margin-bottom: 18px;
-    border-left: 5px solid #d4af37;
-    border-radius: 8px;
-    box-shadow: 0 3px 10px #00000010;
-}
-
-.song-card h3 {
-    color: #086044;
-    margin-bottom: 8px;
-}
-
-.song-card p {
-    color: #555;
-}
-
-#about {
-    margin-top: 40px;
-    padding: 25px;
-    background: #e4efe7;
-    border-radius: 10px;
-    line-height: 1.7;
-}
-
-footer {
-    background: #073d2b;
-    color: white;
-    text-align: center;
-    padding: 20px;
-    margin-top: 30px;
-}
-
-.youtube-video {
-    margin-top: 25px;
-    padding: 20px;
-    background: #eaf3ed;
-    border-radius: 12px;
-    border: 1px solid #d4af37;
-}
-
-.youtube-video h4 {
-    color: #086044;
-    margin-bottom: 15px;
-    font-size: 20px;
-}
-
-.youtube-video iframe {
-    width: 100%;
-    height: 300px;
-    border: none;
-    border-radius: 10px;
-}
-
-.copy-btn {
-    background: #086044;
-    color: white;
-    padding: 12px 22px;
-    border: none;
-    border-radius: 7px;
-    margin-top: 15px;
-    cursor: pointer;
-    font-size: 15px;
-}
-
-.copy-btn:hover {
-    background: #d4af37;
-    color: #073d2b;
-}
-
-.categories {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-    margin: 25px auto;
-    padding: 15px;
-}
-
-.categories button {
-    background: #153d32;
-    color: white;
-    border: 1px solid #d4af37;
-    padding: 12px 20px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: 0.3s;
-}
-
-.categories button:hover {
-    background: #d4af37;
-    color: #153d32;
-    transform: translateY(-3px);
-}
-
-.categories button.active {
-    background: #d4af37;
-    color: #153d32;
-}
-
-.
-..lyrics-content {
-    white-space: pre-line;
-    line-height: 1.5;
-    font-size: 17px;
-    padding: 10px 5px;
-    color: #333;
-}
-
-.lyrics-content h4 {
-    margin-bottom: 8px;
-}
-
-.lyrics-content div {
-    margin-bottom: 12px;
-    line-height: 1.5;
-}
-
-#song-list {
-    display: none;
-}
-
-#song-list.show {
-    display: block;
-}
-/* HOME PAGE DESIGN */
-
-header {
-    background: #073d30;
-    color: white;
-    text-align: center;
-    padding: 22px 15px;
-    border-bottom: 3px solid #d4af37;
+    padding: 25px 15px;
+    border-bottom: 4px solid var(--gold);
 }
 
 .logo {
-    font-size: 30px;
+    font-size: 34px;
     font-weight: bold;
-    color: #f5d98b;
+    color: var(--light-gold);
+    letter-spacing: 1px;
+}
+
+header p {
+    margin-top: 8px;
+    font-size: 15px;
+    color: #e8eadf;
 }
 
 header nav {
-    margin-top: 18px;
+    margin-top: 20px;
 }
 
-header nav a {
+header nav a,
+nav a {
     color: white;
     text-decoration: none;
     margin: 0 13px;
     font-size: 15px;
+    transition: 0.3s;
 }
 
-/* HERO BANNER */
+header nav a:hover,
+nav a:hover {
+    color: var(--light-gold);
+}
+
+/* HERO SECTION */
 
 .home-hero {
-    min-height: 390px;
+    min-height: 430px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -231,96 +77,114 @@ header nav a {
     padding: 50px 20px;
 
     background:
-    linear-gradient(rgba(0,25,15,0.45), rgba(0,25,15,0.65)),
+    linear-gradient(rgba(0,25,15,0.65), rgba(0,25,15,0.72)),
     url("https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=1600")
     center/cover no-repeat;
 
     color: white;
 }
 
+.hero-content {
+    max-width: 750px;
+}
+
 .hero-content h1 {
-    font-size: 42px;
-    color: #f5d98b;
-    margin: 15px 0;
+    font-size: 46px;
+    color: var(--light-gold);
+    margin: 18px 0;
 }
 
 .hero-content h2 {
-    font-size: 22px;
+    font-size: 23px;
+    color: white;
     margin-bottom: 15px;
 }
 
 .hero-small {
     letter-spacing: 5px;
-    color: #f5d98b;
+    color: var(--light-gold);
+    font-size: 13px;
 }
 
 .explore-btn {
     display: inline-block;
-    margin-top: 25px;
-    padding: 13px 25px;
-    background: #d4af37;
-    color: #073d30;
+    margin-top: 28px;
+    padding: 14px 30px;
+    background: var(--gold);
+    color: var(--dark-green);
     text-decoration: none;
     border-radius: 30px;
     font-weight: bold;
+    transition: 0.3s;
+}
+
+.explore-btn:hover {
+    background: white;
+    transform: translateY(-3px);
 }
 
 /* CATEGORY SECTION */
 
 .home-categories {
-    padding: 55px 7%;
+    padding: 60px 7%;
     text-align: center;
     background: #f5f8f2;
 }
 
 .home-categories h2 {
-    color: #07513b;
+    color: var(--green);
     font-size: 30px;
 }
 
 .category-subtitle {
     color: #777;
-    margin: 10px 0 30px;
+    margin: 12px 0 35px;
 }
+
+/* CATEGORY GRID */
 
 .categories {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     max-width: 1050px;
-    margin: auto;
+    margin: 25px auto;
+    padding: 10px;
 }
 
+/* CATEGORY CARDS */
+
 .category-card {
-    min-height: 155px;
-    border: none;
-    border-radius: 15px;
+    min-height: 160px;
+    border: 1px solid rgba(212,175,55,0.5);
+    border-radius: 16px;
     color: white;
     cursor: pointer;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 13px;
+
     font-size: 17px;
     font-weight: bold;
+
     transition: 0.3s;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.12);
-    background-size: cover;
-    background-position: center;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.12);
 }
 
 .category-card:hover {
     transform: translateY(-7px);
-    box-shadow: 0 10px 22px rgba(0,0,0,0.2);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
 }
 
 .category-icon {
     font-size: 38px;
-    color: #ffe49a;
+    color: var(--light-gold);
 }
 
-/* DIFFERENT CATEGORY DESIGNS */
+/* CATEGORY COLORS */
 
 .all-card {
     background: linear-gradient(135deg, #173c68, #3679a1);
@@ -362,33 +226,195 @@ header nav a {
 
 .songs {
     display: none;
-    padding: 40px 7%;
-    background: #fff;
+    padding: 45px 7%;
+    background: #f5f8f2;
 }
 
 .songs h2 {
     text-align: center;
-    color: #07513b;
-    margin-bottom: 20px;
+    color: var(--green);
+    font-size: 29px;
+    margin-bottom: 25px;
 }
+
+/* SEARCH */
 
 #search {
     display: block;
     width: 100%;
-    max-width: 500px;
-    padding: 13px;
-    margin: 0 auto 30px;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    font-size: 15px;
+    max-width: 550px;
+    padding: 15px 20px;
+    margin: 0 auto 35px;
+    border: 1px solid #c9d8ce;
+    border-radius: 30px;
+    outline: none;
+    font-size: 16px;
+    background: white;
 }
 
-/* MOBILE DESIGN */
+#search:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 8px rgba(212,175,55,0.25);
+}
+
+/* SONG CARDS */
+
+.song-card {
+    background: white;
+    padding: 25px;
+    margin: 0 auto 22px;
+    max-width: 900px;
+
+    border: 1px solid #e5e9e4;
+    border-left: 5px solid var(--gold);
+    border-radius: 14px;
+
+    box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+    transition: 0.3s;
+}
+
+.song-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 25px rgba(0,0,0,0.10);
+}
+
+.song-card h3 {
+    color: var(--green);
+    font-size: 22px;
+    margin-bottom: 12px;
+}
+
+.song-card p {
+    color: #777;
+    margin-bottom: 12px;
+}
+
+/* LYRICS TABS */
+
+.lyrics-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 18px 0;
+}
+
+.lyrics-tabs button {
+    background: var(--green);
+    color: white;
+    border: 1px solid var(--gold);
+    padding: 10px 18px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.lyrics-tabs button:hover {
+    background: var(--gold);
+    color: var(--dark-green);
+}
+
+/* LYRICS */
+
+.lyrics-content {
+    white-space: pre-line;
+    line-height: 1.9;
+    font-size: 17px;
+    padding: 18px 10px;
+    color: #333;
+    overflow-wrap: anywhere;
+}
+
+.lyrics-content h4 {
+    margin-bottom: 10px;
+}
+
+/* COPY BUTTON */
+
+.copy-btn {
+    background: var(--green);
+    color: white;
+    padding: 12px 23px;
+    border: none;
+    border-radius: 25px;
+    margin-top: 15px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.copy-btn:hover {
+    background: var(--gold);
+    color: var(--dark-green);
+}
+
+/* AUDIO */
+
+.song-card audio {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* YOUTUBE VIDEO */
+
+.youtube-video {
+    margin-top: 25px;
+    padding: 20px;
+    background: var(--light-green);
+    border-radius: 12px;
+    border: 1px solid #e3d29b;
+}
+
+.youtube-video h4 {
+    color: var(--green);
+    margin-bottom: 15px;
+    font-size: 19px;
+}
+
+.youtube-video iframe {
+    width: 100%;
+    height: 300px;
+    border: none;
+    border-radius: 10px;
+}
+
+/* ABOUT */
+
+#about {
+    margin: 40px auto;
+    padding: 30px;
+    max-width: 1000px;
+    background: var(--light-green);
+    border-radius: 15px;
+    line-height: 1.9;
+}
+
+/* FOOTER */
+
+footer {
+    background: linear-gradient(135deg, #032b21, #07513b);
+    color: white;
+    text-align: center;
+    padding: 28px 15px;
+    margin-top: 40px;
+    border-top: 3px solid var(--gold);
+}
+
+/* MOBILE RESPONSIVE */
 
 @media (max-width: 650px) {
 
+    .logo {
+        font-size: 27px;
+    }
+
+    header nav a {
+        margin: 0 7px;
+        font-size: 13px;
+    }
+
     .hero-content h1 {
-        font-size: 30px;
+        font-size: 31px;
     }
 
     .hero-content h2 {
@@ -396,7 +422,7 @@ header nav a {
     }
 
     .home-hero {
-        min-height: 330px;
+        min-height: 340px;
     }
 
     .home-categories {
@@ -410,6 +436,7 @@ header nav a {
     .categories {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
+        padding: 0;
     }
 
     .category-card {
@@ -421,8 +448,23 @@ header nav a {
         font-size: 30px;
     }
 
-    header nav a {
-        margin: 0 7px;
-        font-size: 13px;
+    .songs {
+        padding: 30px 15px;
+    }
+
+    .song-card {
+        padding: 18px;
+    }
+
+    .song-card h3 {
+        font-size: 19px;
+    }
+
+    .lyrics-content {
+        font-size: 16px;
+    }
+
+    .youtube-video iframe {
+        height: 220px;
     }
 }
