@@ -528,3 +528,67 @@ footer {
         font-size: 13px;
     }
 }
+
+/* MUTHIN PUKAL SONG THUMBNAILS */
+
+.mp-song-preview {
+    cursor: pointer;
+    text-align: center;
+}
+
+.mp-song-thumbnail {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    border-radius: 14px;
+    transition: 0.3s;
+}
+
+.mp-song-preview:hover .mp-song-thumbnail {
+    transform: scale(1.02);
+}
+
+.mp-song-placeholder {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #073d30;
+    color: #d4af37;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 45px;
+    border-radius: 14px;
+}
+
+.mp-song-title {
+    color: #073d30;
+    margin: 14px 0;
+    font-size: 18px;
+}
+
+.mp-open-song {
+    background: #073d30;
+    color: #f5df9a;
+    border: 1px solid #d4af37;
+    border-radius: 25px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-bottom: 12px;
+}
+
+.mp-song-details[hidden] {
+    display: none !important;
+}
+
+.mp-song-details {
+    margin-top: 15px;
+}
+
+.song-card .mp-song-actions {
+    display: none;
+}
+
+.song-card.is-open .mp-song-actions {
+    display: flex;
+}
