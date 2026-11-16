@@ -1,10 +1,9 @@
 
 // =====================================
-// MUTHIN PUKAL - SUPABASE CONNECTION
+// MUTHIN PUKAL - MAIN SCRIPT
 // =====================================
 
 const SUPABASE_URL = "https://bnvmdtpplavypgzvpaga.supabase.co";
-
 const SUPABASE_KEY = "sb_publishable_iX79SzzZ0dW-Kd1VUYthaA_mSfWuYX8";
 
 const supabaseClient = window.supabase.createClient(
@@ -12,8 +11,115 @@ const supabaseClient = window.supabase.createClient(
     SUPABASE_KEY
 );
 
-// Default category
 let selectedCategory = null;
+let showOnlyFavourites = false;
+
+
+// =====================================
+// FAVOURITE STORAGE
+// =====================================
+
+function getFavourites() {
+    try {
+        return JSON.parse(localStorage.getItem("muthinFavourites")) || [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function saveFavourites(favourites) {
+    localStorage.setItem(
+        "muthinFavourites",
+        JSON.stringify(favourites)
+    );
+}
+
+function getSongKey(card) {
+    return (
+        (card.dataset.category || "") +
+        "::" +
+        (card.querySelector("h3")?.innerText || "").trim()
+    );
+}
+
+function toggleFavourite(button) {
+    const card = button.closest(".song-card");
+    if (!card) return;
+
+    const key = getSongKey(card);
+    let favourites = getFavourites();
+
+    if (favourites.includes(key)) {
+        favourites = favourites.filter(item => item !== key);
+        button.innerText = "♡ Favourite";
+    } else {
+        favourites.push(key);
+        button.innerText = "♥ Favourite";
+    }
+
+    saveFavourites(favourites);
+    searchSongs();
+}
+
+
+// =====================================
+// ADD ACTION BUTTONS TO SONG CARDS
+// =====================================
+
+function addSongActions(card) {
+    if (card.dataset.actionsAdded === "true") return;
+
+    card.dataset.actionsAdded = "true";
+
+    const toolbar = document.createElement("div");
+    toolbar.className = "mp-song-actions";
+
+    const favouriteButton = document.createElement("button");
+    favouriteButton.className = "mp-action-btn";
+    favouriteButton.onclick = function () {
+        toggleFavourite(this);
+    };
+
+    const key = getSongKey(card);
+
+    favouriteButton.innerText =
+        getFavourites().includes(key)
+            ? "♥ Favourite"
+            : "♡ Favourite";
+
+    toolbar.appendChild(favouriteButton);
+
+    const pdfButton = document.createElement("button");
+    pdfButton.className = "mp-action-btn";
+    pdfButton.innerText = "📄 Save PDF";
+    pdfButton.onclick = function () {
+        saveSongPDF(card);
+    };
+
+    toolbar.appendChild(pdfButton);
+
+    const shareButton = document.createElement("button");
+    shareButton.className = "mp-action-btn";
+    shareButton.innerText = "📤 Share";
+    shareButton.onclick = function () {
+        shareSong(card);
+    };
+
+    toolbar.appendChild(shareButton);
+
+    card.appendChild(toolbar);
+}
+
+
+// =====================================
+// ENHANCE ALL SONG CARDS
+// =====================================
+
+function enhanceSongCards() {
+    document.querySelectorAll(".song-card").forEach(card => {
+        addSongActions(card);
+    });
+}
 
 
 // =====================================
@@ -24,67 +130,113 @@ function filterCategory(category) {
 
     selectedCategory = category;
 
-    document.querySelectorAll('.categories button').forEach(button => {
-
-        button.classList.remove('active');
+    document.querySelectorAll(".categories button").forEach(button => {
+        button.classList.remove("active");
 
         if (
-            button.getAttribute('onclick') ===
+            button.getAttribute("onclick") ===
             `filterCategory('${category}')`
         ) {
-            button.classList.add('active');
+            button.classList.add("active");
         }
-
     });
 
-    const songsSection = document.querySelector('.songs');
+    const songsSection = document.querySelector(".songs");
 
     if (songsSection) {
-        songsSection.style.display = 'block';
+        songsSection.style.display = "block";
     }
 
-    document.getElementById('song-list').classList.add('show');
+    const songList = document.getElementById("song-list");
+
+    if (songList) {
+        songList.classList.add("show");
+    }
 
     searchSongs();
 
-    const songs = document.getElementById('songs');
+    const songs = document.getElementById("songs");
 
     if (songs) {
-        songs.scrollIntoView({ behavior: 'smooth' });
+        songs.scrollIntoView({ behavior: "smooth" });
     }
 }
 
 
 // =====================================
-// SEARCH SONGS
+// SEARCH AND FAVOURITE FILTER
 // =====================================
 
 function searchSongs() {
 
-    const searchInput = document.getElementById('search');
+    const searchInput = document.getElementById("search");
 
     const searchValue = searchInput
         ? searchInput.value.toLowerCase()
-        : '';
+        : "";
 
-    const songs = document.querySelectorAll(
-        '#song-list .song-card'
-    );
+    const favourites = getFavourites();
 
-    songs.forEach(song => {
+    document.querySelectorAll("#song-list .song-card").forEach(song => {
 
         const categoryMatch =
             selectedCategory === null ||
-            selectedCategory === 'all' ||
+            selectedCategory === "all" ||
             song.dataset.category === selectedCategory;
 
         const searchMatch =
             song.textContent.toLowerCase().includes(searchValue);
 
-        song.style.display =
-            categoryMatch && searchMatch ? 'block' : 'none';
+        const favouriteMatch =
+            !showOnlyFavourites ||
+            favourites.includes(getSongKey(song));
 
+        song.style.display =
+            categoryMatch && searchMatch && favouriteMatch
+                ? "block"
+                : "none";
     });
+}
+
+
+// =====================================
+// FAVOURITE FILTER BUTTON
+// =====================================
+
+function setupFavouriteFilter() {
+
+    const search = document.getElementById("search");
+
+    if (!search || document.getElementById("mp-favourite-filter")) {
+        return;
+    }
+
+    const button = document.createElement("button");
+
+    button.id = "mp-favourite-filter";
+    button.innerText = "♡ Show Favourite Songs";
+
+    button.style.display = "block";
+    button.style.margin = "0 auto 25px";
+    button.style.padding = "12px 22px";
+    button.style.borderRadius = "25px";
+    button.style.border = "1px solid #d4af37";
+    button.style.background = "#073d30";
+    button.style.color = "white";
+    button.style.cursor = "pointer";
+
+    button.onclick = function () {
+
+        showOnlyFavourites = !showOnlyFavourites;
+
+        button.innerText = showOnlyFavourites
+            ? "♥ Show All Songs"
+            : "♡ Show Favourite Songs";
+
+        searchSongs();
+    };
+
+    search.insertAdjacentElement("afterend", button);
 }
 
 
@@ -94,18 +246,20 @@ function searchSongs() {
 
 function showLyrics(button, language) {
 
-    const card = button.closest('.song-card');
+    const card = button.closest(".song-card");
 
-    card.querySelectorAll('.lyrics-content').forEach(item => {
-        item.style.display = 'none';
+    if (!card) return;
+
+    card.querySelectorAll(".lyrics-content").forEach(item => {
+        item.style.display = "none";
     });
 
     const selectedLyrics = card.querySelector(
-        '.lyrics-content.' + language
+        ".lyrics-content." + language
     );
 
     if (selectedLyrics) {
-        selectedLyrics.style.display = 'block';
+        selectedLyrics.style.display = "block";
     }
 }
 
@@ -114,29 +268,184 @@ function showLyrics(button, language) {
 // COPY LYRICS
 // =====================================
 
-function copyLyrics(button) {
+async function copyLyrics(button) {
 
-    const card = button.closest('.song-card');
+    const card = button.closest(".song-card");
+
+    if (!card) return;
 
     const visibleLyrics = [
-        ...card.querySelectorAll('.lyrics-content')
-    ].find(item => getComputedStyle(item).display !== 'none');
+        ...card.querySelectorAll(".lyrics-content")
+    ].find(item => getComputedStyle(item).display !== "none");
 
-    if (!visibleLyrics) return;
+    if (!visibleLyrics) {
+        alert("Please select a lyrics language first.");
+        return;
+    }
 
-    navigator.clipboard.writeText(visibleLyrics.innerText)
-        .then(() => {
+    try {
+        await navigator.clipboard.writeText(visibleLyrics.innerText);
 
-            button.innerText = 'Copied!';
+        const oldText = button.innerText;
+        button.innerText = "Copied!";
 
-            setTimeout(() => {
-                button.innerText = 'Copy Lyrics';
-            }, 2000);
+        setTimeout(() => {
+            button.innerText = oldText;
+        }, 2000);
 
-        })
-        .catch(() => {
-            button.innerText = 'Copy failed';
-        });
+    } catch (error) {
+        alert("Copy failed. Please try again.");
+    }
+}
+
+
+// =====================================
+// SAVE SONG AS PDF
+// =====================================
+
+function escapeHTML(text) {
+    return String(text).replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[character]);
+}
+
+function saveSongPDF(card) {
+
+    const title = card.querySelector("h3")?.innerText || "Song";
+
+    const visibleLyrics = [
+        ...card.querySelectorAll(".lyrics-content")
+    ].find(item => getComputedStyle(item).display !== "none");
+
+    if (!visibleLyrics) {
+        alert("Please select a lyrics language first.");
+        return;
+    }
+
+    const lyrics = visibleLyrics.innerText;
+
+    const pdfWindow = window.open("", "_blank");
+
+    if (!pdfWindow) {
+        alert("Please allow pop-ups in your browser.");
+        return;
+    }
+
+    pdfWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>${escapeHTML(title)}</title>
+
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    padding: 35px;
+                    color: #073d30;
+                }
+
+                h1 {
+                    text-align: center;
+                    color: #07513b;
+                    border-bottom: 2px solid #d4af37;
+                    padding-bottom: 15px;
+                }
+
+                .lyrics {
+                    font-size: 18px;
+                    line-height: 2;
+                    white-space: pre-wrap;
+                    overflow-wrap: anywhere;
+                    margin-top: 30px;
+                }
+
+                .footer {
+                    margin-top: 40px;
+                    text-align: center;
+                    color: #777;
+                }
+
+                @media print {
+                    body {
+                        padding: 15px;
+                    }
+                }
+            </style>
+        </head>
+
+        <body>
+            <h1>${escapeHTML(title)}</h1>
+
+            <div class="lyrics">${escapeHTML(lyrics)}</div>
+
+            <div class="footer">
+                Muthin Pukal
+            </div>
+
+            <script>
+                window.onload = function() {
+                    window.print();
+                };
+            <\/script>
+        </body>
+        </html>
+    `);
+
+    pdfWindow.document.close();
+}
+
+
+// =====================================
+// SHARE SONG
+// =====================================
+
+async function shareSong(card) {
+
+    const title = card.querySelector("h3")?.innerText || "Song";
+
+    const visibleLyrics = [
+        ...card.querySelectorAll(".lyrics-content")
+    ].find(item => getComputedStyle(item).display !== "none");
+
+    const lyrics = visibleLyrics
+        ? visibleLyrics.innerText
+        : "";
+
+    const shareText =
+        title + "\n\n" +
+        lyrics + "\n\n" +
+        "Read more at Muthin Pukal:\n" +
+        "https://muthin-pukal.vercel.app/";
+
+    try {
+
+        if (navigator.share) {
+
+            await navigator.share({
+                title: title,
+                text: shareText,
+                url: "https://muthin-pukal.vercel.app/"
+            });
+
+        } else {
+
+            await navigator.clipboard.writeText(shareText);
+
+            alert("Song details copied! You can share them now.");
+
+        }
+
+    } catch (error) {
+
+        if (error.name !== "AbortError") {
+            alert("Sharing was not successful. Please try again.");
+        }
+    }
 }
 
 
@@ -145,7 +454,7 @@ function copyLyrics(button) {
 // =====================================
 
 function showMalayalam(button) {
-    showLyrics(button, 'malayalam');
+    showLyrics(button, "malayalam");
 }
 
 
@@ -155,57 +464,95 @@ function showMalayalam(button) {
 
 function convertToKannada(button) {
 
-    const card = button.closest('.song-card');
+    const card = button.closest(".song-card");
 
     const malayalam = card.querySelector(
-        '.lyrics-content.malayalam'
+        ".lyrics-content.malayalam"
     );
 
     const kannada = card.querySelector(
-        '.lyrics-content.kannada'
+        ".lyrics-content.kannada"
     );
 
     if (!malayalam || !kannada) return;
 
     const converted = malayalam.innerText
-        .replace(/അ/g, 'ಅ')
-        .replace(/ആ/g, 'ಆ')
-        .replace(/ഇ/g, 'ಇ')
-        .replace(/ഈ/g, 'ಈ')
-        .replace(/ഉ/g, 'ಉ')
-        .replace(/ഊ/g, 'ಊ')
-        .replace(/എ/g, 'ಎ')
-        .replace(/ഏ/g, 'ಏ')
-        .replace(/ഐ/g, 'ಐ')
-        .replace(/ഒ/g, 'ಒ')
-        .replace(/ഓ/g, 'ಓ')
-        .replace(/ഔ/g, 'ಔ')
-        .replace(/ക/g, 'ಕ')
-        .replace(/ഖ/g, 'ಖ')
-        .replace(/ഗ/g, 'ಗ')
-        .replace(/ഘ/g, 'ಘ')
-        .replace(/ങ/g, 'ಙ')
-        .replace(/ച/g, 'ಚ')
-        .replace(/ജ/g, 'ಜ')
-        .replace(/ഞ/g, 'ಞ')
-        .replace(/ട/g, 'ಟ')
-        .replace(/ഡ/g, 'ಡ')
-        .replace(/ണ/g, 'ಣ')
-        .replace(/ത/g, 'ತ')
-        .replace(/ദ/g, 'ದ')
-        .replace(/ന/g, 'ನ')
-        .replace(/പ/g, 'ಪ')
-        .replace(/ബ/g, 'ಬ')
-        .replace(/മ/g, 'ಮ')
-        .replace(/യ/g, 'ಯ')
-        .replace(/ര/g, 'ರ')
-        .replace(/ല/g, 'ಲ')
-        .replace(/വ/g, 'ವ')
-        .replace(/ശ/g, 'ಶ')
-        .replace(/സ/g, 'ಸ')
-        .replace(/ഹ/g, 'ಹ');
+        .replace(/അ/g, "ಅ")
+        .replace(/ആ/g, "ಆ")
+        .replace(/ഇ/g, "ಇ")
+        .replace(/ഈ/g, "ಈ")
+        .replace(/ഉ/g, "ಉ")
+        .replace(/ഊ/g, "ಊ")
+        .replace(/എ/g, "ಎ")
+        .replace(/ഏ/g, "ಏ")
+        .replace(/ഐ/g, "ಐ")
+        .replace(/ഒ/g, "ಒ")
+        .replace(/ഓ/g, "ಓ")
+        .replace(/ഔ/g, "ಔ")
+        .replace(/ക/g, "ಕ")
+        .replace(/ഖ/g, "ಖ")
+        .replace(/ഗ/g, "ಗ")
+        .replace(/ഘ/g, "ಘ")
+        .replace(/ങ/g, "ಙ")
+        .replace(/ച/g, "ಚ")
+        .replace(/ജ/g, "ಜ")
+        .replace(/ഞ/g, "ಞ")
+        .replace(/ട/g, "ಟ")
+        .replace(/ഡ/g, "ಡ")
+        .replace(/ണ/g, "ಣ")
+        .replace(/ത/g, "ತ")
+        .replace(/ദ/g, "ದ")
+        .replace(/ന/g, "ನ")
+        .replace(/പ/g, "ಪ")
+        .replace(/ബ/g, "ಬ")
+        .replace(/മ/g, "ಮ")
+        .replace(/യ/g, "ಯ")
+        .replace(/ര/g, "ರ")
+        .replace(/ല/g, "ಲ")
+        .replace(/വ/g, "ವ")
+        .replace(/ശ/g, "ಶ")
+        .replace(/സ/g, "ಸ")
+        .replace(/ഹ/g, "ಹ");
 
     kannada.innerText = converted;
 
-    showLyrics(button, 'kannada');
+    showLyrics(button, "kannada");
+}
+
+
+// =====================================
+// AUTOMATIC SETUP
+// =====================================
+
+function setupMuthinPukal() {
+
+    enhanceSongCards();
+    setupFavouriteFilter();
+
+    const search = document.getElementById("search");
+
+    if (search) {
+        search.addEventListener("input", searchSongs);
+    }
+
+    const songList = document.getElementById("song-list");
+
+    if (songList) {
+
+        const observer = new MutationObserver(() => {
+            enhanceSongCards();
+            searchSongs();
+        });
+
+        observer.observe(songList, {
+            childList: true,
+            subtree: true
+        });
+    }
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupMuthinPukal);
+} else {
+    setupMuthinPukal();
 }
