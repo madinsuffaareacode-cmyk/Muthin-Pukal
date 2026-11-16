@@ -633,3 +633,150 @@ footer {
 .mp-song-actions {
     flex-wrap: wrap;
 }
+
+/* =====================================
+   MUTHIN PUKAL - MULTI PAGE DESIGN
+===================================== */
+
+/* COMMON PAGE BACKGROUND */
+
+body {
+    background: #f5f8f2;
+}
+
+/* NAVIGATION */
+
+header nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+header nav a {
+    display: inline-block;
+    padding: 9px 17px;
+    border-radius: 25px;
+    transition: 0.3s;
+}
+
+header nav a:hover {
+    background: rgba(212, 175, 55, 0.18);
+}
+
+/* HOME PAGE */
+
+.mp-home-intro {
+    background: linear-gradient(135deg, #032b21, #07513b);
+    border-bottom: 3px solid #d4af37;
+}
+
+.mp-home-intro h1 {
+    letter-spacing: 1px;
+}
+
+.mp-library {
+    padding-top: 45px;
+    padding-bottom: 45px;
+}
+
+/* SONG COLLECTION GRID */
+
+#song-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 22px;
+    align-items: start;
+}
+
+#song-list .song-card {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    min-width: 0;
+}
+
+/* CATEGORY PAGE */
+
+.mp-category-intro {
+    background: linear-gradient(135deg, #032b21, #07513b);
+    border-bottom: 3px solid #d4af37;
+}
+
+.mp-category-section {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+#all-categories .category-card {
+    width: 100%;
+    min-width: 0;
+}
+
+/* CATEGORY SONG SECTION */
+
+.mp-category-songs {
+    background: #f5f8f2;
+    border-top: 1px solid #e5dfc9;
+}
+
+.mp-category-songs .song-card {
+    max-width: none;
+}
+
+/* ABOUT PAGE */
+
+.about-hero {
+    background: linear-gradient(135deg, #032b21, #07513b);
+    border-bottom: 3px solid #d4af37;
+}
+
+.about-container {
+    padding-top: 35px;
+}
+
+.about-card {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+    transition: 0.3s;
+}
+
+.about-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.10);
+}
+
+/* FOOTER */
+
+footer {
+    border-top: 3px solid #d4af37;
+}
+
+/* MOBILE DESIGN */
+
+@media (max-width: 650px) {
+
+    header nav {
+        gap: 5px;
+    }
+
+    header nav a {
+        padding: 8px 11px;
+        margin: 0;
+        font-size: 13px;
+    }
+
+    #song-list {
+        grid-template-columns: 1fr;
+    }
+
+    .mp-library,
+    .mp-category-section,
+    .mp-category-songs {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .about-card {
+        padding: 22px 17px;
+    }
+}
