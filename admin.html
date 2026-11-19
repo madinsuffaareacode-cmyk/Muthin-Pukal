@@ -4,184 +4,740 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Muthin Pukal - Admin</title>
+<title>Muthin Pukal | Admin Dashboard</title>
+
 <style>
+* { box-sizing: border-box; }
+
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #edf5ef;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #edf4ef;
+    color: #183c2e;
 }
-.login-box {
-  background: white;
-  padding: 30px;
-  width: 320px;
-  max-width: calc(100% - 60px);
-  border-radius: 15px;
-  box-shadow: 0 5px 25px #0002;
-  text-align: center;
-}
-h2 { color: #07513b; }
-input {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 13px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 7px;
-}
+
+.hidden { display: none !important; }
+
 button {
-  width: 100%;
-  padding: 13px;
-  background: #07513b;
-  color: white;
-  border: none;
-  border-radius: 7px;
-  cursor: pointer;
-  margin-top: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-weight: bold;
 }
+
+button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    margin: 7px 0 15px;
+    border: 1px solid #ccd8ce;
+    border-radius: 8px;
+    font: inherit;
+}
+
+textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.login-box {
+    background: white;
+    width: 350px;
+    max-width: 90%;
+    padding: 30px;
+    border-radius: 16px;
+    margin: 100px auto;
+    text-align: center;
+    box-shadow: 0 5px 25px #0002;
+}
+
+.login-box h2 { color: #07513b; }
+
+.primary {
+    background: #07513b;
+    color: white;
+}
+
 .secondary {
-  background: #e6eee8;
-  color: #07513b;
+    background: #e5eee8;
+    color: #07513b;
 }
+
+.danger {
+    background: #b83232;
+    color: white;
+}
+
 #message {
-  margin-top: 15px;
-  font-size: 14px;
-  overflow-wrap: anywhere;
+    font-size: 14px;
+    margin-top: 12px;
+    overflow-wrap: anywhere;
 }
-.hidden { display: none; }
+
+header {
+    background: #073d30;
+    color: #d4af37;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+header h2 { margin: 0; }
+
+.dashboard {
+    max-width: 1100px;
+    margin: auto;
+    padding: 25px 18px 60px;
+}
+
+.welcome {
+    background: #07513b;
+    color: white;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 22px;
+}
+
+.welcome h2 {
+    color: #e4c35c;
+    margin-top: 0;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px #0001;
+}
+
+.stat-card h3 {
+    color: #07513b;
+    font-size: 28px;
+    margin: 5px 0;
+}
+
+.panel {
+    background: white;
+    padding: 22px;
+    border-radius: 14px;
+    margin-bottom: 22px;
+    box-shadow: 0 3px 12px #0001;
+}
+
+.panel h2 {
+    color: #07513b;
+    margin-top: 0;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.full { grid-column: 1 / -1; }
+
+.song-item {
+    border: 1px solid #dce6de;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 12px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.song-item h3 {
+    margin: 0 0 7px;
+    color: #07513b;
+}
+
+.song-item p {
+    margin: 0;
+    color: #66756b;
+    font-size: 13px;
+}
+
+.song-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.song-actions button { padding: 9px 13px; }
+
+.edit-btn {
+    background: #e7bd43;
+    color: #173b2d;
+}
+
+#songList { margin-top: 15px; }
+
+.small-note {
+    color: #718078;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+@media(max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .full { grid-column: auto; }
+    .dashboard { padding: 15px 12px 40px; }
+    .panel { padding: 17px; }
+}
 </style>
 </head>
+
 <body>
 
-<div class="login-box">
-  <h2>✦ Muthin Pukal ✦</h2>
+<!-- LOGIN -->
 
-  <div id="loginSection">
+<div class="login-box" id="loginSection">
+
+    <h2>✦ Muthin Pukal ✦</h2>
     <p>Admin Login</p>
+
     <form id="loginForm">
-      <input type="email" id="email" placeholder="Admin Email" required>
-      <input type="password" id="password" placeholder="Password" required>
-      <button type="submit">Login</button>
+        <input type="email" id="email"
+               placeholder="Admin Email" required>
+
+        <input type="password" id="password"
+               placeholder="Password" required>
+
+        <button class="primary" type="submit"
+                id="loginButton" style="width:100%">
+            Login
+        </button>
     </form>
+
     <button class="secondary" id="forgotButton" type="button">
-      Forgot Password?
+        Forgot Password?
     </button>
-  </div>
 
-  <div id="resetSection" class="hidden">
-    <p>Reset Your Password</p>
-    <input type="password" id="newPassword" placeholder="New Password" required>
-    <input type="password" id="confirmPassword" placeholder="Confirm New Password" required>
-    <button id="updateButton" type="button">Update Password</button>
-  </div>
-
-  <p id="message"></p>
+    <p id="message"></p>
 </div>
 
+
+<!-- DASHBOARD -->
+
+<div id="dashboardSection" class="hidden">
+
+    <header>
+        <h2>✦ Muthin Pukal Admin ✦</h2>
+        <button class="secondary" id="logoutButton">
+            Logout
+        </button>
+    </header>
+
+    <main class="dashboard">
+
+        <section class="welcome">
+            <h2>Welcome, Admin!</h2>
+            <p>Manage your Islamic Madh Songs collection here.</p>
+        </section>
+
+        <section class="stats">
+            <div class="stat-card">
+                <p>Total Songs</p>
+                <h3 id="totalSongs">0</h3>
+            </div>
+
+            <div class="stat-card">
+                <p>Dashboard</p>
+                <h3>Active</h3>
+            </div>
+        </section>
+
+        <section class="panel" id="songFormPanel">
+
+            <h2 id="formTitle">Add New Song</h2>
+
+            <form id="songForm">
+
+                <div class="form-grid">
+
+                    <div class="full">
+                        <label>Song Title</label>
+                        <input id="songTitle"
+                               placeholder="Enter song name" required>
+                    </div>
+
+                    <div>
+                        <label>Category</label>
+                        <select id="songCategory" required>
+                            <option value="malayalam">Malayalam</option>
+                            <option value="kannada">Kannada</option>
+                            <option value="arabic">Arabic</option>
+                            <option value="urdu">Urdu</option>
+                            <option value="mappila">Mappila</option>
+                            <option value="ap-usthad">AP Usthad</option>
+                            <option value="sufi">Sufi</option>
+                            <option value="others">Others</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>YouTube Video URL</label>
+                        <input id="youtubeURL" type="url"
+                               placeholder="https://youtube.com/...">
+                    </div>
+
+                    <div class="full">
+                        <label>Malayalam Lyrics</label>
+                        <textarea id="lyricsMalayalam"
+                                  placeholder="Malayalam lyrics..."></textarea>
+                    </div>
+
+                    <div class="full">
+                        <label>Kannada Lyrics</label>
+                        <textarea id="lyricsKannada"
+                                  placeholder="Kannada lyrics..."></textarea>
+                    </div>
+
+                    <div class="full">
+                        <label>Arabic Lyrics</label>
+                        <textarea id="lyricsArabic"
+                                  placeholder="Arabic lyrics..."></textarea>
+                    </div>
+
+                    <div class="full">
+                        <label>Urdu Lyrics</label>
+                        <textarea id="lyricsUrdu"
+                                  placeholder="Urdu lyrics..."></textarea>
+                    </div>
+
+                    <div class="full">
+                        <label>Audio URL (Optional)</label>
+                        <input id="audioURL" type="url"
+                               placeholder="Audio link">
+                    </div>
+
+                </div>
+
+                <button class="primary" type="submit" id="saveButton">
+                    Save Song
+                </button>
+
+                <button class="secondary hidden" type="button"
+                        id="cancelEditButton">
+                    Cancel Edit
+                </button>
+
+            </form>
+
+            <p class="small-note">
+                Fill in the song details and save them to your collection.
+            </p>
+        </section>
+
+        <section class="panel">
+            <h2>Manage Songs</h2>
+
+            <input type="search" id="adminSearch"
+                   placeholder="Search songs...">
+
+            <div id="songList">Loading songs...</div>
+        </section>
+
+    </main>
+</div>
+
+
+<!-- SUPABASE -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
+"use strict";
+
 const SUPABASE_URL = "https://bnvmdtpplavypgzvpaga.supabase.co";
+
 const SUPABASE_KEY = "sb_publishable_iX79SzzZ0dW-Kd1VUYthaA_mSfWuYX8";
 
 const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
+    SUPABASE_URL,
+    SUPABASE_KEY
 );
 
 const loginSection = document.getElementById("loginSection");
-const resetSection = document.getElementById("resetSection");
+const dashboardSection = document.getElementById("dashboardSection");
 const message = document.getElementById("message");
 
+let songs = [];
+let editingId = null;
+
 function showMessage(text, success = false) {
-  message.textContent = text;
-  message.style.color = success ? "green" : "red";
+    message.textContent = text;
+    message.style.color = success ? "green" : "red";
 }
 
-supabaseClient.auth.onAuthStateChange((event, session) => {
-  if (event === "PASSWORD_RECOVERY") {
-    loginSection.classList.add("hidden");
-    resetSection.classList.remove("hidden");
-    showMessage("Enter your new password.", true);
-  }
+function showDashboard() {
+    loginSection.style.display = "none";
+    dashboardSection.style.display = "block";
+    loadSongs();
+}
+
+function showLogin() {
+    dashboardSection.style.display = "none";
+    loginSection.style.display = "block";
+}
+
+
+// LOGIN
+
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const loginButton = document.getElementById("loginButton");
+    loginButton.disabled = true;
+    loginButton.textContent = "Logging in...";
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email,
+            password
+        });
+
+        if (error) {
+            showMessage(error.message);
+            return;
+        }
+
+        if (data.session) {
+            showDashboard();
+            showMessage("Login successful!", true);
+        }
+
+    } catch (error) {
+        showMessage("Login error: " + error.message);
+    } finally {
+        loginButton.disabled = false;
+        loginButton.textContent = "Login";
+    }
 });
 
-// Admin Login
-document.getElementById("loginForm").addEventListener("submit", async (event) => {
-  event.preventDefault();
 
-  showMessage("Logging in...", true);
+// FORGOT PASSWORD — FIXED REDIRECT
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  const { error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if (error) {
-    showMessage(error.message);
-  } else {
-    showMessage("Login successful!", true);
-  }
-});
-
-// Send password reset email
 document.getElementById("forgotButton").addEventListener("click", async () => {
-  const email = document.getElementById("email").value.trim();
 
-  if (!email) {
-    showMessage("Please enter your admin email first.");
-    return;
-  }
+    const email = document.getElementById("email").value.trim();
 
-  showMessage("Sending reset email...", true);
+    if (!email) {
+        showMessage("Enter your admin email first.");
+        return;
+    }
 
-  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + "/admin.html"
-  });
+    const button = document.getElementById("forgotButton");
+    button.disabled = true;
+    button.textContent = "Sending...";
 
-  if (error) {
-    showMessage(error.message);
-  } else {
-    showMessage("Password reset email sent. Check your Gmail.", true);
-  }
+    try {
+        const { error } = await supabaseClient.auth.resetPasswordForEmail(
+            email,
+            {
+                redirectTo: "https://muthin-pukal.vercel.app/reset-password.html"
+            }
+        );
+
+        if (error) {
+            showMessage(error.message);
+        } else {
+            showMessage("Reset email sent! Check your email.", true);
+        }
+
+    } catch (error) {
+        showMessage("Error: " + error.message);
+    } finally {
+        button.disabled = false;
+        button.textContent = "Forgot Password?";
+    }
 });
 
-// Update password
-document.getElementById("updateButton").addEventListener("click", async () => {
-  const newPassword = document.getElementById("newPassword").value;
-  const confirmPassword = document.getElementById("confirmPassword").value;
 
-  if (newPassword.length < 6) {
-    showMessage("Password must be at least 6 characters.");
-    return;
-  }
+// LOGOUT
 
-  if (newPassword !== confirmPassword) {
-    showMessage("Passwords do not match.");
-    return;
-  }
+document.getElementById("logoutButton").addEventListener("click", async () => {
 
-  showMessage("Updating password...", true);
+    const button = document.getElementById("logoutButton");
+    button.disabled = true;
 
-  const { error } = await supabaseClient.auth.updateUser({
-    password: newPassword
-  });
+    const { error } = await supabaseClient.auth.signOut();
 
-  if (error) {
-    showMessage(error.message);
-  } else {
-    showMessage("Password updated successfully! You can now login.", true);
-    await supabaseClient.auth.signOut();
-    resetSection.classList.add("hidden");
-    loginSection.classList.remove("hidden");
-  }
+    button.disabled = false;
+
+    if (error) {
+        alert("Logout failed: " + error.message);
+    } else {
+        showLogin();
+    }
 });
+
+
+// LOAD SONGS
+
+async function loadSongs() {
+
+    const songList = document.getElementById("songList");
+    songList.textContent = "Loading songs...";
+
+    try {
+        const { data, error } = await supabaseClient
+            .from("songs")
+            .select("*")
+            .order("created_at", { ascending: false });
+
+        if (error) {
+            songList.textContent = "Error loading songs: " + error.message;
+            document.getElementById("totalSongs").textContent = "—";
+            return;
+        }
+
+        songs = data || [];
+        document.getElementById("totalSongs").textContent = songs.length;
+
+        displaySongs(songs);
+
+    } catch (error) {
+        songList.textContent = "Error: " + error.message;
+    }
+}
+
+
+// DISPLAY SONGS
+
+function displaySongs(list) {
+
+    const songList = document.getElementById("songList");
+    songList.innerHTML = "";
+
+    if (!list.length) {
+        songList.textContent = "No songs found.";
+        return;
+    }
+
+    list.forEach(song => {
+
+        const item = document.createElement("div");
+        item.className = "song-item";
+
+        const info = document.createElement("div");
+
+        const title = document.createElement("h3");
+        title.textContent = song.title || "Untitled";
+
+        const category = document.createElement("p");
+        category.textContent = "Category: " + (song.category || "Others");
+
+        info.append(title, category);
+
+        const actions = document.createElement("div");
+        actions.className = "song-actions";
+
+        const editButton = document.createElement("button");
+        editButton.className = "edit-btn";
+        editButton.textContent = "Edit";
+        editButton.addEventListener("click", () => editSong(song.id));
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "danger";
+        deleteButton.textContent = "Delete";
+        deleteButton.addEventListener("click", () => deleteSong(song.id));
+
+        actions.append(editButton, deleteButton);
+        item.append(info, actions);
+        songList.appendChild(item);
+    });
+}
+
+
+// ADD / UPDATE SONG
+
+document.getElementById("songForm").addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const song = {
+        title: document.getElementById("songTitle").value.trim(),
+        category: document.getElementById("songCategory").value,
+        youtube_url: document.getElementById("youtubeURL").value.trim() || null,
+        audio_url: document.getElementById("audioURL").value.trim() || null,
+        lyrics_malayalam: document.getElementById("lyricsMalayalam").value,
+        lyrics_kannada: document.getElementById("lyricsKannada").value,
+        lyrics_arabic: document.getElementById("lyricsArabic").value,
+        lyrics_urdu: document.getElementById("lyricsUrdu").value
+    };
+
+    const saveButton = document.getElementById("saveButton");
+    const isEditing = editingId !== null;
+
+    saveButton.disabled = true;
+    saveButton.textContent = "Saving...";
+
+    try {
+        let result;
+
+        if (isEditing) {
+            result = await supabaseClient
+                .from("songs")
+                .update(song)
+                .eq("id", editingId);
+        } else {
+            result = await supabaseClient
+                .from("songs")
+                .insert([song]);
+        }
+
+        if (result.error) {
+            alert("Error: " + result.error.message);
+            return;
+        }
+
+        alert(isEditing
+            ? "Song updated successfully!"
+            : "New song added successfully!");
+
+        resetSongForm();
+        await loadSongs();
+
+    } catch (error) {
+        alert("Error: " + error.message);
+    } finally {
+        saveButton.disabled = false;
+        saveButton.textContent = "Save Song";
+    }
+});
+
+
+// EDIT SONG
+
+function editSong(id) {
+
+    const song = songs.find(item => String(item.id) === String(id));
+    if (!song) return;
+
+    editingId = id;
+
+    document.getElementById("songTitle").value = song.title || "";
+    document.getElementById("songCategory").value = song.category || "others";
+    document.getElementById("youtubeURL").value = song.youtube_url || "";
+    document.getElementById("audioURL").value = song.audio_url || "";
+
+    document.getElementById("lyricsMalayalam").value = song.lyrics_malayalam || "";
+    document.getElementById("lyricsKannada").value = song.lyrics_kannada || "";
+    document.getElementById("lyricsArabic").value = song.lyrics_arabic || "";
+    document.getElementById("lyricsUrdu").value = song.lyrics_urdu || "";
+
+    document.getElementById("formTitle").textContent = "Edit Song";
+    document.getElementById("saveButton").textContent = "Update Song";
+
+    document.getElementById("cancelEditButton").classList.remove("hidden");
+
+    document.getElementById("songFormPanel").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+
+// DELETE SONG
+
+async function deleteSong(id) {
+
+    const confirmed = confirm("Are you sure you want to delete this song?");
+    if (!confirmed) return;
+
+    const { error } = await supabaseClient
+        .from("songs")
+        .delete()
+        .eq("id", id);
+
+    if (error) {
+        alert("Delete failed: " + error.message);
+        return;
+    }
+
+    alert("Song deleted successfully!");
+    await loadSongs();
+}
+
+
+// RESET FORM
+
+function resetSongForm() {
+
+    editingId = null;
+
+    document.getElementById("songForm").reset();
+
+    document.getElementById("formTitle").textContent = "Add New Song";
+    document.getElementById("saveButton").textContent = "Save Song";
+
+    document.getElementById("cancelEditButton").classList.add("hidden");
+}
+
+document.getElementById("cancelEditButton")
+    .addEventListener("click", resetSongForm);
+
+
+// SEARCH
+
+document.getElementById("adminSearch").addEventListener("input", (e) => {
+
+    const search = e.target.value.toLowerCase();
+
+    const filtered = songs.filter(song =>
+        (song.title || "").toLowerCase().includes(search) ||
+        (song.category || "").toLowerCase().includes(search)
+    );
+
+    displaySongs(filtered);
+});
+
+
+// SESSION CHECK
+
+window.addEventListener("load", async () => {
+
+    try {
+        const { data, error } = await supabaseClient.auth.getSession();
+
+        if (error) {
+            showLogin();
+            showMessage("Session error: " + error.message);
+            return;
+        }
+
+        if (data.session) {
+            showDashboard();
+        } else {
+            showLogin();
+        }
+
+    } catch (error) {
+        showLogin();
+        showMessage("Error: " + error.message);
+    }
+});
+
 </script>
 
 </body>

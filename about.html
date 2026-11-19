@@ -2,99 +2,155 @@
 <!DOCTYPE html>
 <html lang="ml">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us | Muthin Pukal</title>
 
-    <title>About Us | Muthin Pukal</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<style>
+.about-hero {
+    text-align:center;
+    padding:65px 20px 45px;
+}
 
-    <style>
-        .about-hero {
-            text-align: center;
-            padding: 60px 20px 35px;
-        }
+.about-hero .small-title {
+    color:#f5df9a;
+    letter-spacing:3px;
+    font-size:13px;
+}
 
-        .about-hero h1 {
-            color: #d4af37;
-            font-size: clamp(30px, 5vw, 46px);
-        }
+.about-hero h1 {
+    color:#d4af37;
+    font-size:clamp(32px,5vw,48px);
+    margin:15px 0;
+}
 
-        .about-hero p {
-            color: #f5df9a;
-            font-size: 16px;
-        }
+.about-hero p {
+    color:#f5df9a;
+    font-size:16px;
+    line-height:1.8;
+}
 
-        .about-container {
-            max-width: 900px;
-            margin: 20px auto 60px;
-            padding: 20px;
-        }
+.about-container {
+    max-width:950px;
+    margin:0 auto;
+    padding:20px 20px 100px;
+}
 
-        .about-card {
-            background: rgba(7, 61, 48, 0.75);
-            border: 1px solid rgba(212, 175, 55, 0.45);
-            border-radius: 18px;
-            padding: 30px;
-            margin-bottom: 25px;
-            text-align: center;
-        }
+.about-card {
+    background:rgba(7,61,48,.78);
+    border:1px solid rgba(212,175,55,.4);
+    border-radius:20px;
+    padding:30px;
+    margin-bottom:22px;
+    text-align:center;
+    transition:.3s;
+}
 
-        .about-card .about-icon {
-            color: #d4af37;
-            font-size: 35px;
-            margin-bottom: 15px;
-        }
+.about-card:hover {
+    transform:translateY(-4px);
+    border-color:#d4af37;
+}
 
-        .about-card h2 {
-            color: #d4af37;
-            margin-bottom: 15px;
-        }
+.about-icon {
+    color:#d4af37;
+    font-size:34px;
+    margin-bottom:15px;
+}
 
-        .about-card p {
-            color: #eee;
-            line-height: 1.9;
-            font-size: 16px;
-        }
+.about-card h2 {
+    color:#d4af37;
+    margin-bottom:15px;
+}
 
-        .about-quote {
-            color: #f5df9a !important;
-            font-size: 20px !important;
-            font-style: italic;
-        }
+.about-card p {
+    color:#eee;
+    line-height:1.9;
+    font-size:16px;
+}
 
-        footer {
-            text-align: center;
-            padding: 25px 15px;
-        }
-    </style>
+.about-quote {
+    color:#f5df9a !important;
+    font-size:21px !important;
+    font-style:italic;
+}
+
+.language-list {
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:20px;
+}
+
+.language-list span {
+    color:#f5df9a;
+    border:1px solid #b99a38;
+    padding:9px 17px;
+    border-radius:25px;
+    font-size:14px;
+}
+
+.about-footer {
+    text-align:center;
+    padding:25px 15px 100px;
+    color:#ddd;
+    line-height:1.8;
+}
+
+/* Bottom Navigation */
+.mp-bottom-nav {
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    z-index:999;
+    display:flex;
+    justify-content:space-around;
+    background:#071c15;
+    border-top:1px solid rgba(212,175,55,.35);
+    padding:10px 5px calc(10px + env(safe-area-inset-bottom));
+}
+
+.mp-bottom-nav a {
+    text-decoration:none;
+    color:#b9c8bf;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:5px;
+    font-size:11px;
+    min-width:55px;
+}
+
+.mp-bottom-nav a i {
+    font-size:19px;
+}
+
+.mp-bottom-nav a.active {
+    color:#d4af37;
+}
+
+body {
+    padding-bottom:75px;
+}
+</style>
 </head>
 
 <body>
 
 <header>
     <div class="logo">✦ മുത്തിൻ പുകൾ ✦</div>
-
     <p>ഇസ്‌ലാമിക മദ്ഹ് ഗാനങ്ങൾ</p>
-
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="categories.html">Categories</a>
-        <a href="about.html">About</a>
-    </nav>
 </header>
 
-
-<!-- ABOUT INTRO -->
-
 <section class="about-hero">
+    <div class="small-title">WELCOME TO</div>
     <h1>About Muthin Pukal</h1>
     <p>A beautiful collection of Islamic Madh Songs</p>
 </section>
-
-
-<!-- ABOUT CONTENT -->
 
 <main class="about-container">
 
@@ -102,67 +158,92 @@
         <div class="about-icon">
             <i class="fa-solid fa-moon"></i>
         </div>
-
         <h2>Who We Are</h2>
-
         <p>
-            Muthin Pukal is an online collection of Islamic Madh songs.
-            Our platform brings together beautiful songs and praises
-            of Prophet Muhammad ﷺ in different languages.
+            Muthin Pukal is a digital platform dedicated to Islamic
+            Madh songs and praises of Prophet Muhammad ﷺ.
+            We bring together beautiful lyrics from different
+            traditions and languages in one place.
         </p>
     </section>
-
 
     <section class="about-card">
         <div class="about-icon">
             <i class="fa-solid fa-book-open"></i>
         </div>
-
         <h2>Our Mission</h2>
-
         <p>
-            Our mission is to preserve and share Islamic Madh songs
-            with everyone. We aim to make lyrics easily accessible
-            in different languages so that everyone can read,
-            learn and enjoy them.
+            Our mission is to preserve, collect and share Islamic
+            Madh songs. We aim to make lyrics easily accessible
+            so that everyone can read, learn and share them.
         </p>
     </section>
-
 
     <section class="about-card">
         <div class="about-icon">
             <i class="fa-solid fa-heart"></i>
         </div>
-
         <h2>Our Vision</h2>
-
         <p class="about-quote">
             "Keeping the beauty of Madh alive, one song at a time."
         </p>
     </section>
 
+    <section class="about-card">
+        <div class="about-icon">
+            <i class="fa-solid fa-language"></i>
+        </div>
+        <h2>Our Languages</h2>
+        <p>
+            Explore Islamic Madh songs in different languages
+            and discover the beauty of their words.
+        </p>
+        <div class="language-list">
+            <span>Malayalam</span>
+            <span>Kannada</span>
+            <span>Arabic</span>
+            <span>Urdu</span>
+            <span>Manglish</span>
+        </div>
+    </section>
 
     <section class="about-card">
         <div class="about-icon">
             <i class="fa-solid fa-globe"></i>
         </div>
-
         <h2>Explore With Us</h2>
-
         <p>
-            Discover songs in Malayalam, Kannada, Arabic, Urdu
-            and other languages. Explore our collections and
-            enjoy the beauty of Islamic songs.
+            Discover your favourite Madh songs, explore different
+            categories and enjoy a growing collection of Islamic
+            musical heritage.
         </p>
     </section>
 
 </main>
 
-
-<footer>
+<footer class="about-footer">
     <p>© 2026 Muthin Pukal. All Rights Reserved.</p>
     <p>Made with love for Islamic Madh Songs</p>
 </footer>
+
+<nav class="mp-bottom-nav">
+    <a href="index.html">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </a>
+    <a href="categories.html">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Categories</span>
+    </a>
+    <a href="library.html">
+        <i class="fa-solid fa-bookmark"></i>
+        <span>Library</span>
+    </a>
+    <a href="about.html" class="active">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>About</span>
+    </a>
+</nav>
 
 </body>
 </html>

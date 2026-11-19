@@ -11,6 +11,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     <style>
+        body {
+            padding-bottom: 85px;
+        }
+
+        /* INTRO */
+
         .mp-category-intro {
             text-align: center;
             padding: 45px 20px 25px;
@@ -39,6 +45,8 @@
             margin-bottom: 25px;
         }
 
+        /* CATEGORY GRID */
+
         #all-categories {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -48,7 +56,14 @@
         #all-categories .category-card {
             min-height: 110px;
             cursor: pointer;
+            transition: 0.3s ease;
         }
+
+        #all-categories .category-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* SEARCH */
 
         #search {
             display: block;
@@ -78,7 +93,57 @@
             display: none;
         }
 
+        /* BOTTOM NAVIGATION */
+
+        .mp-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: #071c15;
+            border-top: 1px solid rgba(212, 175, 55, 0.4);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 9999;
+            box-sizing: border-box;
+            padding: 5px 8px;
+        }
+
+        .mp-bottom-nav a {
+            flex: 1;
+            text-decoration: none;
+            color: #a9b5ad;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 11px;
+            transition: 0.3s;
+        }
+
+        .mp-bottom-nav a i {
+            font-size: 20px;
+        }
+
+        .mp-bottom-nav a.active {
+            color: #d4af37;
+        }
+
+        .mp-bottom-nav a.active i {
+            transform: translateY(-2px);
+        }
+
+        .mp-bottom-nav a:hover {
+            color: #e7c75a;
+        }
+
+        /* MOBILE */
+
         @media (max-width: 600px) {
+
             #all-categories {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 12px;
@@ -87,22 +152,33 @@
             #song-list {
                 grid-template-columns: 1fr;
             }
+
+            .mp-category-intro {
+                padding-top: 30px;
+            }
+
+            .mp-bottom-nav {
+                height: 65px;
+            }
+
+            .mp-bottom-nav a {
+                font-size: 10px;
+            }
+
+            .mp-bottom-nav a i {
+                font-size: 19px;
+            }
         }
     </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
+
 <header>
     <div class="logo">✦ മുത്തിൻ പുകൾ ✦</div>
-
     <p>ഇസ്‌ലാമിക മദ്ഹ് ഗാനങ്ങൾ</p>
-
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="categories.html">Categories</a>
-        <a href="about.html">About</a>
-    </nav>
 </header>
 
 
@@ -122,47 +198,47 @@
 
     <div class="categories" id="all-categories">
 
-        <button onclick="filterCategory('all')" class="category-card all-card">
+        <button type="button" onclick="filterCategory('all')" class="category-card all-card">
             <span class="category-icon">✦</span>
             <span>All Songs</span>
         </button>
 
-        <button onclick="filterCategory('malayalam')" class="category-card malayalam-card">
+        <button type="button" onclick="filterCategory('malayalam')" class="category-card malayalam-card">
             <span class="category-icon">മ</span>
             <span>Malayalam Songs</span>
         </button>
 
-        <button onclick="filterCategory('kannada')" class="category-card kannada-card">
+        <button type="button" onclick="filterCategory('kannada')" class="category-card kannada-card">
             <span class="category-icon">ಕ</span>
             <span>Kannada Songs</span>
         </button>
 
-        <button onclick="filterCategory('urdu')" class="category-card urdu-card">
+        <button type="button" onclick="filterCategory('urdu')" class="category-card urdu-card">
             <span class="category-icon">ن</span>
             <span>Urdu Na'ath</span>
         </button>
 
-        <button onclick="filterCategory('mappila')" class="category-card mappila-card">
+        <button type="button" onclick="filterCategory('mappila')" class="category-card mappila-card">
             <span class="category-icon">♫</span>
             <span>Mappila Songs</span>
         </button>
 
-        <button onclick="filterCategory('ap-usthad')" class="category-card usthad-card">
+        <button type="button" onclick="filterCategory('ap-usthad')" class="category-card usthad-card">
             <span class="category-icon">✧</span>
             <span>A.P Usthad Songs</span>
         </button>
 
-        <button onclick="filterCategory('sufi')" class="category-card sufi-card">
+        <button type="button" onclick="filterCategory('sufi')" class="category-card sufi-card">
             <span class="category-icon">☪</span>
             <span>Sufi Songs</span>
         </button>
 
-        <button onclick="filterCategory('arabic')" class="category-card arabic-card">
+        <button type="button" onclick="filterCategory('arabic')" class="category-card arabic-card">
             <span class="category-icon">يا</span>
             <span>Arabic Nasheeds</span>
         </button>
 
-        <button onclick="filterCategory('others')" class="category-card others-card">
+        <button type="button" onclick="filterCategory('others')" class="category-card others-card">
             <span class="category-icon">❖</span>
             <span>Others</span>
         </button>
@@ -192,10 +268,41 @@
 </section>
 
 
+<!-- FOOTER -->
+
 <footer>
     <p>© 2026 Muthin Pukal. All Rights Reserved.</p>
 </footer>
 
+
+<!-- YOUTUBE STYLE BOTTOM NAVIGATION -->
+
+<nav class="mp-bottom-nav">
+
+    <a href="index.html">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </a>
+
+    <a href="categories.html" class="active">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Categories</span>
+    </a>
+
+    <a href="library.html">
+        <i class="fa-solid fa-bookmark"></i>
+        <span>Library</span>
+    </a>
+
+    <a href="about.html">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>About</span>
+    </a>
+
+</nav>
+
+
+<!-- SCRIPTS -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="script.js"></script>

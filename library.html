@@ -1,0 +1,377 @@
+
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Library | Muthin Pukal</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+        body {
+            padding-bottom: 90px;
+        }
+
+        .library-hero {
+            text-align: center;
+            padding: 45px 20px 25px;
+        }
+
+        .library-hero h1 {
+            color: #d4af37;
+            font-size: clamp(30px, 5vw, 42px);
+        }
+
+        .library-hero p {
+            color: #aaa;
+        }
+
+        .library-container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .library-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 20px 0 30px;
+        }
+
+        .library-tabs button {
+            padding: 12px 22px;
+            border: 1px solid #d4af37;
+            border-radius: 25px;
+            background: transparent;
+            color: #d4af37;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .library-tabs button.active {
+            background: #d4af37;
+            color: #073d30;
+        }
+
+        #library-search {
+            display: block;
+            width: min(100%, 550px);
+            margin: 20px auto 30px;
+            padding: 14px 18px;
+            border: 1px solid #d4af37;
+            border-radius: 30px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        #library-song-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+        }
+
+        #library-song-list .song-card {
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        .library-empty {
+            text-align: center;
+            padding: 45px 15px;
+            color: #aaa;
+            grid-column: 1 / -1;
+        }
+
+        .library-empty i {
+            font-size: 45px;
+            color: #d4af37;
+            margin-bottom: 15px;
+        }
+
+        .library-count {
+            text-align: center;
+            color: #aaa;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .mp-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: #071c15;
+            border-top: 1px solid rgba(212,175,55,.4);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 9999;
+            padding: 5px 8px;
+            box-sizing: border-box;
+        }
+
+        .mp-bottom-nav a {
+            flex: 1;
+            text-decoration: none;
+            color: #a9b5ad;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 11px;
+        }
+
+        .mp-bottom-nav a i {
+            font-size: 20px;
+        }
+
+        .mp-bottom-nav a.active {
+            color: #d4af37;
+        }
+
+        #song-list {
+            display: none !important;
+        }
+
+        @media(max-width:600px) {
+            #library-song-list {
+                grid-template-columns: 1fr;
+            }
+
+            .mp-bottom-nav {
+                height: 65px;
+            }
+
+            .mp-bottom-nav a {
+                font-size: 10px;
+            }
+
+            .mp-bottom-nav a i {
+                font-size: 19px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">✦ മുത്തിൻ പുകൾ ✦</div>
+    <p>ഇസ്‌ലാമിക മദ്ഹ് ഗാനങ്ങൾ</p>
+</header>
+
+<section class="library-hero">
+    <h1><i class="fa-solid fa-book-open"></i> My Library</h1>
+    <p>Your personal collection of Islamic Madh Songs</p>
+</section>
+
+<main class="library-container">
+
+    <div class="library-tabs">
+
+        <button class="active" id="all-tab"
+            onclick="changeLibraryTab('all')">
+            <i class="fa-solid fa-music"></i> All Songs
+        </button>
+
+        <button id="favourite-tab"
+            onclick="changeLibraryTab('favourites')">
+            <i class="fa-solid fa-heart"></i> Favourites
+        </button>
+
+    </div>
+
+    <input
+        type="text"
+        id="library-search"
+        placeholder="Search your songs..."
+        oninput="searchSongs()"
+    >
+
+    <p class="library-count" id="library-count">
+        Loading your collection...
+    </p>
+
+    <div id="library-song-list">
+        <div class="library-empty">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            <p>Loading songs...</p>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    <p>© 2026 Muthin Pukal. All Rights Reserved.</p>
+</footer>
+
+<!-- Hidden database loading area -->
+<div id="song-list"></div>
+
+<!-- BOTTOM NAVIGATION -->
+
+<nav class="mp-bottom-nav">
+
+    <a href="index.html">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </a>
+
+    <a href="categories.html">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Categories</span>
+    </a>
+
+    <a href="library.html" class="active">
+        <i class="fa-solid fa-bookmark"></i>
+        <span>Library</span>
+    </a>
+
+    <a href="about.html">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>About</span>
+    </a>
+
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
+<script src="database.js"></script>
+
+<script>
+
+// =====================================
+// LIBRARY SYSTEM
+// =====================================
+
+let libraryMode = "all";
+
+const sourceList = document.getElementById("song-list");
+const libraryList = document.getElementById("library-song-list");
+
+function changeLibraryTab(mode) {
+
+    libraryMode = mode;
+
+    document.getElementById("all-tab")
+        .classList.toggle("active", mode === "all");
+
+    document.getElementById("favourite-tab")
+        .classList.toggle("active", mode === "favourites");
+
+    searchSongs();
+}
+
+
+// OVERRIDE MAIN SEARCH FOR LIBRARY
+
+function searchSongs() {
+
+    const query = document.getElementById("library-search")
+        .value.toLowerCase().trim();
+
+    const favourites = getFavourites();
+
+    const cards = [
+        ...libraryList.querySelectorAll(".song-card")
+    ];
+
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+
+        const key = getSongKey(card);
+
+        const matchesSearch =
+            card.textContent.toLowerCase().includes(query);
+
+        const matchesFavourite =
+            libraryMode === "all" || favourites.includes(key);
+
+        const visible = matchesSearch && matchesFavourite;
+
+        card.style.display = visible ? "block" : "none";
+
+        if (visible) visibleCount++;
+
+    });
+
+    document.getElementById("library-count").textContent =
+        visibleCount + (visibleCount === 1 ? " song" : " songs");
+
+    const empty = libraryList.querySelector(".library-empty");
+
+    if (empty) empty.remove();
+
+    if (visibleCount === 0) {
+
+        const message = document.createElement("div");
+        message.className = "library-empty";
+
+        if (libraryMode === "favourites" && favourites.length === 0) {
+            message.innerHTML = `
+                <i class="fa-regular fa-heart"></i>
+                <h3>No Favourite Songs Yet</h3>
+                <p>Tap the heart button on any song to save it here.</p>
+            `;
+        } else {
+            message.innerHTML = `
+                <i class="fa-solid fa-music"></i>
+                <h3>No Songs Found</h3>
+                <p>Try another search.</p>
+            `;
+        }
+
+        libraryList.appendChild(message);
+    }
+}
+
+
+// MOVE DATABASE SONGS TO LIBRARY
+
+function collectSongs() {
+
+    const cards = sourceList.querySelectorAll(".song-card");
+
+    cards.forEach(card => {
+
+        if (!libraryList.contains(card)) {
+            libraryList.appendChild(card);
+        }
+
+    });
+
+    if (libraryList.querySelector(".song-card")) {
+        searchSongs();
+    }
+}
+
+
+// WATCH DATABASE LOADING
+
+const libraryObserver = new MutationObserver(() => {
+    collectSongs();
+});
+
+libraryObserver.observe(sourceList, {
+    childList: true,
+    subtree: true
+});
+
+
+// REFRESH WHEN DATABASE FINISHES
+
+collectSongs();
+
+</script>
+
+</body>
+</html>

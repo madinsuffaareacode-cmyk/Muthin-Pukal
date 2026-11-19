@@ -222,6 +222,28 @@
             line-height: 2.5;
         }
 
+        /* COPY AND PDF BUTTONS */
+
+        .mp-copy-lyrics,
+        .mp-download-pdf {
+            background: linear-gradient(135deg, #14533c, #1d7652);
+            color: white;
+            border: 1px solid #c5a45d;
+            padding: 11px 20px;
+            margin: 10px 5px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .mp-copy-lyrics:hover,
+        .mp-download-pdf:hover {
+            background: #c5a45d;
+            color: #173e2e;
+            transform: translateY(-2px);
+        }
+
         /* FOOTER */
 
         footer {
@@ -266,6 +288,69 @@
             .lyrics-content {
                 padding: 15px;
             }
+
+        }
+
+
+        /* YOUTUBE-STYLE FIXED BOTTOM NAVIGATION */
+        .mp-bottom-nav {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            background: rgba(4, 30, 23, 0.97);
+            border-top: 1px solid rgba(214, 181, 104, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 9999;
+            box-sizing: border-box;
+            padding: 5px 8px calc(5px + env(safe-area-inset-bottom));
+        }
+
+        .mp-bottom-nav .mp-nav-item {
+            flex: 1;
+            min-width: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            color: #aabbb0;
+            text-decoration: none;
+            font-family: 'Anek Malayalam', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .mp-bottom-nav .mp-nav-item i {
+            font-size: 19px;
+        }
+
+        .mp-bottom-nav .mp-nav-item.active,
+        .mp-bottom-nav .mp-nav-item:hover {
+            color: #e4c477;
+        }
+
+        body {
+            padding-bottom: 82px;
+        }
+
+        @media (min-width: 900px) {
+            .mp-bottom-nav {
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+                width: min(100%, 720px);
+                border: 1px solid rgba(214, 181, 104, 0.4);
+                border-bottom: 0;
+                border-radius: 16px 16px 0 0;
+            }
         }
 
     </style>
@@ -273,105 +358,129 @@
 
 <body>
 
-<!-- HEADER -->
+    <!-- HEADER -->
 
-<header>
+    <header>
 
-    <div class="logo">✦ മുത്തിൻ പുകൾ ✦</div>
+        <div class="logo">✦ മുത്തിൻ പുകൾ ✦</div>
 
-    <p>ഇസ്‌ലാമിക മദ്ഹ് ഗാനങ്ങൾ</p>
+        <p>ഇസ്‌ലാമിക മദ്ഹ് ഗാനങ്ങൾ</p>
 
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="categories.html">Categories</a>
-        <a href="about.html">About</a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="categories.html">Categories</a>
+            <a href="about.html">About</a>
+        </nav>
+
+    </header>
+
+
+    <!-- HERO SECTION -->
+
+    <section class="mp-home-intro">
+
+        <p class="mp-small-title">
+            WELCOME TO OUR ISLAMIC SONG LIBRARY
+        </p>
+
+        <h1>മുത്തിൻ പുകൾ</h1>
+
+        <p class="mp-arabic">
+            مَدْحُ خَيْرِ الْأَنَامِ
+        </p>
+
+        <div class="intro-line"></div>
+
+        <p class="mp-description">
+            Discover the beauty of Islamic Madh Songs.
+            <br>
+            A beautiful collection of songs filled with love and devotion.
+        </p>
+
+        <a href="#songs" class="mp-explore-btn">
+            <i class="fa-solid fa-music"></i>
+            Explore Songs
+        </a>
+
+    </section>
+
+
+    <!-- SONG COLLECTION -->
+
+    <section class="mp-library" id="songs">
+
+        <div class="mp-library-heading">
+
+            <h2>Our Song Collection</h2>
+
+            <div class="mp-divider"></div>
+
+            <p>
+                Explore all your favourite Madh songs in one place
+            </p>
+
+        </div>
+
+        <input
+            type="text"
+            id="search"
+            placeholder="Search your favourite song..."
+            oninput="searchSongs()"
+        >
+
+        <div id="song-list">
+
+            <p class="mp-empty-message">
+                Loading songs...
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>© 2026 Muthin Pukal. All Rights Reserved.</p>
+
+        <p>Created by: Ibn Jamaluddin Al Furqani</p>
+
+    </footer>
+
+
+
+    <!-- FIXED BOTTOM NAVIGATION -->
+    <nav class="mp-bottom-nav" aria-label="Main navigation">
+        <a href="index.html" class="mp-nav-item active" aria-current="page">
+            <i class="fa-solid fa-house" aria-hidden="true"></i>
+            <span>Home</span>
+        </a>
+        <a href="categories.html" class="mp-nav-item">
+            <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
+            <span>Categories</span>
+        </a>
+        <a href="index.html#songs" class="mp-nav-item">
+            <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+            <span>Library</span>
+        </a>
+        <a href="about.html" class="mp-nav-item">
+            <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+            <span>About</span>
+        </a>
     </nav>
 
-</header>
+    <!-- SCRIPTS -->
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<!-- HERO SECTION -->
+    <!-- PDF LIBRARY -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
 
-<section class="mp-home-intro">
-
-    <p class="mp-small-title">
-        WELCOME TO OUR ISLAMIC SONG LIBRARY
-    </p>
-
-    <h1>മുത്തിൻ പുകൾ</h1>
-
-    <p class="mp-arabic">
-        مَدْحُ خَيْرِ الْأَنَامِ
-    </p>
-
-    <div class="intro-line"></div>
-
-    <p class="mp-description">
-        Discover the beauty of Islamic Madh Songs.
-        <br>
-        A beautiful collection of songs filled with love and devotion.
-    </p>
-
-    <a href="#songs" class="mp-explore-btn">
-        <i class="fa-solid fa-music"></i>
-        Explore Songs
-    </a>
-
-</section>
-
-
-<!-- SONG COLLECTION -->
-
-<section class="mp-library" id="songs">
-
-    <div class="mp-library-heading">
-
-        <h2>Our Song Collection</h2>
-
-        <div class="mp-divider"></div>
-
-        <p>
-            Explore all your favourite Madh songs in one place
-        </p>
-
-    </div>
-
-    <input
-        type="text"
-        id="search"
-        placeholder="Search your favourite song..."
-        oninput="searchSongs()"
-    >
-
-    <div id="song-list">
-
-        <p class="mp-empty-message">
-            Loading songs...
-        </p>
-
-    </div>
-
-</section>
-
-
-<!-- FOOTER -->
-
-<footer>
-
-    <p>© 2026 Muthin Pukal. All Rights Reserved.</p>
-
-    <p>Created by: Ibn Jamaluddin Al Furqani</p>
-
-</footer>
-
-
-<!-- SCRIPTS -->
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script src="script.js"></script>
-
-<script src="database.js"></script>
+    <!-- WEBSITE JAVASCRIPT -->
+    <script src="script.js"></script>
+    <script src="database.js"></script>
 
 </body>
 </html>
