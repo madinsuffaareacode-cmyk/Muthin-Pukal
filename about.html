@@ -93,6 +93,39 @@
     font-size:14px;
 }
 
+/* For More Information */
+.information-name {
+    color:#f5df9a !important;
+    font-size:17px !important;
+    font-weight:600;
+    margin:15px 0 20px;
+}
+
+.instagram-link {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    color:#f5df9a;
+    text-decoration:none;
+    border:1px solid rgba(212,175,55,.55);
+    padding:11px 20px;
+    border-radius:30px;
+    transition:.3s;
+    font-size:15px;
+}
+
+.instagram-link i {
+    font-size:22px;
+    color:#E4405F;
+}
+
+.instagram-link:hover {
+    background:rgba(212,175,55,.12);
+    border-color:#d4af37;
+    transform:translateY(-3px);
+}
+
 .about-footer {
     text-align:center;
     padding:25px 15px 100px;
@@ -217,15 +250,30 @@ body {
             categories and enjoy a growing collection of Islamic
             musical heritage.
         </p>
-    </section>class="about-card">
+    </section>
+
+    <!-- For More Information -->
+    <section class="about-card">
         <div class="about-icon">
-            <i class="fa-solid fa-contact"></i>
-            </div>
-             <h2>For More Information</h2>
-             <p> Hafiz Fazal Abdul Rahman Anas.
-                <ig>
-                <hafiz_anas_ullal></hafiz_anas_ullal>
-             </p>
+            <i class="fa-solid fa-circle-info"></i>
+        </div>
+
+        <h2>For More Information</h2>
+
+        <p class="information-name">
+            Hafiz Fazal Abdurrahman Anas Bin Jamaluddin Al-Furqani
+        </p>
+
+        <a
+            href="https://www.instagram.com/hafiz_anas_ullal/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="instagram-link"
+        >
+            <i class="fa-brands fa-instagram"></i>
+            <span>ig/hafiz_anas_ullal</span>
+        </a>
+    </section>
 
 </main>
 
