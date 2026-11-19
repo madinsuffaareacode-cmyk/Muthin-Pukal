@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>മുത്തിൻ പുകൾ | Muthin Pukal</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+        .mp-home-intro {
+            text-align: center;
+            padding: 55px 20px 35px;
+        }
+
+        .mp-home-intro h1 {
+            color: #d4af37;
+            font-size: clamp(30px, 5vw, 48px);
+            margin-bottom: 12px;
+        }
+
+        .mp-home-intro p {
+            color: #f5df9a;
+            font-size: 16px;
+        }
+
+        .mp-home-intro .intro-line {
+            width: 80px;
+            height: 3px;
+            background: #d4af37;
+            margin: 20px auto;
+            border-radius: 5px;
+        }
+
+        .mp-library {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .mp-library-heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .mp-library-heading h2 {
+            color: #d4af37;
+            font-size: 28px;
+        }
+
+        .mp-library-heading p {
+            color: #aaa;
+        }
+
+        #song-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+            margin-top: 30px;
+        }
+
+        #song-list .song-card {
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        #search {
+            display: block;
+            width: min(100%, 550px);
+            margin: 25px auto;
+            padding: 14px 18px;
+            border: 1px solid #d4af37;
+            border-radius: 30px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .mp-empty-message {
+            text-align: center;
+            color: #aaa;
+            padding: 30px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px 15px;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 600px) {
+            #song-list {
+                grid-template-columns: 1fr;
+            }
+
+            .mp-home-intro {
+                padding-top: 35px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">✦ മുത്തിൻ പുകൾ ✦</div>
+
+    <p>ഇസ്‌ലാമിക മദ്ഹ് ഗാനങ്ങൾ</p>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="categories.html">Categories</a>
+        <a href="about.html">About</a>
+    </nav>
+</header>
+
+<!-- HOME INTRO -->
+
+<section class="mp-home-intro">
+    <h1>✦ Muthin Pukal ✦</h1>
+
+    <div class="intro-line"></div>
+
+    <p>Discover the beauty of Islamic Madh Songs</p>
+</section>
+
+
+<!-- ALL SONGS -->
+
+<section class="mp-library" id="songs">
+
+    <div class="mp-library-heading">
+        <h2>Our Song Collection</h2>
+
+        <p>Explore all your favourite Madh songs in one place</p>
+    </div>
+
+    <input
+        type="text"
+        id="search"
+        placeholder="Search your favourite song..."
+        oninput="searchSongs()"
+    >
+
+    <div id="song-list">
+        <p class="mp-empty-message">Loading songs...</p>
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+    <p>© 2026 Muthin Pukal. All Rights Reserved.</p>
+    <p>Made with love for Islamic Madh Songs</p>
+</footer>
+
+
+<!-- SCRIPTS -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
+<script src="database.js"></script>
+
+</body>
+</html>
