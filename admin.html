@@ -7,7 +7,9 @@
 <title>Muthin Pukal | Admin Dashboard</title>
 
 <style>
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
@@ -16,7 +18,9 @@ body {
     color: #183c2e;
 }
 
-.hidden { display: none !important; }
+.hidden {
+    display: none !important;
+}
 
 button {
     cursor: pointer;
@@ -56,7 +60,9 @@ textarea {
     box-shadow: 0 5px 25px #0002;
 }
 
-.login-box h2 { color: #07513b; }
+.login-box h2 {
+    color: #07513b;
+}
 
 .primary {
     background: #07513b;
@@ -90,7 +96,9 @@ header {
     flex-wrap: wrap;
 }
 
-header h2 { margin: 0; }
+header h2 {
+    margin: 0;
+}
 
 .dashboard {
     max-width: 1100px;
@@ -150,7 +158,9 @@ header h2 { margin: 0; }
     gap: 10px;
 }
 
-.full { grid-column: 1 / -1; }
+.full {
+    grid-column: 1 / -1;
+}
 
 .song-item {
     border: 1px solid #dce6de;
@@ -180,14 +190,18 @@ header h2 { margin: 0; }
     gap: 8px;
 }
 
-.song-actions button { padding: 9px 13px; }
+.song-actions button {
+    padding: 9px 13px;
+}
 
 .edit-btn {
     background: #e7bd43;
     color: #173b2d;
 }
 
-#songList { margin-top: 15px; }
+#songList {
+    margin-top: 15px;
+}
 
 .small-note {
     color: #718078;
@@ -196,10 +210,21 @@ header h2 { margin: 0; }
 }
 
 @media(max-width: 600px) {
-    .form-grid { grid-template-columns: 1fr; }
-    .full { grid-column: auto; }
-    .dashboard { padding: 15px 12px 40px; }
-    .panel { padding: 17px; }
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full {
+        grid-column: auto;
+    }
+
+    .dashboard {
+        padding: 15px 12px 40px;
+    }
+
+    .panel {
+        padding: 17px;
+    }
 }
 </style>
 </head>
@@ -214,6 +239,7 @@ header h2 { margin: 0; }
     <p>Admin Login</p>
 
     <form id="loginForm">
+
         <input type="email" id="email"
                placeholder="Admin Email" required>
 
@@ -224,6 +250,7 @@ header h2 { margin: 0; }
                 id="loginButton" style="width:100%">
             Login
         </button>
+
     </form>
 
     <button class="secondary" id="forgotButton" type="button">
@@ -231,6 +258,7 @@ header h2 { margin: 0; }
     </button>
 
     <p id="message"></p>
+
 </div>
 
 
@@ -240,6 +268,7 @@ header h2 { margin: 0; }
 
     <header>
         <h2>✦ Muthin Pukal Admin ✦</h2>
+
         <button class="secondary" id="logoutButton">
             Logout
         </button>
@@ -248,11 +277,12 @@ header h2 { margin: 0; }
     <main class="dashboard">
 
         <section class="welcome">
-            <h2>Welcome, Admin!</h2>
-            <p>Manage your Islamic Madh Songs collection here.</p>
+            <h2>Welcome, Anas Ullal</h2>
+            <p>Manage the Islamic Madh Songs collection here.</p>
         </section>
 
         <section class="stats">
+
             <div class="stat-card">
                 <p>Total Songs</p>
                 <h3 id="totalSongs">0</h3>
@@ -262,7 +292,11 @@ header h2 { margin: 0; }
                 <p>Dashboard</p>
                 <h3>Active</h3>
             </div>
+
         </section>
+
+
+        <!-- ADD SONG -->
 
         <section class="panel" id="songFormPanel">
 
@@ -280,6 +314,7 @@ header h2 { margin: 0; }
 
                     <div>
                         <label>Category</label>
+
                         <select id="songCategory" required>
                             <option value="malayalam">Malayalam</option>
                             <option value="kannada">Kannada</option>
@@ -344,15 +379,21 @@ header h2 { margin: 0; }
             <p class="small-note">
                 Fill in the song details and save them to your collection.
             </p>
+
         </section>
 
+
+        <!-- MANAGE SONGS -->
+
         <section class="panel">
+
             <h2>Manage Songs</h2>
 
             <input type="search" id="adminSearch"
                    placeholder="Search songs...">
 
             <div id="songList">Loading songs...</div>
+
         </section>
 
     </main>
@@ -366,9 +407,11 @@ header h2 { margin: 0; }
 <script>
 "use strict";
 
-const SUPABASE_URL = "https://bnvmdtpplavypgzvpaga.supabase.co";
+const SUPABASE_URL =
+    "https://bnvmdtpplavypgzvpaga.supabase.co";
 
-const SUPABASE_KEY = "sb_publishable_iX79SzzZ0dW-Kd1VUYthaA_mSfWuYX8";
+const SUPABASE_KEY =
+    "sb_publishable_iX79SzzZ0dW-Kd1VUYthaA_mSfWuYX8";
 
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
@@ -382,29 +425,48 @@ const message = document.getElementById("message");
 let songs = [];
 let editingId = null;
 
+
+// MESSAGE
+
 function showMessage(text, success = false) {
     message.textContent = text;
     message.style.color = success ? "green" : "red";
 }
 
+
+// SHOW DASHBOARD — FIXED
+
 function showDashboard() {
+
     loginSection.style.display = "none";
+
+    dashboardSection.classList.remove("hidden");
     dashboardSection.style.display = "block";
+
     loadSongs();
 }
 
+
+// SHOW LOGIN
+
 function showLogin() {
+
+    dashboardSection.classList.add("hidden");
     dashboardSection.style.display = "none";
+
     loginSection.style.display = "block";
 }
 
 
 // LOGIN
 
-document.getElementById("loginForm").addEventListener("submit", async (e) => {
+document.getElementById("loginForm")
+.addEventListener("submit", async (e) => {
+
     e.preventDefault();
 
     const loginButton = document.getElementById("loginButton");
+
     loginButton.disabled = true;
     loginButton.textContent = "Logging in...";
 
@@ -412,10 +474,12 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     const password = document.getElementById("password").value;
 
     try {
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
-            email,
-            password
-        });
+
+        const { data, error } =
+            await supabaseClient.auth.signInWithPassword({
+                email,
+                password
+            });
 
         if (error) {
             showMessage(error.message);
@@ -428,17 +492,22 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
         }
 
     } catch (error) {
+
         showMessage("Login error: " + error.message);
+
     } finally {
+
         loginButton.disabled = false;
         loginButton.textContent = "Login";
+
     }
 });
 
 
-// FORGOT PASSWORD — FIXED REDIRECT
+// FORGOT PASSWORD
 
-document.getElementById("forgotButton").addEventListener("click", async () => {
+document.getElementById("forgotButton")
+.addEventListener("click", async () => {
 
     const email = document.getElementById("email").value.trim();
 
@@ -448,16 +517,20 @@ document.getElementById("forgotButton").addEventListener("click", async () => {
     }
 
     const button = document.getElementById("forgotButton");
+
     button.disabled = true;
     button.textContent = "Sending...";
 
     try {
-        const { error } = await supabaseClient.auth.resetPasswordForEmail(
-            email,
-            {
-                redirectTo: "https://muthin-pukal.vercel.app/reset-password.html"
-            }
-        );
+
+        const { error } =
+            await supabaseClient.auth.resetPasswordForEmail(
+                email,
+                {
+                    redirectTo:
+                    "https://muthin-pukal.vercel.app/reset-password.html"
+                }
+            );
 
         if (error) {
             showMessage(error.message);
@@ -466,19 +539,25 @@ document.getElementById("forgotButton").addEventListener("click", async () => {
         }
 
     } catch (error) {
+
         showMessage("Error: " + error.message);
+
     } finally {
+
         button.disabled = false;
         button.textContent = "Forgot Password?";
+
     }
 });
 
 
 // LOGOUT
 
-document.getElementById("logoutButton").addEventListener("click", async () => {
+document.getElementById("logoutButton")
+.addEventListener("click", async () => {
 
     const button = document.getElementById("logoutButton");
+
     button.disabled = true;
 
     const { error } = await supabaseClient.auth.signOut();
@@ -498,27 +577,37 @@ document.getElementById("logoutButton").addEventListener("click", async () => {
 async function loadSongs() {
 
     const songList = document.getElementById("songList");
+
     songList.textContent = "Loading songs...";
 
     try {
+
         const { data, error } = await supabaseClient
             .from("songs")
             .select("*")
             .order("created_at", { ascending: false });
 
         if (error) {
-            songList.textContent = "Error loading songs: " + error.message;
+
+            songList.textContent =
+                "Error loading songs: " + error.message;
+
             document.getElementById("totalSongs").textContent = "—";
+
             return;
         }
 
         songs = data || [];
-        document.getElementById("totalSongs").textContent = songs.length;
+
+        document.getElementById("totalSongs").textContent =
+            songs.length;
 
         displaySongs(songs);
 
     } catch (error) {
+
         songList.textContent = "Error: " + error.message;
+
     }
 }
 
@@ -528,6 +617,7 @@ async function loadSongs() {
 function displaySongs(list) {
 
     const songList = document.getElementById("songList");
+
     songList.innerHTML = "";
 
     if (!list.length) {
@@ -546,7 +636,8 @@ function displaySongs(list) {
         title.textContent = song.title || "Untitled";
 
         const category = document.createElement("p");
-        category.textContent = "Category: " + (song.category || "Others");
+        category.textContent =
+            "Category: " + (song.category || "Others");
 
         info.append(title, category);
 
@@ -556,55 +647,86 @@ function displaySongs(list) {
         const editButton = document.createElement("button");
         editButton.className = "edit-btn";
         editButton.textContent = "Edit";
-        editButton.addEventListener("click", () => editSong(song.id));
+
+        editButton.addEventListener("click", () => {
+            editSong(song.id);
+        });
 
         const deleteButton = document.createElement("button");
         deleteButton.className = "danger";
         deleteButton.textContent = "Delete";
-        deleteButton.addEventListener("click", () => deleteSong(song.id));
+
+        deleteButton.addEventListener("click", () => {
+            deleteSong(song.id);
+        });
 
         actions.append(editButton, deleteButton);
+
         item.append(info, actions);
+
         songList.appendChild(item);
+
     });
 }
 
 
 // ADD / UPDATE SONG
 
-document.getElementById("songForm").addEventListener("submit", async (e) => {
+document.getElementById("songForm")
+.addEventListener("submit", async (e) => {
 
     e.preventDefault();
 
     const song = {
+
         title: document.getElementById("songTitle").value.trim(),
+
         category: document.getElementById("songCategory").value,
-        youtube_url: document.getElementById("youtubeURL").value.trim() || null,
-        audio_url: document.getElementById("audioURL").value.trim() || null,
-        lyrics_malayalam: document.getElementById("lyricsMalayalam").value,
-        lyrics_kannada: document.getElementById("lyricsKannada").value,
-        lyrics_arabic: document.getElementById("lyricsArabic").value,
-        lyrics_urdu: document.getElementById("lyricsUrdu").value
+
+        youtube_url:
+            document.getElementById("youtubeURL").value.trim() || null,
+
+        audio_url:
+            document.getElementById("audioURL").value.trim() || null,
+
+        lyrics_malayalam:
+            document.getElementById("lyricsMalayalam").value,
+
+        lyrics_kannada:
+            document.getElementById("lyricsKannada").value,
+
+        lyrics_arabic:
+            document.getElementById("lyricsArabic").value,
+
+        lyrics_urdu:
+            document.getElementById("lyricsUrdu").value
+
     };
 
     const saveButton = document.getElementById("saveButton");
+
     const isEditing = editingId !== null;
 
     saveButton.disabled = true;
     saveButton.textContent = "Saving...";
 
     try {
+
         let result;
 
         if (isEditing) {
+
             result = await supabaseClient
                 .from("songs")
                 .update(song)
                 .eq("id", editingId);
+
         } else {
+
             result = await supabaseClient
                 .from("songs")
                 .insert([song]);
+
         }
 
         if (result.error) {
@@ -612,18 +734,26 @@ document.getElementById("songForm").addEventListener("submit", async (e) => {
             return;
         }
 
-        alert(isEditing
-            ? "Song updated successfully!"
-            : "New song added successfully!");
+        alert(
+            isEditing
+                ? "Song updated successfully!"
+                : "New song added successfully!"
+        );
 
         resetSongForm();
+
         await loadSongs();
 
     } catch (error) {
+
         alert("Error: " + error.message);
+
     } finally {
+
         saveButton.disabled = false;
+
         saveButton.textContent = "Save Song";
+
     }
 });
 
@@ -632,29 +762,49 @@ document.getElementById("songForm").addEventListener("submit", async (e) => {
 
 function editSong(id) {
 
-    const song = songs.find(item => String(item.id) === String(id));
+    const song = songs.find(
+        item => String(item.id) === String(id)
+    );
+
     if (!song) return;
 
     editingId = id;
 
-    document.getElementById("songTitle").value = song.title || "";
-    document.getElementById("songCategory").value = song.category || "others";
-    document.getElementById("youtubeURL").value = song.youtube_url || "";
-    document.getElementById("audioURL").value = song.audio_url || "";
+    document.getElementById("songTitle").value =
+        song.title || "";
 
-    document.getElementById("lyricsMalayalam").value = song.lyrics_malayalam || "";
-    document.getElementById("lyricsKannada").value = song.lyrics_kannada || "";
-    document.getElementById("lyricsArabic").value = song.lyrics_arabic || "";
-    document.getElementById("lyricsUrdu").value = song.lyrics_urdu || "";
+    document.getElementById("songCategory").value =
+        song.category || "others";
 
-    document.getElementById("formTitle").textContent = "Edit Song";
-    document.getElementById("saveButton").textContent = "Update Song";
+    document.getElementById("youtubeURL").value =
+        song.youtube_url || "";
 
-    document.getElementById("cancelEditButton").classList.remove("hidden");
+    document.getElementById("audioURL").value =
+        song.audio_url || "";
 
-    document.getElementById("songFormPanel").scrollIntoView({
-        behavior: "smooth"
-    });
+    document.getElementById("lyricsMalayalam").value =
+        song.lyrics_malayalam || "";
+
+    document.getElementById("lyricsKannada").value =
+        song.lyrics_kannada || "";
+
+    document.getElementById("lyricsArabic").value =
+        song.lyrics_arabic || "";
+
+    document.getElementById("lyricsUrdu").value =
+        song.lyrics_urdu || "";
+
+    document.getElementById("formTitle").textContent =
+        "Edit Song";
+
+    document.getElementById("saveButton").textContent =
+        "Update Song";
+
+    document.getElementById("cancelEditButton")
+        .classList.remove("hidden");
+
+    document.getElementById("songFormPanel")
+        .scrollIntoView({ behavior: "smooth" });
 }
 
 
@@ -662,7 +812,10 @@ function editSong(id) {
 
 async function deleteSong(id) {
 
-    const confirmed = confirm("Are you sure you want to delete this song?");
+    const confirmed = confirm(
+        "Are you sure you want to delete this song?"
+    );
+
     if (!confirmed) return;
 
     const { error } = await supabaseClient
@@ -676,6 +829,7 @@ async function deleteSong(id) {
     }
 
     alert("Song deleted successfully!");
+
     await loadSongs();
 }
 
@@ -688,28 +842,37 @@ function resetSongForm() {
 
     document.getElementById("songForm").reset();
 
-    document.getElementById("formTitle").textContent = "Add New Song";
-    document.getElementById("saveButton").textContent = "Save Song";
+    document.getElementById("formTitle").textContent =
+        "Add New Song";
 
-    document.getElementById("cancelEditButton").classList.add("hidden");
+    document.getElementById("saveButton").textContent =
+        "Save Song";
+
+    document.getElementById("cancelEditButton")
+        .classList.add("hidden");
 }
 
 document.getElementById("cancelEditButton")
-    .addEventListener("click", resetSongForm);
+.addEventListener("click", resetSongForm);
 
 
 // SEARCH
 
-document.getElementById("adminSearch").addEventListener("input", (e) => {
+document.getElementById("adminSearch")
+.addEventListener("input", (e) => {
 
     const search = e.target.value.toLowerCase();
 
     const filtered = songs.filter(song =>
+
         (song.title || "").toLowerCase().includes(search) ||
+
         (song.category || "").toLowerCase().includes(search)
+
     );
 
     displaySongs(filtered);
+
 });
 
 
@@ -718,23 +881,35 @@ document.getElementById("adminSearch").addEventListener("input", (e) => {
 window.addEventListener("load", async () => {
 
     try {
-        const { data, error } = await supabaseClient.auth.getSession();
+
+        const { data, error } =
+            await supabaseClient.auth.getSession();
 
         if (error) {
+
             showLogin();
+
             showMessage("Session error: " + error.message);
+
             return;
         }
 
         if (data.session) {
+
             showDashboard();
+
         } else {
+
             showLogin();
+
         }
 
     } catch (error) {
+
         showLogin();
+
         showMessage("Error: " + error.message);
+
     }
 });
 
