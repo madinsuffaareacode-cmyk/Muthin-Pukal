@@ -84,6 +84,7 @@ function addSongActions(card) {
     // Favourite
     const favouriteButton = document.createElement("button");
     favouriteButton.className = "mp-action-btn mp-favourite-btn";
+
     favouriteButton.onclick = function () {
         toggleFavourite(this);
     };
@@ -314,7 +315,7 @@ async function copyLyrics(button) {
 
 
 // =====================================
-// SAVE SONG AS PDF
+// SAVE SONG AS PREMIUM PDF
 // =====================================
 
 function escapeHTML(text) {
@@ -327,8 +328,11 @@ function escapeHTML(text) {
     })[character]);
 }
 
+
 function saveSongPDF(card) {
-    const title = card.querySelector("h3")?.innerText || "Song";
+
+    const title =
+        card.querySelector("h3")?.innerText || "Song";
 
     const visibleLyrics = [
         ...card.querySelectorAll(".lyrics-content")
@@ -340,6 +344,15 @@ function saveSongPDF(card) {
     }
 
     const lyrics = visibleLyrics.innerText;
+
+    const language = [
+        "malayalam",
+        "kannada",
+        "arabic",
+        "urdu"
+    ].find(lang => visibleLyrics.classList.contains(lang))
+        || "malayalam";
+
     const pdfWindow = window.open("", "_blank");
 
     if (!pdfWindow) {
@@ -347,51 +360,276 @@ function saveSongPDF(card) {
         return;
     }
 
+    // Language-specific fonts
+    const fontSettings = {
+        malayalam: {
+            family: "'Anek Malayalam', sans-serif",
+            size: "23px",
+            line: "2.1",
+            direction: "ltr"
+        },
+
+        kannada: {
+            family: "'Noto Sans Kannada', sans-serif",
+            size: "22px",
+            line: "2.1",
+            direction: "ltr"
+        },
+
+        arabic: {
+            family: "'Amiri', serif",
+            size: "30px",
+            line: "2.4",
+            direction: "rtl"
+        },
+
+        urdu: {
+            family: "'Noto Nastaliq Urdu', serif",
+            size: "28px",
+            line: "2.7",
+            direction: "rtl"
+        }
+    };
+
+    const font = fontSettings[language];
+
+    const googleFonts = `
+        <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;500;600;700&family=Amiri:wght@400;700&family=Noto+Sans+Kannada:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+    `;
+
+    pdfWindow.document.open();
+
     pdfWindow.document.write(`
         <!DOCTYPE html>
-        <html>
+        <html lang="ml">
+
         <head>
+
             <meta charset="UTF-8">
-            <title>${escapeHTML(title)}</title>
+
+            <meta name="viewport"
+                  content="width=device-width, initial-scale=1.0">
+
+            <title>${escapeHTML(title)} - Muthin Pukal</title>
+
+            ${googleFonts}
+
             <style>
+
+                * {
+                    box-sizing: border-box;
+                }
+
+                @page {
+                    size: A4;
+                    margin: 18mm;
+                }
+
+                html, body {
+                    margin: 0;
+                    padding: 0;
+                    background: white;
+                }
+
                 body {
-                    font-family: Arial, sans-serif;
-                    padding: 35px;
-                    color: #073d30;
+                    color: #173e2e;
+                    font-family: 'Anek Malayalam', sans-serif;
+                    position: relative;
+                    -webkit-print-color-adjust: exact;
+                    print-color-adjust: exact;
                 }
-                h1 {
+
+                /* WATERMARK */
+
+                .watermark {
+                    position: fixed;
+                    top: 42%;
+                    left: 0;
+                    width: 100%;
                     text-align: center;
-                    color: #07513b;
-                    border-bottom: 2px solid #d4af37;
-                    padding-bottom: 15px;
+
+                    font-family: 'Anek Malayalam', sans-serif;
+                    font-size: 65px;
+                    font-weight: 700;
+
+                    color: #b99a4b;
+                    opacity: 0.11;
+
+                    transform: rotate(-30deg);
+
+                    white-space: nowrap;
+                    pointer-events: none;
+                    z-index: 0;
                 }
+
+                /* MAIN CONTENT */
+
+                .content {
+                    position: relative;
+                    z-index: 1;
+                }
+
+                /* HEADER */
+
+                .pdf-header {
+                    text-align: center;
+                    padding-bottom: 18px;
+                    border-bottom: 2px solid #c5a45d;
+                    margin-bottom: 30px;
+                }
+
+                .brand {
+                    font-family: 'Anek Malayalam', sans-serif;
+                    font-size: 16px;
+                    font-weight: 700;
+                    letter-spacing: 2px;
+                    color: #987b3e;
+                    margin-bottom: 12px;
+                }
+
+                h1 {
+                    color: #07513b;
+                    font-family: 'Anek Malayalam', sans-serif;
+                    font-size: 30px;
+                    font-weight: 700;
+                    margin: 0;
+                    line-height: 1.7;
+                }
+
+                .arabic-subtitle {
+                    font-family: 'Amiri', serif;
+                    font-size: 22px;
+                    color: #a18343;
+                    margin-top: 8px;
+                }
+
+                /* LYRICS */
+
                 .lyrics {
-                    font-size: 18px;
-                    line-height: 2;
+                    color: #173e2e;
+                    font-family: ${font.family};
+                    font-size: ${font.size};
+                    line-height: ${font.line};
+                    direction: ${font.direction};
+                    text-align: ${language === "arabic" || language === "urdu" ? "right" : "left"};
+
                     white-space: pre-wrap;
                     overflow-wrap: anywhere;
-                    margin-top: 30px;
+                    word-break: normal;
+
+                    margin-top: 25px;
                 }
+
+                /* FOOTER */
+
                 .footer {
-                    margin-top: 40px;
+                    margin-top: 45px;
+                    padding-top: 15px;
+                    border-top: 1px solid #d4af37;
+
                     text-align: center;
-                    color: #777;
+                    color: #987b3e;
+
+                    font-family: 'Anek Malayalam', sans-serif;
+                    font-size: 13px;
+                    line-height: 2;
                 }
+
+                .footer-brand {
+                    font-size: 16px;
+                    font-weight: 700;
+                    letter-spacing: 2px;
+                    color: #07513b;
+                }
+
+                /* PRINT SETTINGS */
+
                 @media print {
-                    body { padding: 15px; }
+
+                    body {
+                        background: white;
+                    }
+
+                    .watermark {
+                        position: fixed;
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
+                    }
+
+                    .content {
+                        position: relative;
+                    }
+
                 }
+
             </style>
+
         </head>
+
         <body>
-            <h1>${escapeHTML(title)}</h1>
-            <div class="lyrics">${escapeHTML(lyrics)}</div>
-            <div class="footer">Muthin Pukal</div>
+
+            <div class="watermark">
+                മുത്തിൻ പുകൾ
+            </div>
+
+            <div class="content">
+
+                <header class="pdf-header">
+
+                    <div class="brand">
+                        MUTHIN PUKAL
+                    </div>
+
+                    <h1>${escapeHTML(title)}</h1>
+
+                    <div class="arabic-subtitle">
+                        مَدْحُ خَيْرِ الْأَنَامِ
+                    </div>
+
+                </header>
+
+                <main>
+
+                    <div class="lyrics">${escapeHTML(lyrics)}</div>
+
+                </main>
+
+                <footer class="footer">
+
+                    <div class="footer-brand">
+                        മുത്തിൻ പുകൾ
+                    </div>
+
+                    Knowledge • Faith • Guidance
+
+                    <br>
+
+                    https://muthin-pukal.vercel.app/
+
+                </footer>
+
+            </div>
+
             <script>
-                window.onload = function() {
-                    window.print();
+
+                window.onload = async function() {
+
+                    try {
+                        await document.fonts.ready;
+                    } catch (error) {
+                        console.log("Font loading issue", error);
+                    }
+
+                    setTimeout(function() {
+                        window.print();
+                    }, 700);
+
                 };
+
             <\/script>
+
         </body>
+
         </html>
     `);
 
@@ -506,6 +744,7 @@ function convertToKannada(button) {
 // =====================================
 
 function setupMuthinPukal() {
+
     enhanceSongCards();
     setupFavouriteFilter();
 
@@ -518,6 +757,7 @@ function setupMuthinPukal() {
     const songList = document.getElementById("song-list");
 
     if (songList) {
+
         const observer = new MutationObserver(() => {
             enhanceSongCards();
             searchSongs();
@@ -527,11 +767,51 @@ function setupMuthinPukal() {
             childList: true,
             subtree: true
         });
+
     }
 }
 
 if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", setupMuthinPukal);
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        setupMuthinPukal
+    );
+
 } else {
+
     setupMuthinPukal();
+
 }
+
+
+// =====================================
+// MUTHIN PUKAL SPLASH SCREEN
+// =====================================
+
+function hideMPSplash() {
+
+    const splash = document.getElementById("splash");
+
+    if (splash) {
+
+        setTimeout(() => {
+            splash.classList.add("hide");
+        }, 800);
+
+    }
+
+}
+
+if (document.readyState === "complete") {
+
+    hideMPSplash();
+
+} else {
+
+    window.addEventListener("load", hideMPSplash);
+
+}
+
+// Fallback
+setTimeout(hideMPSplash, 5000);
