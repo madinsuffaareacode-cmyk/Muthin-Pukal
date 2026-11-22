@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,9 +7,7 @@
 <title>Muthin Pukal | Admin Dashboard</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
@@ -18,9 +16,7 @@ body {
     color: #183c2e;
 }
 
-.hidden {
-    display: none !important;
-}
+.hidden { display: none !important; }
 
 button {
     cursor: pointer;
@@ -60,9 +56,7 @@ textarea {
     box-shadow: 0 5px 25px #0002;
 }
 
-.login-box h2 {
-    color: #07513b;
-}
+.login-box h2 { color: #07513b; }
 
 .primary {
     background: #07513b;
@@ -96,9 +90,7 @@ header {
     flex-wrap: wrap;
 }
 
-header h2 {
-    margin: 0;
-}
+header h2 { margin: 0; }
 
 .dashboard {
     max-width: 1100px;
@@ -158,9 +150,7 @@ header h2 {
     gap: 10px;
 }
 
-.full {
-    grid-column: 1 / -1;
-}
+.full { grid-column: 1 / -1; }
 
 .song-item {
     border: 1px solid #dce6de;
@@ -190,18 +180,14 @@ header h2 {
     gap: 8px;
 }
 
-.song-actions button {
-    padding: 9px 13px;
-}
+.song-actions button { padding: 9px 13px; }
 
 .edit-btn {
     background: #e7bd43;
     color: #173b2d;
 }
 
-#songList {
-    margin-top: 15px;
-}
+#songList { margin-top: 15px; }
 
 .small-note {
     color: #718078;
@@ -210,21 +196,10 @@ header h2 {
 }
 
 @media(max-width: 600px) {
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .full {
-        grid-column: auto;
-    }
-
-    .dashboard {
-        padding: 15px 12px 40px;
-    }
-
-    .panel {
-        padding: 17px;
-    }
+    .form-grid { grid-template-columns: 1fr; }
+    .full { grid-column: auto; }
+    .dashboard { padding: 15px 12px 40px; }
+    .panel { padding: 17px; }
 }
 </style>
 </head>
@@ -234,12 +209,10 @@ header h2 {
 <!-- LOGIN -->
 
 <div class="login-box" id="loginSection">
-
     <h2>✦ Muthin Pukal ✦</h2>
     <p>Admin Login</p>
 
     <form id="loginForm">
-
         <input type="email" id="email"
                placeholder="Admin Email" required>
 
@@ -250,7 +223,6 @@ header h2 {
                 id="loginButton" style="width:100%">
             Login
         </button>
-
     </form>
 
     <button class="secondary" id="forgotButton" type="button">
@@ -258,7 +230,6 @@ header h2 {
     </button>
 
     <p id="message"></p>
-
 </div>
 
 
@@ -268,10 +239,7 @@ header h2 {
 
     <header>
         <h2>✦ Muthin Pukal Admin ✦</h2>
-
-        <button class="secondary" id="logoutButton">
-            Logout
-        </button>
+        <button class="secondary" id="logoutButton">Logout</button>
     </header>
 
     <main class="dashboard">
@@ -282,7 +250,6 @@ header h2 {
         </section>
 
         <section class="stats">
-
             <div class="stat-card">
                 <p>Total Songs</p>
                 <h3 id="totalSongs">0</h3>
@@ -292,7 +259,6 @@ header h2 {
                 <p>Dashboard</p>
                 <h3>Active</h3>
             </div>
-
         </section>
 
 
@@ -314,7 +280,6 @@ header h2 {
 
                     <div>
                         <label>Category</label>
-
                         <select id="songCategory" required>
                             <option value="malayalam">Malayalam</option>
                             <option value="kannada">Kannada</option>
@@ -357,10 +322,20 @@ header h2 {
                                   placeholder="Urdu lyrics..."></textarea>
                     </div>
 
+                    <!-- AUDIO FILE UPLOAD -->
+
                     <div class="full">
-                        <label>Audio URL (Optional)</label>
-                        <input id="audioURL" type="url"
-                               placeholder="Audio link">
+                        <label>Upload Audio (MP3 / M4A)</label>
+
+                        <input
+                            id="audioFile"
+                            type="file"
+                            accept=".mp3,.m4a,audio/mpeg,audio/mp4"
+                        >
+
+                        <p id="audioStatus" class="small-note">
+                            Choose an MP3 or M4A audio file.
+                        </p>
                     </div>
 
                 </div>
@@ -386,14 +361,12 @@ header h2 {
         <!-- MANAGE SONGS -->
 
         <section class="panel">
-
             <h2>Manage Songs</h2>
 
             <input type="search" id="adminSearch"
                    placeholder="Search songs...">
 
             <div id="songList">Loading songs...</div>
-
         </section>
 
     </main>
@@ -413,6 +386,8 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_iX79SzzZ0dW-Kd1VUYthaA_mSfWuYX8";
 
+const BUCKET_NAME = "song-audios";
+
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
@@ -424,6 +399,7 @@ const message = document.getElementById("message");
 
 let songs = [];
 let editingId = null;
+let currentAudioUrl = null;
 
 
 // MESSAGE
@@ -434,15 +410,12 @@ function showMessage(text, success = false) {
 }
 
 
-// SHOW DASHBOARD — FIXED
+// SHOW DASHBOARD
 
 function showDashboard() {
-
     loginSection.style.display = "none";
-
     dashboardSection.classList.remove("hidden");
     dashboardSection.style.display = "block";
-
     loadSongs();
 }
 
@@ -450,10 +423,8 @@ function showDashboard() {
 // SHOW LOGIN
 
 function showLogin() {
-
     dashboardSection.classList.add("hidden");
     dashboardSection.style.display = "none";
-
     loginSection.style.display = "block";
 }
 
@@ -474,7 +445,6 @@ document.getElementById("loginForm")
     const password = document.getElementById("password").value;
 
     try {
-
         const { data, error } =
             await supabaseClient.auth.signInWithPassword({
                 email,
@@ -492,14 +462,11 @@ document.getElementById("loginForm")
         }
 
     } catch (error) {
-
         showMessage("Login error: " + error.message);
 
     } finally {
-
         loginButton.disabled = false;
         loginButton.textContent = "Login";
-
     }
 });
 
@@ -522,7 +489,6 @@ document.getElementById("forgotButton")
     button.textContent = "Sending...";
 
     try {
-
         const { error } =
             await supabaseClient.auth.resetPasswordForEmail(
                 email,
@@ -539,14 +505,11 @@ document.getElementById("forgotButton")
         }
 
     } catch (error) {
-
         showMessage("Error: " + error.message);
 
     } finally {
-
         button.disabled = false;
         button.textContent = "Forgot Password?";
-
     }
 });
 
@@ -557,7 +520,6 @@ document.getElementById("logoutButton")
 .addEventListener("click", async () => {
 
     const button = document.getElementById("logoutButton");
-
     button.disabled = true;
 
     const { error } = await supabaseClient.auth.signOut();
@@ -577,23 +539,19 @@ document.getElementById("logoutButton")
 async function loadSongs() {
 
     const songList = document.getElementById("songList");
-
     songList.textContent = "Loading songs...";
 
     try {
-
         const { data, error } = await supabaseClient
             .from("songs")
             .select("*")
             .order("created_at", { ascending: false });
 
         if (error) {
-
             songList.textContent =
                 "Error loading songs: " + error.message;
 
             document.getElementById("totalSongs").textContent = "—";
-
             return;
         }
 
@@ -605,9 +563,7 @@ async function loadSongs() {
         displaySongs(songs);
 
     } catch (error) {
-
         songList.textContent = "Error: " + error.message;
-
     }
 }
 
@@ -617,7 +573,6 @@ async function loadSongs() {
 function displaySongs(list) {
 
     const songList = document.getElementById("songList");
-
     songList.innerHTML = "";
 
     if (!list.length) {
@@ -661,12 +616,50 @@ function displaySongs(list) {
         });
 
         actions.append(editButton, deleteButton);
-
         item.append(info, actions);
-
         songList.appendChild(item);
-
     });
+}
+
+
+// AUDIO FILE UPLOAD
+
+async function uploadAudioFile(file) {
+
+    const extension = file.name.split(".").pop().toLowerCase();
+
+    if (!["mp3", "m4a"].includes(extension)) {
+        throw new Error("Only MP3 and M4A files are allowed.");
+    }
+
+    const safeName = file.name
+        .replace(/\.[^/.]+$/, "")
+        .replace(/[^a-zA-Z0-9-_]/g, "-")
+        .slice(0, 60);
+
+    const filePath =
+        Date.now() + "-" +
+        crypto.randomUUID() + "-" +
+        safeName + "." + extension;
+
+    const { error } = await supabaseClient.storage
+        .from(BUCKET_NAME)
+        .upload(filePath, file, {
+            contentType: extension === "mp3"
+                ? "audio/mpeg"
+                : "audio/mp4",
+            upsert: false
+        });
+
+    if (error) {
+        throw new Error("Audio upload failed: " + error.message);
+    }
+
+    const { data } = supabaseClient.storage
+        .from(BUCKET_NAME)
+        .getPublicUrl(filePath);
+
+    return data.publicUrl;
 }
 
 
@@ -677,33 +670,9 @@ document.getElementById("songForm")
 
     e.preventDefault();
 
-    const song = {
-
-        title: document.getElementById("songTitle").value.trim(),
-
-        category: document.getElementById("songCategory").value,
-
-        youtube_url:
-            document.getElementById("youtubeURL").value.trim() || null,
-
-        audio_url:
-            document.getElementById("audioURL").value.trim() || null,
-
-        lyrics_malayalam:
-            document.getElementById("lyricsMalayalam").value,
-
-        lyrics_kannada:
-            document.getElementById("lyricsKannada").value,
-
-        lyrics_arabic:
-            document.getElementById("lyricsArabic").value,
-
-        lyrics_urdu:
-            document.getElementById("lyricsUrdu").value
-
-    };
-
     const saveButton = document.getElementById("saveButton");
+    const audioInput = document.getElementById("audioFile");
+    const audioStatus = document.getElementById("audioStatus");
 
     const isEditing = editingId !== null;
 
@@ -711,6 +680,45 @@ document.getElementById("songForm")
     saveButton.textContent = "Saving...";
 
     try {
+
+        let audioUrl = currentAudioUrl;
+
+        // Upload a new audio file only when selected
+        if (audioInput.files.length > 0) {
+
+            const file = audioInput.files[0];
+
+            audioStatus.textContent = "Uploading audio...";
+
+            audioUrl = await uploadAudioFile(file);
+
+            audioStatus.textContent = "Audio uploaded successfully!";
+        }
+
+        const song = {
+
+            title: document.getElementById("songTitle").value.trim(),
+
+            category: document.getElementById("songCategory").value,
+
+            youtube_url:
+                document.getElementById("youtubeURL").value.trim() || null,
+
+            audio_url: audioUrl,
+
+            lyrics_malayalam:
+                document.getElementById("lyricsMalayalam").value,
+
+            lyrics_kannada:
+                document.getElementById("lyricsKannada").value,
+
+            lyrics_arabic:
+                document.getElementById("lyricsArabic").value,
+
+            lyrics_urdu:
+                document.getElementById("lyricsUrdu").value
+
+        };
 
         let result;
 
@@ -730,8 +738,7 @@ document.getElementById("songForm")
         }
 
         if (result.error) {
-            alert("Error: " + result.error.message);
-            return;
+            throw new Error(result.error.message);
         }
 
         alert(
@@ -741,7 +748,6 @@ document.getElementById("songForm")
         );
 
         resetSongForm();
-
         await loadSongs();
 
     } catch (error) {
@@ -751,9 +757,9 @@ document.getElementById("songForm")
     } finally {
 
         saveButton.disabled = false;
-
-        saveButton.textContent = "Save Song";
-
+        saveButton.textContent = editingId !== null
+            ? "Update Song"
+            : "Save Song";
     }
 });
 
@@ -769,6 +775,7 @@ function editSong(id) {
     if (!song) return;
 
     editingId = id;
+    currentAudioUrl = song.audio_url || null;
 
     document.getElementById("songTitle").value =
         song.title || "";
@@ -779,8 +786,12 @@ function editSong(id) {
     document.getElementById("youtubeURL").value =
         song.youtube_url || "";
 
-    document.getElementById("audioURL").value =
-        song.audio_url || "";
+    document.getElementById("audioFile").value = "";
+
+    document.getElementById("audioStatus").textContent =
+        currentAudioUrl
+            ? "Existing audio is saved. Choose a new file only to replace it."
+            : "No audio file uploaded yet.";
 
     document.getElementById("lyricsMalayalam").value =
         song.lyrics_malayalam || "";
@@ -829,7 +840,6 @@ async function deleteSong(id) {
     }
 
     alert("Song deleted successfully!");
-
     await loadSongs();
 }
 
@@ -839,6 +849,7 @@ async function deleteSong(id) {
 function resetSongForm() {
 
     editingId = null;
+    currentAudioUrl = null;
 
     document.getElementById("songForm").reset();
 
@@ -847,6 +858,9 @@ function resetSongForm() {
 
     document.getElementById("saveButton").textContent =
         "Save Song";
+
+    document.getElementById("audioStatus").textContent =
+        "Choose an MP3 or M4A audio file.";
 
     document.getElementById("cancelEditButton")
         .classList.add("hidden");
@@ -864,15 +878,11 @@ document.getElementById("adminSearch")
     const search = e.target.value.toLowerCase();
 
     const filtered = songs.filter(song =>
-
         (song.title || "").toLowerCase().includes(search) ||
-
         (song.category || "").toLowerCase().includes(search)
-
     );
 
     displaySongs(filtered);
-
 });
 
 
@@ -886,30 +896,20 @@ window.addEventListener("load", async () => {
             await supabaseClient.auth.getSession();
 
         if (error) {
-
             showLogin();
-
             showMessage("Session error: " + error.message);
-
             return;
         }
 
         if (data.session) {
-
             showDashboard();
-
         } else {
-
             showLogin();
-
         }
 
     } catch (error) {
-
         showLogin();
-
         showMessage("Error: " + error.message);
-
     }
 });
 
@@ -917,3 +917,4 @@ window.addEventListener("load", async () => {
 
 </body>
 </html>
+```
