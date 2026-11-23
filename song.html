@@ -1,303 +1,174 @@
+```html
 <!DOCTYPE html>
 <html lang="ml">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="referrer" content="strict-origin-when-cross-origin">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 
-    <title>Song | Muthin Pukal</title>
+<title>Song | Muthin Pukal</title>
 
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;500;600;700&family=Amiri:wght@400;700&family=Noto+Sans+Kannada:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;500;600;700&family=Amiri:wght@400;700&family=Noto+Sans+Kannada:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
 
-    <style>
-        body {
-            font-family: 'Anek Malayalam', sans-serif;
-            background: #061f18;
-            color: #eee;
-            padding-bottom: 90px;
-        }
+<style>
+body {
+    font-family: 'Anek Malayalam', sans-serif;
+    background: #061f18;
+    color: #eee;
+    padding-bottom: 90px;
+}
 
-        .song-page {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
-        }
+.song-page {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+}
 
-        .song-box {
-            background: #10382c;
-            border: 1px solid rgba(214,181,104,0.4);
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-        }
+.song-box {
+    background: #10382c;
+    border: 1px solid rgba(214,181,104,0.4);
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
 
-        .back-button {
-            display: inline-block;
-            text-decoration: none;
-            color: #e4c477;
-            margin-bottom: 22px;
-            font-size: 16px;
-        }
+.back-button {
+    display: inline-block;
+    text-decoration: none;
+    color: #e4c477;
+    margin-bottom: 22px;
+    font-size: 16px;
+}
 
-        #songTitle {
-            color: #e4c477;
-            font-size: clamp(25px, 5vw, 36px);
-            text-align: center;
-            margin-bottom: 10px;
-        }
+#songTitle {
+    color: #e4c477;
+    font-size: clamp(25px, 5vw, 36px);
+    text-align: center;
+    margin-bottom: 10px;
+}
 
-        #songCategory {
-            text-align: center;
-            color: #b8c8bd;
-            margin-bottom: 25px;
-        }
+#songCategory {
+    text-align: center;
+    color: #b8c8bd;
+    margin-bottom: 25px;
+}
 
-        .lyrics-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin: 25px 0;
-        }
+.lyrics-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 25px 0;
+}
 
-        .lyrics-tabs button {
-            background: #08271d;
-            color: #e4c477;
-            border: 1px solid #c5a45d;
-            border-radius: 25px;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-family: inherit;
-        }
+.lyrics-tabs button {
+    background: #08271d;
+    color: #e4c477;
+    border: 1px solid #c5a45d;
+    border-radius: 25px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-family: inherit;
+}
 
-        .lyrics-tabs button.active {
-            background: #d6b568;
-            color: #08271d;
-        }
+.lyrics-tabs button.active {
+    background: #d6b568;
+    color: #08271d;
+}
 
-        .lyrics-content {
-            font-size: 20px;
-            line-height: 2.2;
-            padding: 20px 5px;
-            white-space: pre-wrap;
-            overflow-wrap: anywhere;
-        }
+.lyrics-content {
+    font-size: 20px;
+    line-height: 2.2;
+    padding: 20px 5px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
 
-        .lyrics-content.malayalam {
-            font-family: 'Anek Malayalam', sans-serif;
-        }
+.lyrics-content.malayalam {
+    font-family: 'Anek Malayalam', sans-serif;
+}
 
-        .lyrics-content.kannada {
-            font-family: 'Noto Sans Kannada', sans-serif;
-        }
+.lyrics-content.kannada {
+    font-family: 'Noto Sans Kannada', sans-serif;
+}
 
-        .lyrics-content.arabic {
-            font-family: 'Amiri', serif;
-            font-size: 27px;
-            direction: rtl;
-            text-align: right;
-        }
+.lyrics-content.arabic {
+    font-family: 'Amiri', serif;
+    font-size: 27px;
+    direction: rtl;
+    text-align: right;
+}
 
-        .lyrics-content.urdu {
-            font-family: 'Noto Nastaliq Urdu', serif;
-            font-size: 24px;
-            direction: rtl;
-            text-align: right;
-        }
+.lyrics-content.urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 24px;
+    direction: rtl;
+    text-align: right;
+}
 
-        .mp-copy-lyrics,
-        .mp-download-pdf {
-            background: linear-gradient(135deg, #14533c, #1d7652);
-            color: white;
-            border: 1px solid #c5a45d;
-            padding: 11px 20px;
-            margin: 10px 5px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: inherit;
-        }
+.mp-copy-lyrics,
+.mp-download-pdf {
+    background: linear-gradient(135deg, #14533c, #1d7652);
+    color: white;
+    border: 1px solid #c5a45d;
+    padding: 11px 20px;
+    margin: 10px 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+}
 
-        .mp-download-pdf {
-            background: linear-gradient(135deg, #e4c477, #b38b3d);
-            color: #08271d;
-            font-weight: 700;
-        }
+.mp-download-pdf {
+    background: linear-gradient(135deg, #e4c477, #b38b3d);
+    color: #08271d;
+    font-weight: 700;
+}
 
-        .song-media {
-            margin-top: 30px;
-        }
+.song-media {
+    margin-top: 30px;
+}
 
-        .song-media h3 {
-            color: #e4c477;
-            margin-bottom: 15px;
-        }
+.song-media h3 {
+    color: #e4c477;
+    margin-bottom: 15px;
+}
 
-        .song-media audio {
-            width: 100%;
-        }
+.song-media audio {
+    width: 100%;
+}
 
-        .song-media iframe {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            height: auto;
-            border: 0;
-            border-radius: 12px;
-        }
+.song-media iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    border: 0;
+    border-radius: 12px;
+}
 
-        #songMessage {
-            text-align: center;
-            padding: 40px 10px;
-            color: #e4c477;
-        }
+#songMessage {
+    text-align: center;
+    padding: 40px 10px;
+    color: #e4c477;
+}
 
-        @media(max-width: 600px) {
-            .song-page {
-                padding: 14px;
-                margin: 20px auto;
-            }
+@media(max-width: 600px) {
+    .song-page {
+        padding: 14px;
+        margin: 20px auto;
+    }
 
-            .song-box {
-                padding: 18px;
-            }
+    .song-box {
+        padding: 18px;
+    }
 
-            .lyrics-content {
-                font-size: 18px;
-            }
-        }
-
-        /* PDF - HIDDEN ON NORMAL WEBSITE */
-        #pdfSheet {
-            display: none;
-        }
-
-        @media print {
-
-            @page {
-                size: A4;
-                margin: 15mm 19mm 18mm;
-            }
-
-            html, body {
-                margin: 0 !important;
-                padding: 0 !important;
-                background: white !important;
-            }
-
-            body * {
-                visibility: hidden !important;
-            }
-
-            #pdfSheet,
-            #pdfSheet * {
-                visibility: visible !important;
-            }
-
-            #pdfSheet {
-                display: block !important;
-
-                position: relative !important;
-                left: auto !important;
-                top: auto !important;
-
-                width: 100%;
-                min-height: 0;
-                margin: 0;
-                padding: 10mm 0 0;
-
-                box-sizing: border-box;
-                color: #ffffff;
-
-                background-image:
-                    linear-gradient(
-                        rgba(3, 30, 22, 0.78),
-                        rgba(3, 30, 22, 0.86)
-                    ),
-                    url("https://i.pinimg.com/564x/d1/b9/8b/d1b98b805afee597bbfb525d36fc772a.jpg");
-
-                background-position: center;
-                background-size: cover;
-                background-repeat: repeat-y;
-
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
-            #pdfTitle {
-                color: #f1d18a;
-                text-align: center;
-                font-size: 25pt;
-                margin: 0 0 5mm;
-                overflow-wrap: anywhere;
-            }
-
-            #pdfLanguage {
-                color: #e4c477;
-                text-align: center;
-                font-size: 12pt;
-                margin-bottom: 10mm;
-            }
-
-            #pdfLyrics {
-                color: #ffffff;
-                font-size: 15pt;
-                line-height: 2;
-                white-space: pre-wrap;
-                overflow-wrap: anywhere;
-                padding-bottom: 10mm;
-            }
-
-            #pdfLyrics.malayalam {
-                font-family: 'Anek Malayalam', sans-serif;
-            }
-
-            #pdfLyrics.kannada {
-                font-family: 'Noto Sans Kannada', sans-serif;
-            }
-
-            #pdfLyrics.arabic {
-                font-family: 'Amiri', serif;
-                font-size: 19pt;
-                direction: rtl;
-                text-align: right;
-            }
-
-            #pdfLyrics.urdu {
-                font-family: 'Noto Nastaliq Urdu', serif;
-                font-size: 17pt;
-                direction: rtl;
-                text-align: right;
-            }
-
-            /* FOOTER AFTER LYRICS - NOT FIXED */
-            #pdfFooter {
-                position: static !important;
-
-                display: flex;
-                align-items: center;
-                gap: 12px;
-
-                border-top: 1px solid #d6b568;
-                padding-top: 5mm;
-                margin-top: 8mm;
-
-                color: #f1d18a;
-                font-size: 10pt;
-                font-weight: bold;
-
-                break-inside: avoid;
-                page-break-inside: avoid;
-            }
-
-            #pdfFooter img {
-                width: 45px;
-                height: 45px;
-                object-fit: contain;
-            }
-        }
-    </style>
+    .lyrics-content {
+        font-size: 18px;
+    }
+}
+</style>
 </head>
 
 <body>
@@ -336,28 +207,7 @@
         </div>
 
     </div>
-
 </main>
-
-<!-- PDF CONTENT -->
-<div id="pdfSheet">
-
-    <h1 id="pdfTitle"></h1>
-
-    <div id="pdfLanguage"></div>
-
-    <div id="pdfLyrics"></div>
-
-    <div id="pdfFooter">
-        <img src="logo.png" alt="Muthin Pukal Logo">
-
-        <span>
-            LYRICS PROVIDED BY<br>
-            MUTHIN PUKAL MADH APP
-        </span>
-    </div>
-
-</div>
 
 <footer>
     <p>© 2026 Muthin Pukal. All Rights Reserved.</p>
@@ -425,6 +275,16 @@ function getYouTubeId(url) {
     return null;
 }
 
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
 async function copyLyrics(text, button) {
     try {
         await navigator.clipboard.writeText(text);
@@ -447,19 +307,201 @@ async function copyLyrics(text, button) {
     }, 2000);
 }
 
-// DOWNLOAD SELECTED LANGUAGE AS PDF
+// CREATE PDF IN A SEPARATE WINDOW
 function downloadLyricsPDF(songTitle, languageName, languageClass, lyricsText) {
 
-    document.getElementById("pdfTitle").textContent = songTitle;
+    // Open window immediately after button click
+    const pdfWindow = window.open("", "_blank");
 
-    document.getElementById("pdfLanguage").textContent = languageName;
+    if (!pdfWindow) {
+        alert("Please allow pop-ups for this website and try again.");
+        return;
+    }
 
-    const pdfLyrics = document.getElementById("pdfLyrics");
+    const safeTitle = escapeHTML(songTitle);
+    const safeLanguage = escapeHTML(languageName);
+    const safeLyrics = escapeHTML(lyricsText);
 
-    pdfLyrics.textContent = lyricsText;
-    pdfLyrics.className = languageClass;
+    const fontMap = {
+        malayalam: "'Anek Malayalam', sans-serif",
+        kannada: "'Noto Sans Kannada', sans-serif",
+        arabic: "'Amiri', serif",
+        urdu: "'Noto Nastaliq Urdu', serif"
+    };
 
-    window.print();
+    const font = fontMap[languageClass] || "sans-serif";
+
+    const direction = ["arabic", "urdu"].includes(languageClass)
+        ? "rtl"
+        : "ltr";
+
+    const alignment = direction === "rtl" ? "right" : "left";
+
+    const lyricsSize = {
+        malayalam: "15pt",
+        kannada: "15pt",
+        arabic: "19pt",
+        urdu: "17pt"
+    }[languageClass] || "15pt";
+
+    const logoURL = new URL("logo.png", window.location.href).href;
+
+    const backgroundURL =
+        "https://i.pinimg.com/564x/d1/b9/8b/d1b98b805afee597bbfb525d36fc772a.jpg";
+
+    const html = `
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta charset="UTF-8">
+<title>${safeTitle} - Muthin Pukal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;500;600;700&family=Amiri:wght@400;700&family=Noto+Sans+Kannada:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+    @page {
+        size: A4;
+        margin: 15mm 19mm;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html, body {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        color: white;
+        font-family: ${font};
+        background-color: #063326;
+
+        background-image:
+            linear-gradient(
+                rgba(3, 30, 22, 0.82),
+                rgba(3, 30, 22, 0.88)
+            ),
+            url("${backgroundURL}");
+
+        background-size: cover;
+        background-position: center;
+        background-repeat: repeat-y;
+
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .pdf-title {
+        color: #f1d18a;
+        text-align: center;
+        font-size: 25pt;
+        margin: 0 0 5mm;
+        overflow-wrap: anywhere;
+    }
+
+    .pdf-language {
+        color: #e4c477;
+        text-align: center;
+        font-size: 12pt;
+        margin-bottom: 10mm;
+    }
+
+    .pdf-lyrics {
+        color: #ffffff;
+        font-family: ${font};
+        font-size: ${lyricsSize};
+        line-height: 2;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        direction: ${direction};
+        text-align: ${alignment};
+        padding-bottom: 10mm;
+    }
+
+    .pdf-footer {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        border-top: 1px solid #d6b568;
+        padding-top: 5mm;
+        margin-top: 8mm;
+
+        color: #f1d18a;
+        font-family: Arial, sans-serif;
+        font-size: 10pt;
+        font-weight: bold;
+
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .pdf-footer img {
+        width: 45px;
+        height: 45px;
+        object-fit: contain;
+    }
+
+    @media print {
+        body {
+            background-color: #063326 !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<h1 class="pdf-title">${safeTitle}</h1>
+
+<div class="pdf-language">${safeLanguage}</div>
+
+<div class="pdf-lyrics">${safeLyrics}</div>
+
+<div class="pdf-footer">
+    <img src="${logoURL}" alt="Muthin Pukal Logo">
+    <span>
+        LYRICS PROVIDED BY<br>
+        MUTHIN PUKAL MADH APP
+    </span>
+</div>
+
+<script>
+    window.addEventListener("load", async function() {
+        try {
+            if (document.fonts && document.fonts.ready) {
+                await document.fonts.ready;
+            }
+
+            const logo = document.querySelector(".pdf-footer img");
+
+            if (logo && !logo.complete) {
+                await new Promise(resolve => {
+                    logo.onload = resolve;
+                    logo.onerror = resolve;
+                });
+            }
+        } catch (error) {
+            console.error("PDF loading error:", error);
+        }
+
+        setTimeout(function() {
+            window.focus();
+            window.print();
+        }, 700);
+    });
+<\/script>
+
+</body>
+</html>`;
+
+    pdfWindow.document.open();
+    pdfWindow.document.write(html);
+    pdfWindow.document.close();
 }
 
 async function loadSong() {
@@ -483,7 +525,7 @@ async function loadSong() {
             return;
         }
 
-        document.title = (song.title || "Song") + " | ಮುತ್ತಿನ್ ಪുകൾ";
+        document.title = (song.title || "Song") + " | Muthin Pukal";
 
         document.getElementById("songTitle").textContent =
             song.title || "Untitled Song";
@@ -510,7 +552,6 @@ async function loadSong() {
             available.forEach((item, index) => {
 
                 const tab = document.createElement("button");
-
                 tab.textContent = item[1];
 
                 if (index === 0) {
@@ -533,9 +574,7 @@ async function loadSong() {
                 area.innerHTML = "";
 
                 const copyButton = document.createElement("button");
-
                 copyButton.className = "mp-copy-lyrics";
-
                 copyButton.innerHTML =
                     '<i class="fa-solid fa-copy"></i> Copy Lyrics';
 
@@ -544,28 +583,21 @@ async function loadSong() {
                 });
 
                 const pdfButton = document.createElement("button");
-
                 pdfButton.className = "mp-download-pdf";
-
                 pdfButton.innerHTML =
                     '<i class="fa-solid fa-file-pdf"></i> Download PDF';
 
                 pdfButton.addEventListener("click", () => {
-
                     downloadLyricsPDF(
                         song.title || "Untitled Song",
                         available[index][1],
                         available[index][0],
                         available[index][2]
                     );
-
                 });
 
                 const lyrics = document.createElement("div");
-
-                lyrics.className =
-                    "lyrics-content " + available[index][0];
-
+                lyrics.className = "lyrics-content " + available[index][0];
                 lyrics.textContent = available[index][2];
 
                 area.appendChild(copyButton);
@@ -576,9 +608,7 @@ async function loadSong() {
             showLanguage(0);
 
         } else {
-
             area.textContent = "Lyrics are not available for this song yet.";
-
         }
 
         // AUDIO
@@ -634,7 +664,6 @@ async function loadSong() {
 
         message.textContent =
             "Something went wrong while loading the song.";
-
     }
 }
 
