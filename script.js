@@ -329,30 +329,47 @@ function escapeHTML(text) {
 }
 
 
-function saveSongPDF(card) {
 
+function saveSongPDF(card) {
     const title =
-        card.querySelector("h3")?.innerText || "Song";
+        card.querySelector("h3")?.innerText?.trim() || "Song";
+
+    const languages = ["malayalam", "kannada", "arabic", "urdu"];
 
     const visibleLyrics = [
         ...card.querySelectorAll(".lyrics-content")
-    ].find(item => getComputedStyle(item).display !== "none");
+    ].find(item => {
+        const style = window.getComputedStyle(item);
+
+        return (
+            style.display !== "none" &&
+            style.visibility !== "hidden" &&
+            item.getClientRects().length > 0
+        );
+    });
 
     if (!visibleLyrics) {
         alert("Please select a lyrics language first.");
         return;
     }
 
-    const lyrics = visibleLyrics.innerText;
+    const language =
+        visibleLyrics.dataset.language ||
+        languages.find(lang => visibleLyrics.classList.contains(lang));
 
-    const language = [
-        "malayalam",
-        "kannada",
-        "arabic",
-        "urdu"
-    ].find(lang => visibleLyrics.classList.contains(lang))
-        || "malayalam";
+    if (!language || !languages.includes(language)) {
+        alert("Could not identify the selected language.");
+        return;
+    }
 
+    const lyrics = visibleLyrics.innerText.trim();
+
+    if (!lyrics) {
+        alert("No lyrics found in this language.");
+        return;
+    }
+
+    // Open preview window first
     const pdfWindow = window.open("", "_blank");
 
     if (!pdfWindow) {
@@ -360,62 +377,65 @@ function saveSongPDF(card) {
         return;
     }
 
-    // Language-specific fonts
-    const fontSettings = {
+    const settings = {
         malayalam: {
             family: "'Anek Malayalam', sans-serif",
             size: "23px",
             line: "2.1",
-            direction: "ltr"
+            direction: "ltr",
+            align: "left",
+            label: "Malayalam",
+            lang: "ml"
         },
-
         kannada: {
             family: "'Noto Sans Kannada', sans-serif",
             size: "22px",
             line: "2.1",
-            direction: "ltr"
+            direction: "ltr",
+            align: "left",
+            label: "Kannada",
+            lang: "kn"
         },
-
         arabic: {
             family: "'Amiri', serif",
             size: "30px",
             line: "2.4",
-            direction: "rtl"
+            direction: "rtl",
+            align: "right",
+            label: "Arabic",
+            lang: "ar"
         },
-
         urdu: {
             family: "'Noto Nastaliq Urdu', serif",
             size: "28px",
             line: "2.7",
-            direction: "rtl"
+            direction: "rtl",
+            align: "right",
+            label: "Urdu",
+            lang: "ur"
         }
     };
 
-    const font = fontSettings[language];
+    const font = settings[language];
 
-    const googleFonts = `
-        <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;500;600;700&family=Amiri:wght@400;700&family=Noto+Sans+Kannada:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
-    `;
+    const safeTitle = escapeHTML(title);
+    const safeLyrics = escapeHTML(lyrics);
 
     pdfWindow.document.open();
 
     pdfWindow.document.write(`
         <!DOCTYPE html>
-        <html lang="ml">
-
+        <html lang="${font.lang}">
         <head>
-
             <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta name="referrer" content="strict-origin-when-cross-origin">
 
-            <meta name="viewport"
-                  content="width=device-width, initial-scale=1.0">
+            <title>${safeTitle} - Muthin Pukal</title>
 
-            <title>${escapeHTML(title)} - Muthin Pukal</title>
-
-            ${googleFonts}
+            <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;500;600;700&family=Amiri:wght@400;700&family=Noto+Sans+Kannada:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
 
             <style>
-
                 * {
                     box-sizing: border-box;
                 }
@@ -428,18 +448,47 @@ function saveSongPDF(card) {
                 html, body {
                     margin: 0;
                     padding: 0;
-                    background: white;
+                    background: #fff;
                 }
 
                 body {
                     color: #173e2e;
-                    font-family: 'Anek Malayalam', sans-serif;
-                    position: relative;
+                    font-family: ${font.family};
                     -webkit-print-color-adjust: exact;
                     print-color-adjust: exact;
                 }
 
-                /* WATERMARK */
+                .toolbar {
+                    position: sticky;
+                    top: 0;
+                    z-index: 10;
+                    padding: 14px;
+                    text-align: center;
+                    background: #062c22;
+                    border-bottom: 2px solid #d6b568;
+                }
+
+                .toolbar button {
+                    padding: 12px 25px;
+                    border: none;
+                    border-radius: 25px;
+                    background: linear-gradient(135deg, #e4c477, #b38b3d);
+                    color: #08271d;
+                    font-size: 15px;
+                    font-weight: 700;
+                    cursor: pointer;
+                }
+
+                .toolbar button:disabled {
+                    opacity: .5;
+                    cursor: wait;
+                }
+
+                .status {
+                    color: #fff4dc;
+                    font: 13px Arial, sans-serif;
+                    margin-top: 8px;
+                }
 
                 .watermark {
                     position: fixed;
@@ -447,29 +496,21 @@ function saveSongPDF(card) {
                     left: 0;
                     width: 100%;
                     text-align: center;
-
                     font-family: 'Anek Malayalam', sans-serif;
                     font-size: 65px;
                     font-weight: 700;
-
                     color: #b99a4b;
-                    opacity: 0.11;
-
+                    opacity: .11;
                     transform: rotate(-30deg);
-
                     white-space: nowrap;
                     pointer-events: none;
                     z-index: 0;
                 }
 
-                /* MAIN CONTENT */
-
                 .content {
                     position: relative;
                     z-index: 1;
                 }
-
-                /* HEADER */
 
                 .pdf-header {
                     text-align: center;
@@ -491,9 +532,14 @@ function saveSongPDF(card) {
                     color: #07513b;
                     font-family: 'Anek Malayalam', sans-serif;
                     font-size: 30px;
-                    font-weight: 700;
                     margin: 0;
                     line-height: 1.7;
+                }
+
+                .language-label {
+                    font: 12px Arial, sans-serif;
+                    color: #987b3e;
+                    margin-top: 8px;
                 }
 
                 .arabic-subtitle {
@@ -503,33 +549,25 @@ function saveSongPDF(card) {
                     margin-top: 8px;
                 }
 
-                /* LYRICS */
-
                 .lyrics {
                     color: #173e2e;
                     font-family: ${font.family};
                     font-size: ${font.size};
                     line-height: ${font.line};
                     direction: ${font.direction};
-                    text-align: ${language === "arabic" || language === "urdu" ? "right" : "left"};
-
+                    text-align: ${font.align};
                     white-space: pre-wrap;
                     overflow-wrap: anywhere;
                     word-break: normal;
-
                     margin-top: 25px;
                 }
-
-                /* FOOTER */
 
                 .footer {
                     margin-top: 45px;
                     padding-top: 15px;
                     border-top: 1px solid #d4af37;
-
                     text-align: center;
                     color: #987b3e;
-
                     font-family: 'Anek Malayalam', sans-serif;
                     font-size: 13px;
                     line-height: 2;
@@ -542,77 +580,53 @@ function saveSongPDF(card) {
                     color: #07513b;
                 }
 
-                /* PRINT SETTINGS */
-
                 @media print {
-
-                    body {
-                        background: white;
+                    .toolbar {
+                        display: none !important;
                     }
-
-                    .watermark {
-                        position: fixed;
-                        -webkit-print-color-adjust: exact;
-                        print-color-adjust: exact;
-                    }
-
-                    .content {
-                        position: relative;
-                    }
-
                 }
-
             </style>
-
         </head>
 
         <body>
+            <div class="toolbar">
+                <button id="saveButton" disabled>
+                    Loading Fonts...
+                </button>
 
-            <div class="watermark">
-                മുത്തിൻ പുകൾ
+                <div class="status" id="status">
+                    Preparing ${font.label} preview...
+                </div>
             </div>
 
+            <div class="watermark">മുത്തിൻ പുകൾ</div>
+
             <div class="content">
-
                 <header class="pdf-header">
-
-                    <div class="brand">
-                        MUTHIN PUKAL
-                    </div>
-
-                    <h1>${escapeHTML(title)}</h1>
-
+                    <div class="brand">MUTHIN PUKAL</div>
+                    <h1>${safeTitle}</h1>
+                    <div class="language-label">${font.label} Lyrics</div>
                     <div class="arabic-subtitle">
                         مَدْحُ خَيْرِ الْأَنَامِ
                     </div>
-
                 </header>
 
                 <main>
-
-                    <div class="lyrics">${escapeHTML(lyrics)}</div>
-
+                    <div class="lyrics">${safeLyrics}</div>
                 </main>
 
                 <footer class="footer">
-
-                    <div class="footer-brand">
-                        മുത്തിൻ പുകൾ
-                    </div>
-
+                    <div class="footer-brand">മുത്തിൻ പുകൾ</div>
                     Knowledge • Faith • Guidance
-
                     <br>
-
                     https://muthin-pukal.vercel.app/
-
                 </footer>
-
             </div>
 
             <script>
-
-                window.onload = async function() {
+                window.addEventListener("load", async function() {
+                    const button = document.getElementById("saveButton");
+                    const status = document.getElementById("status");
 
                     try {
                         await document.fonts.ready;
@@ -620,21 +634,22 @@ function saveSongPDF(card) {
                         console.log("Font loading issue", error);
                     }
 
-                    setTimeout(function() {
-                        window.print();
-                    }, 700);
+                    button.disabled = false;
+                    button.textContent = "Save / Download PDF";
+                    status.textContent = "Your ${font.label} preview is ready.";
+                });
 
-                };
-
+                document.getElementById("saveButton").addEventListener("click", function() {
+                    window.print();
+                });
             <\/script>
-
         </body>
-
         </html>
     `);
 
     pdfWindow.document.close();
 }
+
 
 
 // =====================================

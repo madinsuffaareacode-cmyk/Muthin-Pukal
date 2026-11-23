@@ -476,3 +476,24 @@ body {
         transform: rotate(360deg);
     }
 }
+
+/* MUTHIN PUKAL - SONG ACTION BUTTON SPACING */
+
+.mp-song-details button {
+    margin: 12px 10px !important;
+    min-width: 120px;
+}
+
+/* Arrange action buttons neatly */
+.mp-song-details {
+    display: flow-root;
+}
+
+/* Mobile button spacing */
+@media (max-width: 600px) {
+    .mp-song-details button {
+    margin: 10px 8px !important;
+    padding: 11px 16px;
+    min-width: 110px;
+}
+}

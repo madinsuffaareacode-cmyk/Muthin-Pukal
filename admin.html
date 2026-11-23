@@ -663,10 +663,96 @@ async function uploadAudioFile(file) {
 }
 
 
+
 // ADD / UPDATE SONG
 
 document.getElementById("songForm")
 .addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const saveButton = document.getElementById("saveButton");
+    const audioInput = document.getElementById("audioFile");
+    const audioStatus = document.getElementById("audioStatus");
+
+    const isEditing = editingId !== null;
+
+    saveButton.disabled = true;
+    saveButton.textContent = "Saving...";
+
+    try {
+        let audioUrl = currentAudioUrl;
+
+        // Upload selected audio file
+        if (audioInput.files.length > 0) {
+            audioStatus.textContent = "Uploading audio...";
+
+            audioUrl = await uploadAudioFile(audioInput.files[0]);
+
+            if (!audioUrl) {
+                throw new Error("Audio URL was not generated.");
+            }
+
+            audioStatus.textContent = "Audio uploaded successfully!";
+        }
+
+        console.log("Audio URL to save:", audioUrl);
+
+        const song = {
+            title: document.getElementById("songTitle").value.trim(),
+            category: document.getElementById("songCategory").value,
+            youtube_url: document.getElementById("youtubeURL").value.trim() || null,
+            audio_url: audioUrl || null,
+            lyrics_malayalam: document.getElementById("lyricsMalayalam").value,
+            lyrics_kannada: document.getElementById("lyricsKannada").value,
+            lyrics_arabic: document.getElementById("lyricsArabic").value,
+            lyrics_urdu: document.getElementById("lyricsUrdu").value
+        };
+
+        let result;
+
+        if (isEditing) {
+            result = await supabaseClient
+                .from("songs")
+                .update(song)
+                .eq("id", editingId)
+                .select("id,audio_url")
+                .single();
+        } else {
+            result = await supabaseClient
+                .from("songs")
+                .insert([song])
+                .select("id,audio_url")
+                .single();
+        }
+
+        if (result.error) {
+            throw new Error(result.error.message);
+        }
+
+        console.log("Saved database row:", result.data);
+
+        if (audioUrl && !result.data.audio_url) {
+            throw new Error("Database did not save the audio URL.");
+        }
+
+        alert("Song saved successfully!");
+
+        resetSongForm();
+        await loadSongs();
+
+    } catch (error) {
+        console.error("Save error:", error);
+        alert("Error: " + error.message);
+
+    } finally {
+        saveButton.disabled = false;
+        saveButton.textContent = editingId !== null
+            ? "Update Song"
+            : "Save Song";
+    }
+});
+
 
     e.preventDefault();
 
