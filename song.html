@@ -169,15 +169,16 @@
             }
         }
 
-        /* PDF DOCUMENT - HIDDEN ON WEBSITE */
+        /* PDF - HIDDEN ON NORMAL WEBSITE */
         #pdfSheet {
             display: none;
         }
 
         @media print {
+
             @page {
                 size: A4;
-                margin: 0;
+                margin: 15mm 19mm 18mm;
             }
 
             html, body {
@@ -197,14 +198,17 @@
 
             #pdfSheet {
                 display: block !important;
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 210mm;
-                min-height: 297mm;
-                box-sizing: border-box;
-                padding: 22mm 19mm 30mm;
 
+                position: relative !important;
+                left: auto !important;
+                top: auto !important;
+
+                width: 100%;
+                min-height: 0;
+                margin: 0;
+                padding: 10mm 0 0;
+
+                box-sizing: border-box;
                 color: #ffffff;
 
                 background-image:
@@ -243,7 +247,7 @@
                 line-height: 2;
                 white-space: pre-wrap;
                 overflow-wrap: anywhere;
-                padding-bottom: 20mm;
+                padding-bottom: 10mm;
             }
 
             #pdfLyrics.malayalam {
@@ -268,20 +272,24 @@
                 text-align: right;
             }
 
+            /* FOOTER AFTER LYRICS - NOT FIXED */
             #pdfFooter {
-                position: fixed;
-                bottom: 10mm;
-                left: 19mm;
-                right: 19mm;
-                border-top: 1px solid #d6b568;
-                padding-top: 5mm;
+                position: static !important;
+
                 display: flex;
                 align-items: center;
                 gap: 12px;
+
+                border-top: 1px solid #d6b568;
+                padding-top: 5mm;
+                margin-top: 8mm;
+
                 color: #f1d18a;
                 font-size: 10pt;
                 font-weight: bold;
-                background: transparent;
+
+                break-inside: avoid;
+                page-break-inside: avoid;
             }
 
             #pdfFooter img {
@@ -334,17 +342,22 @@
 
 <!-- PDF CONTENT -->
 <div id="pdfSheet">
+
     <h1 id="pdfTitle"></h1>
+
     <div id="pdfLanguage"></div>
+
     <div id="pdfLyrics"></div>
 
     <div id="pdfFooter">
         <img src="logo.png" alt="Muthin Pukal Logo">
+
         <span>
             LYRICS PROVIDED BY<br>
             MUTHIN PUKAL MADH APP
         </span>
     </div>
+
 </div>
 
 <footer>
@@ -357,14 +370,17 @@
         <i class="fa-solid fa-house"></i>
         <span>Home</span>
     </a>
+
     <a href="categories.html" class="mp-nav-item">
         <i class="fa-solid fa-layer-group"></i>
         <span>Categories</span>
     </a>
+
     <a href="index.html#songs" class="mp-nav-item active">
         <i class="fa-solid fa-book-open"></i>
         <span>Library</span>
     </a>
+
     <a href="about.html" class="mp-nav-item">
         <i class="fa-solid fa-circle-info"></i>
         <span>About</span>
@@ -417,6 +433,7 @@ async function copyLyrics(text, button) {
     } catch (error) {
         const textarea = document.createElement("textarea");
         textarea.value = text;
+
         document.body.appendChild(textarea);
         textarea.select();
 
@@ -433,10 +450,13 @@ async function copyLyrics(text, button) {
 
 // DOWNLOAD SELECTED LANGUAGE AS PDF
 function downloadLyricsPDF(songTitle, languageName, languageClass, lyricsText) {
+
     document.getElementById("pdfTitle").textContent = songTitle;
+
     document.getElementById("pdfLanguage").textContent = languageName;
 
     const pdfLyrics = document.getElementById("pdfLyrics");
+
     pdfLyrics.textContent = lyricsText;
     pdfLyrics.className = languageClass;
 
@@ -444,12 +464,14 @@ function downloadLyricsPDF(songTitle, languageName, languageClass, lyricsText) {
 }
 
 async function loadSong() {
+
     if (!songId) {
         message.textContent = "Song not found. Please go back and select a song.";
         return;
     }
 
     try {
+
         const { data: song, error } = await db
             .from("songs")
             .select("*")
@@ -485,11 +507,16 @@ async function loadSong() {
         const area = document.getElementById("lyricsArea");
 
         if (available.length > 0) {
+
             available.forEach((item, index) => {
+
                 const tab = document.createElement("button");
+
                 tab.textContent = item[1];
 
-                if (index === 0) tab.classList.add("active");
+                if (index === 0) {
+                    tab.classList.add("active");
+                }
 
                 tab.addEventListener("click", () => {
                     showLanguage(index);
@@ -499,6 +526,7 @@ async function loadSong() {
             });
 
             function showLanguage(index) {
+
                 tabs.querySelectorAll("button").forEach((button, i) => {
                     button.classList.toggle("active", i === index);
                 });
@@ -506,7 +534,9 @@ async function loadSong() {
                 area.innerHTML = "";
 
                 const copyButton = document.createElement("button");
+
                 copyButton.className = "mp-copy-lyrics";
+
                 copyButton.innerHTML =
                     '<i class="fa-solid fa-copy"></i> Copy Lyrics';
 
@@ -515,21 +545,28 @@ async function loadSong() {
                 });
 
                 const pdfButton = document.createElement("button");
+
                 pdfButton.className = "mp-download-pdf";
+
                 pdfButton.innerHTML =
                     '<i class="fa-solid fa-file-pdf"></i> Download PDF';
 
                 pdfButton.addEventListener("click", () => {
+
                     downloadLyricsPDF(
                         song.title || "Untitled Song",
                         available[index][1],
                         available[index][0],
                         available[index][2]
                     );
+
                 });
 
                 const lyrics = document.createElement("div");
-                lyrics.className = "lyrics-content " + available[index][0];
+
+                lyrics.className =
+                    "lyrics-content " + available[index][0];
+
                 lyrics.textContent = available[index][2];
 
                 area.appendChild(copyButton);
@@ -538,12 +575,16 @@ async function loadSong() {
             }
 
             showLanguage(0);
+
         } else {
+
             area.textContent = "Lyrics are not available for this song yet.";
+
         }
 
         // AUDIO
         if (song.audio_url) {
+
             const audioArea = document.getElementById("audioArea");
 
             const heading = document.createElement("h3");
@@ -559,18 +600,24 @@ async function loadSong() {
 
         // YOUTUBE VIDEO
         if (song.youtube_url) {
+
             const videoId = getYouTubeId(song.youtube_url);
 
             if (videoId) {
+
                 const videoArea = document.getElementById("videoArea");
 
                 const heading = document.createElement("h3");
                 heading.textContent = "Watch Song on YouTube";
 
                 const iframe = document.createElement("iframe");
+
                 iframe.src = "https://www.youtube.com/embed/" + videoId;
                 iframe.title = song.title || "Song video";
-                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+
+                iframe.allow =
+                    "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+
                 iframe.allowFullscreen = true;
                 iframe.loading = "lazy";
 
@@ -583,8 +630,12 @@ async function loadSong() {
         content.hidden = false;
 
     } catch (error) {
+
         console.error("DATABASE ERROR:", error);
-        message.textContent = "Something went wrong while loading the song.";
+
+        message.textContent =
+            "Something went wrong while loading the song.";
+
     }
 }
 
