@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="ml">
 <head>
@@ -9,7 +9,6 @@
     <title>Song | Muthin Pukal</title>
 
     <link rel="stylesheet" href="style.css">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@400;500;600;700&family=Amiri:wght@400;700&family=Noto+Sans+Kannada:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
@@ -122,6 +121,12 @@
             font-family: inherit;
         }
 
+        .mp-download-pdf {
+            background: linear-gradient(135deg, #e4c477, #b38b3d);
+            color: #08271d;
+            font-weight: 700;
+        }
+
         .song-media {
             margin-top: 30px;
         }
@@ -163,6 +168,128 @@
                 font-size: 18px;
             }
         }
+
+        /* PDF DOCUMENT - HIDDEN ON WEBSITE */
+        #pdfSheet {
+            display: none;
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 0;
+            }
+
+            html, body {
+                margin: 0 !important;
+                padding: 0 !important;
+                background: white !important;
+            }
+
+            body * {
+                visibility: hidden !important;
+            }
+
+            #pdfSheet,
+            #pdfSheet * {
+                visibility: visible !important;
+            }
+
+            #pdfSheet {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 210mm;
+                min-height: 297mm;
+                box-sizing: border-box;
+                padding: 22mm 19mm 30mm;
+
+                color: #ffffff;
+
+                background-image:
+                    linear-gradient(
+                        rgba(3, 30, 22, 0.78),
+                        rgba(3, 30, 22, 0.86)
+                    ),
+                    url("https://i.pinimg.com/564x/d1/b9/8b/d1b98b805afee597bbfb525d36fc772a.jpg");
+
+                background-position: center;
+                background-size: cover;
+                background-repeat: repeat-y;
+
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #pdfTitle {
+                color: #f1d18a;
+                text-align: center;
+                font-size: 25pt;
+                margin: 0 0 5mm;
+                overflow-wrap: anywhere;
+            }
+
+            #pdfLanguage {
+                color: #e4c477;
+                text-align: center;
+                font-size: 12pt;
+                margin-bottom: 10mm;
+            }
+
+            #pdfLyrics {
+                color: #ffffff;
+                font-size: 15pt;
+                line-height: 2;
+                white-space: pre-wrap;
+                overflow-wrap: anywhere;
+                padding-bottom: 20mm;
+            }
+
+            #pdfLyrics.malayalam {
+                font-family: 'Anek Malayalam', sans-serif;
+            }
+
+            #pdfLyrics.kannada {
+                font-family: 'Noto Sans Kannada', sans-serif;
+            }
+
+            #pdfLyrics.arabic {
+                font-family: 'Amiri', serif;
+                font-size: 19pt;
+                direction: rtl;
+                text-align: right;
+            }
+
+            #pdfLyrics.urdu {
+                font-family: 'Noto Nastaliq Urdu', serif;
+                font-size: 17pt;
+                direction: rtl;
+                text-align: right;
+            }
+
+            #pdfFooter {
+                position: fixed;
+                bottom: 10mm;
+                left: 19mm;
+                right: 19mm;
+                border-top: 1px solid #d6b568;
+                padding-top: 5mm;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                color: #f1d18a;
+                font-size: 10pt;
+                font-weight: bold;
+                background: transparent;
+            }
+
+            #pdfFooter img {
+                width: 45px;
+                height: 45px;
+                object-fit: contain;
+            }
+        }
     </style>
 </head>
 
@@ -194,11 +321,9 @@
             <p id="songCategory"></p>
 
             <div id="lyricsTabs" class="lyrics-tabs"></div>
-
             <div id="lyricsArea"></div>
 
             <div id="audioArea" class="song-media"></div>
-
             <div id="videoArea" class="song-media"></div>
 
         </div>
@@ -206,6 +331,21 @@
     </div>
 
 </main>
+
+<!-- PDF CONTENT -->
+<div id="pdfSheet">
+    <h1 id="pdfTitle"></h1>
+    <div id="pdfLanguage"></div>
+    <div id="pdfLyrics"></div>
+
+    <div id="pdfFooter">
+        <img src="logo.png" alt="Muthin Pukal Logo">
+        <span>
+            LYRICS PROVIDED BY<br>
+            MUTHIN PUKAL MADH APP
+        </span>
+    </div>
+</div>
 
 <footer>
     <p>© 2026 Muthin Pukal. All Rights Reserved.</p>
@@ -291,6 +431,18 @@ async function copyLyrics(text, button) {
     }, 2000);
 }
 
+// DOWNLOAD SELECTED LANGUAGE AS PDF
+function downloadLyricsPDF(songTitle, languageName, languageClass, lyricsText) {
+    document.getElementById("pdfTitle").textContent = songTitle;
+    document.getElementById("pdfLanguage").textContent = languageName;
+
+    const pdfLyrics = document.getElementById("pdfLyrics");
+    pdfLyrics.textContent = lyricsText;
+    pdfLyrics.className = languageClass;
+
+    window.print();
+}
+
 async function loadSong() {
     if (!songId) {
         message.textContent = "Song not found. Please go back and select a song.";
@@ -310,7 +462,7 @@ async function loadSong() {
             return;
         }
 
-        document.title = (song.title || "Song") + " | മുത്തിൻ പുകൾ";
+        document.title = (song.title || "Song") + " | ಮುತ್ತಿನ್ ಪുകൾ";
 
         document.getElementById("songTitle").textContent =
             song.title || "Untitled Song";
@@ -362,11 +514,26 @@ async function loadSong() {
                     copyLyrics(available[index][2], copyButton);
                 });
 
+                const pdfButton = document.createElement("button");
+                pdfButton.className = "mp-download-pdf";
+                pdfButton.innerHTML =
+                    '<i class="fa-solid fa-file-pdf"></i> Download PDF';
+
+                pdfButton.addEventListener("click", () => {
+                    downloadLyricsPDF(
+                        song.title || "Untitled Song",
+                        available[index][1],
+                        available[index][0],
+                        available[index][2]
+                    );
+                });
+
                 const lyrics = document.createElement("div");
                 lyrics.className = "lyrics-content " + available[index][0];
                 lyrics.textContent = available[index][2];
 
                 area.appendChild(copyButton);
+                area.appendChild(pdfButton);
                 area.appendChild(lyrics);
             }
 
@@ -426,3 +593,4 @@ loadSong();
 
 </body>
 </html>
+```
